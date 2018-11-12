@@ -1,0 +1,13 @@
+possible command:
+!help 						- the guide for commands
+!date						- the date about the user asked
+!brand 						- the brand list for lip product
+!cate				 		- the category list for lip category
+!price	-brand -cate  		- the price of specific product
+!where	-brand -cate  		- list some possible place that we can buy
+!color	-brand -cate -num 	- gave a picture that the color of the specific products
+!num	-brand -cate 		- the number of each categories of lip products
+!guide	-cate				- the guide for each categories 
+!rate	-brand -cate		- check the rate in sephora of specific products
+
+Topic:  The topic is about the lip makeup things
