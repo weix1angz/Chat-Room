@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 public class ChatBotView extends Application{
 	private int boardlength = 700;
 	private int boardwidth = 400;
+	private int buttonwidth = 100;
 	private TextField username;//username text field
 	private MenuButton chatroom; // chatroom menu button
 	private MenuItem nba;
@@ -43,27 +44,35 @@ public class ChatBotView extends Application{
 		MenuItem item2 = new MenuItem("History");
 		Menu menu = new Menu("File");
 		menu.getItems().addAll(item1,item2);
-		MenuBar menuBar = new MenuBar(menu);
-		//setting the buttonset
-		VBox buttons = buttonset();
-		pane.setLeft(buttons);
+		MenuBar menuBar = new MenuBar(menu);	
 		pane.setTop(menuBar);
-		//initialized chatboard
-		VBox chatAndSend = Initchatboard();
-		pane.setRight(chatAndSend);
+		pane.setCenter(layout());
+		messageEvent();
 		stage.setScene(scene);
 		stage.setResizable(false);
 		stage.show();
 		
+	}
+	public HBox layout() {
+		VBox buttons = buttonset();//setting the buttonset
+		VBox chatAndSend = Initchatboard();//initialized chatboard
+		HBox Layout = new HBox(buttons, chatAndSend);
+		Layout.setPadding(new Insets(10,10,10,10));
+		Layout.setSpacing(20);
+		return Layout;
 	}
 	
 	public VBox buttonset() {
 		VBox chatroom = dropdownButton();
 		VBox username = usernameBox();
 		connect = new Button("Connect");
+		connect.setPrefWidth(buttonwidth);
 		clear = new Button("Clear");
+		clear.setOnAction(event->{
+			chatboard.clear();
+		});
+		clear.setPrefWidth(buttonwidth);
 		VBox buttonSet = new VBox(username, chatroom, connect,clear);
-		buttonSet.setPadding(new Insets(10, 10, 10, 10));
 		buttonSet.setSpacing(50);
 		return buttonSet;
 	}
@@ -75,7 +84,21 @@ public class ChatBotView extends Application{
 		music = new MenuItem("Music");
 		moba = new MenuItem("LOL game");
 		makeup = new MenuItem("Lip products");
-		chatroom = new MenuButton("chatroom choice",null, nba, music, moba, makeup);
+		//menuitem get selected
+		makeup.setOnAction(event->{
+			chatroom.setText(makeup.getText());
+		});
+		moba.setOnAction(event->{
+			chatroom.setText(moba.getText());
+		});
+		music.setOnAction(event->{
+			chatroom.setText(music.getText());
+		});
+		nba.setOnAction(event->{
+			chatroom.setText(nba.getText());
+		});
+		chatroom = new MenuButton("NBA",null, nba, music, moba, makeup);
+		chatroom.setPrefWidth(buttonwidth);
 		chatroomlabel.getChildren().add(chat);
 		chatroomlabel.getChildren().add(chatroom);
 		return chatroomlabel;
@@ -100,8 +123,32 @@ public class ChatBotView extends Application{
 		HBox hb = new HBox(message, SendButton);
 		VBox vb = new VBox(chatboard,hb);
 		vb.setSpacing(30);
-		vb.setPadding(new Insets(10, 20,10, 10));
 		return vb;
+	}
+	public void messageEvent() {
+		message.setOnAction(event->{
+			//TODO
+			String chat = message.getText();
+			String name = username.getText();
+			String chatrooms = chatroom.getText();
+			if(!chat.isEmpty()) {
+				chatboard.appendText(name+"@"+chatrooms+" : " + chat+"\n");
+			}
+			message.setText("");
+		});
+		SendButton.setOnAction(events->{
+			//TODO
+			String chat = message.getText();
+			String name = username.getText();
+			String chatrooms = chatroom.getText();
+			if(!chat.isEmpty()) {
+				chatboard.appendText(name+"@"+chatrooms+" : " + chat+"\n");
+			}
+			message.setText("");
+		});
+	}
+	public void ConnectServer() {
+		//TODO
 	}
 	 
 }
