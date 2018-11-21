@@ -12,11 +12,12 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map; 
 
 public class NBAbot {
 	
-	static HashMap<String, JSONObject[]> NBAresult = new HashMap<>();
+	static LinkedHashMap<String, JSONObject[]> NBAresult = new LinkedHashMap<>();
 	
 	public NBAbot() {
 		
@@ -49,9 +50,9 @@ public class NBAbot {
 	    Iterator it = mp.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
-	        System.out.println((JSONObject[])pair.getValue());
-	        //System.out.println(pair.getKey() + " = ");
-	        //printMatches((JSONObject[])pair.getValue());
+	        System.out.println(pair.getKey() + " = ");
+	        //System.out.println((JSONObject[])pair.getValue());
+	        printMatches((JSONObject[])pair.getValue());
 	        //it.remove();
 	    }
 	}
@@ -59,14 +60,12 @@ public class NBAbot {
 	private static void printMatches(JSONObject[] matches) {
 		for(int i = 0; i < matches.length; i++) {
 			try {
-				System.out.print(matches[i]);
-				
 				System.out.printf("%s %s (%s) : (%s)\n", 
 						matches[i].get("startTime"),
 						matches[i].get("leftEnName"),
 						matches[i].get("leftGoal"),
 						matches[i].get("rightGoal"),//);//,
-						matches[i].get("RightEnName"));
+						matches[i].get("rightEnName"));
 			} catch (JSONException e) {
 				//System.err.println("json field not found");
 				e.printStackTrace();
@@ -84,9 +83,14 @@ public class NBAbot {
 		   // convert matches as a json array
 			JSONObject[] matchesJson = new JSONObject[matches.length];
 			for(int j = 0; j <matches.length; j++) {
-				//matchesJson[j] = new JSONObject(matches[j]);
-				System.out.println(matches[j]);
+				try {
+					matchesJson[j] = new JSONObject(matches[j]);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			// date : matches(json)
 			NBAresult.put(jsonArray[i].substring(1, 11), matchesJson);
 		}
 	}
