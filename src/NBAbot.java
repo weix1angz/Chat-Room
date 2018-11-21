@@ -6,21 +6,39 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map; 
+import java.util.Map;
+import java.util.TimeZone; 
 
 public class NBAbot {
 	
 	static LinkedHashMap<String, JSONObject[]> NBAresult = new LinkedHashMap<>();
 	
 	public NBAbot() {
-		
+		String jsonText;
+		try {
+			jsonText = readJsonFromUrl("http://matchweb.sports.qq.com/" + 
+					"kbs/list?from=NBA_PC&columnId=100000&" + 
+					"startTime=2018-11-21&endTime=2018-11-27&" + 
+					"callback=ajaxExec&_=1542776881859");
+
+			//fillMatchInfo(jsonText);
+			//printMap(NBAresult);
+			System.out.print(convertTimeZone("2018-11-21 15:02:00"));
+		} catch (IOException | JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	private static String readAll(Reader reader) throws IOException {
 	    StringBuilder builder = new StringBuilder();
@@ -51,7 +69,6 @@ public class NBAbot {
 	    while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
 	        System.out.println(pair.getKey() + " = ");
-	        //System.out.println((JSONObject[])pair.getValue());
 	        printMatches((JSONObject[])pair.getValue());
 	        //it.remove();
 	    }
@@ -60,17 +77,39 @@ public class NBAbot {
 	private static void printMatches(JSONObject[] matches) {
 		for(int i = 0; i < matches.length; i++) {
 			try {
-				System.out.printf("%s %s (%s) : (%s)\n", 
-						matches[i].get("startTime"),
+				System.out.printf("%s %s (%s) : (%s) %s\n", 
+						convertTimeZone((String) matches[i].get("startTime")),
 						matches[i].get("leftEnName"),
 						matches[i].get("leftGoal"),
-						matches[i].get("rightGoal"),//);//,
+						matches[i].get("rightGoal"),
 						matches[i].get("rightEnName"));
+				
 			} catch (JSONException e) {
 				//System.err.println("json field not found");
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private static String convertTimeZone(String dateStr) {
+		
+		String format = "yyyy-MM-dd HH:mm:ss";
+	    SimpleDateFormat fromTime = new SimpleDateFormat(format);
+	    
+	    fromTime.setTimeZone(TimeZone.getTimeZone("UTC"));
+	    Date date = null;
+		try {
+			date = fromTime.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		System.out.println(date);
+	    SimpleDateFormat toTime = new SimpleDateFormat(format);
+	    // convert to local time zone
+	    toTime.setTimeZone(TimeZone.getTimeZone("Lord Howe Summer Time"));
+
+	    return toTime.format(date);
+	    
 	}
 	
 	public static void fillMatchInfo(String jsonText) {
@@ -96,20 +135,6 @@ public class NBAbot {
 	}
 	
 	public static void main(String[] args) throws IOException, JSONException {
-		
-	   String jsonText = readJsonFromUrl("http://matchweb.sports.qq.com/" + 
-	    		"kbs/list?from=NBA_PC&columnId=100000&" + 
-	    		"startTime=2018-11-21&endTime=2018-11-27&" + 
-	    		"callback=ajaxExec&_=1542776881859");
-	   
-	   fillMatchInfo(jsonText);
-	   
-	   printMap(NBAresult);
-
-	   
-	   //System.out.println(jsonText); //41876
-	   ////JSONObject json = new JSONObject(jsonText);
-	   //System.out.println(json.toString());
-	   //System.out.println(json.get("id"));
+		NBAbot bot = new NBAbot();
 	}
 }
