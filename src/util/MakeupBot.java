@@ -13,6 +13,8 @@ public class MakeupBot extends Bot {
 		commandsMap = new HashMap<>();
 		commandsMap.put("brand", "- the brand list for lip product.");
 		commandsMap.put("cate", "- the category list for lip category.");
+		commandsMap.put("price-brand-cate", "- the price of specific product");
+		commandsMap.put("rate-brand-cate", "- check the rate in sephora of specific products");
 		
 	}
 
