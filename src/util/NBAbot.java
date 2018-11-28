@@ -1,3 +1,4 @@
+package util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,29 +13,42 @@ import java.text.SimpleDateFormat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.TimeZone; 
 
-public class NBAbot {
+public class NBAbot extends Bot{
 	
 	static LinkedHashMap<String, JSONObject[]> NBAresult = new LinkedHashMap<>();
+	private AbstractMap<String, String> commandsMap;
 	
-	public NBAbot() {
+	public NBAbot(char id) {
+		super();
+		fetchMatchInfo();
+		commandsMap = new HashMap<>();
+		commandsMap.put("schedule", "A weekly schedule of NBA matches.");
+	}
+	
+	private void fetchMatchInfo() {
 		String jsonText;
 		try {
 			jsonText = readJsonFromUrl("http://matchweb.sports.qq.com/" + 
 					"kbs/list?from=NBA_PC&columnId=100000&" + 
-					"startTime=2018-11-21&endTime=2018-11-27&" + 
-					"callback=ajaxExec&_=1542776881859");
-
-			//fillMatchInfo(jsonText);
+					"startTime=2018-11-28&endTime=2018-12-04&" + 
+					"callback=ajaxExec&_=1543372642261");
+			
+			fillMatchInfo(jsonText);
+			
 			//printMap(NBAresult);
-			System.out.print(convertTimeZone("2018-11-21 15:02:00"));
+			//System.out.print(convertTimeZone("2018-11-21 01:33:00"));
 		} catch (IOException | JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -78,7 +92,8 @@ public class NBAbot {
 		for(int i = 0; i < matches.length; i++) {
 			try {
 				System.out.printf("%s %s (%s) : (%s) %s\n", 
-						convertTimeZone((String) matches[i].get("startTime")),
+						//convertTimeZone((String) matches[i].get("startTime")),
+						matches[i].get("startTime"),
 						matches[i].get("leftEnName"),
 						matches[i].get("leftGoal"),
 						matches[i].get("rightGoal"),
@@ -96,8 +111,9 @@ public class NBAbot {
 		String format = "yyyy-MM-dd HH:mm:ss";
 	    SimpleDateFormat fromTime = new SimpleDateFormat(format);
 	    
-	    fromTime.setTimeZone(TimeZone.getTimeZone("UTC"));
+	    fromTime.setTimeZone(TimeZone.getTimeZone("CT"));
 	    Date date = null;
+	    
 		try {
 			date = fromTime.parse(dateStr);
 		} catch (ParseException e) {
@@ -106,8 +122,8 @@ public class NBAbot {
 		System.out.println(date);
 	    SimpleDateFormat toTime = new SimpleDateFormat(format);
 	    // convert to local time zone
-	    toTime.setTimeZone(TimeZone.getTimeZone("Lord Howe Summer Time"));
-
+	    toTime.setTimeZone(TimeZone.getDefault());
+	    
 	    return toTime.format(date);
 	    
 	}
@@ -135,6 +151,80 @@ public class NBAbot {
 	}
 	
 	public static void main(String[] args) throws IOException, JSONException {
-		NBAbot bot = new NBAbot();
+		NBAbot bot = new NBAbot('a');
+	}
+	
+	@Override
+	public String getBotSignature() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String infoCommand(User user) {
+		return "User: " + user.getHandle() + "\t"
+				+ "Birthday: " + user.getBirthday().toString();
+	}
+
+	@Override
+	public String whoamiCommand(User user) {
+		return "User: " + user.getHandle() + "\t" 
+			+ "IP address: " + user.getConnectionInfo();
+	}
+	
+	@Override
+	public String dateCommand() {
+		Date today = new Date();
+		List<String> DateResponses = new ArrayList<String>();
+
+		// Default type of responses from toString().
+		DateResponses.add(today.toString());
+
+		// Another format:
+		SimpleDateFormat ft = new SimpleDateFormat("E yyyy.MM.dd");
+		DateResponses.add("Today is " + ft.format(today));
+
+		Random rndGen = new Random();
+		return DateResponses.get(rndGen.nextInt(DateResponses.size()));
+	}
+
+	@Override
+	public String getResponses(String message, User user) {
+		if (message == null || user == null)
+			return "Something wrong happened.";
+		// Split the command into multiple string delimited by space character.
+		String[] msg_tokens = message.split(" ");
+
+		// Get the command.
+		String command = msg_tokens[0].substring(1, msg_tokens[0].length());
+
+		// Response
+		String response = "";
+
+		// if valid command
+		if (!getDefaultCommandsList().containsKey(command)) {
+			switch(command) {
+				case ("help"):
+					response += helpCommand();
+					break;
+				case ("info"):
+					response += infoCommand(user);
+					break;
+				case ("date"):
+					response += dateCommand();
+					break;
+				case ("whoami"):
+					response += whoamiCommand(user);
+					break;
+				default:
+					//
+			}
+			
+		} else {
+			// TODO: If it's not a default command then find those commands in this bot's
+			// command list.
+			
+			return "";
+		}
+		return response;
 	}
 }
