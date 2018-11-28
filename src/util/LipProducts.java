@@ -11,9 +11,19 @@ public class LipProducts {
 	/**
 	 * 
 	 */
+	private String rate = "";
+	private String url = "";
+	private String price = "";
 	private HashMap<String, HashMap<String, String[]>> brandsAndCate; // the key is brand, the value is cate
 	public LipProducts() {
-		brandsAndCate = new HashMap<>();
+		brandsAndCate.put("Dior", Dior());
+		brandsAndCate.put("Giorgio_Armani_beauty", Giorgio_Armani_beauty());
+		brandsAndCate.put("Fenty_Beauty_By_Rihanna", Fenty_Beauty_By_Rihanna());
+		brandsAndCate.put("Givenchy",Givenchy());
+		brandsAndCate.put("Tom_Ford",Tom_Ford());
+		brandsAndCate.put("YSL", YSL());
+		brandsAndCate.put("Nars",Nars());
+		
 		
 	}
 	public HashMap<String, String[]> Giorgio_Armani_beauty(){
@@ -138,6 +148,31 @@ public class LipProducts {
 		cate.put(cate3, LipGlow);
 		return cate;
 		
+	}
+	public void geteverything(String brand,String cate) {
+		HashMap<String, String[]> map;
+		if(!brandsAndCate.get(brand).isEmpty()) {
+			map = brandsAndCate.get(brand);
+			price = map.get(cate)[0];
+			url = map.get(cate)[1];
+			rate = map.get(cate)[2];
+		}
+		else {
+			System.out.println("No such brands");
+			
+		}
+	}
+	public String getbrand() {
+		return brandsAndCate.keySet().toString();
+	}
+	public String getprice() {
+		return price;
+	}
+	public String getrate() {
+		return rate;
+	}
+	public String geturl() {
+		return url;
 	}
 
 }
