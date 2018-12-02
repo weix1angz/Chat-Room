@@ -25,63 +25,6 @@ public class SignInView extends Application{
 	boolean userFound = false;
 	private String hostName = "localhost";
 	private int portNumber = 4000;
-
-	// I am about to make it extend the stage
-	/*
-	public SignInView() {
-		super();
-		
-		VBox signInWindow = new VBox(30);
-		signInWindow.setPrefHeight(200);
-		signInWindow.setPrefWidth(350);
-		signInWindow.setPadding(new Insets(35,30,35,45));
-		signInWindow.setStyle("-fx-background-color: white");
-		Scene scene = new Scene(signInWindow);
-		
-		
-		Label welcome = new Label("\t    Welcom to the CHATBOT!");
-		
-		HBox userName = new HBox();
-		Label userNameLabel = new Label("USERNAME:\t");
-		TextField userNameText = new TextField();
-		userName.getChildren().addAll(userNameLabel, userNameText);
-		
-		
-		HBox password = new HBox();
-		Label passwordLabel = new Label("PASSWORD:\t");
-		PasswordField passwordText = new PasswordField();
-		password.getChildren().addAll(passwordLabel, passwordText);
-		
-		
-		HBox button = new HBox(120);
-		Button signIn = new Button("SIGN IN");
-		Button signUp = new Button("SIGN UP");
-		button.getChildren().addAll(signIn, signUp);
-		
-		signIn.setOnAction(MouseClicked -> {
-			if(checkUserName(userNameText.getText(), passwordText.getText())) {
-				System.out.println("user found");
-				setuserFound();
-			}else {
-				new Alert(Alert.AlertType.WARNING, "user not found or wrong password").showAndWait();
-				System.out.println("user not found or wrong password");
-				
-			}
-			if(userFound) primaryStage.close();
-		});
-		
-		signUp.setOnAction(MouseClicked -> {
-			SignUpView signup = new SignUpView();
-			signup.show();
-		});
-		
-		signInWindow.getChildren().addAll(welcome, userName, password, button);
-		
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("SignIn");
-	}
-	*/
-	// here is for debug
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -122,7 +65,7 @@ public class SignInView extends Application{
 				
 			}
 			if(userFound) {
-				ChatBotView view = new ChatBotView(hostName, portNumber);
+				ChatBotView view = new ChatBotView(hostName, portNumber, userNameText.getText());
 				primaryStage.close();}
 		});
 		
