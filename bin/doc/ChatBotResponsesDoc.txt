@@ -1,0 +1,23 @@
+List of default commands:
+!help - list out the available commands for the current bot. 
+!info User - prints out the information of User.
+!date - prints out the current date.
+!whoami - prints out the user's client info such as IP addresses, ...
+
+Yanghu's chatbot theme: Soccer
+
+Weixiang's chatbot theme: MOBA game or LoL.
+
+MingJun's chatbot theme: 
+
+MinhBui's chatbot theme: music bot that supports youtube music
+!import [URL] - given a Youtube URL, import the URL to the play list.
+!remove [ID]/[Name] - given an ID or name, remove the music from the play list.
+!list - lists out the current songs in the playlist.
+!play [ID]/[Name] - given a name or an ID, play the song in the list. If nothing is given, resume playing the current song.
+!current - displays the current playing song.
+!pause - pause the current song
+!repeat - toggle repeat mode
+!shuffle - shuffle repeat mode
+![reponse] - comments on the reponse of an user. (nlp feature)
+!rate [User]/[MusicID]/[MusicName] - give a random rate of a music or an user from 0 to 10.
