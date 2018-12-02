@@ -27,34 +27,46 @@ import java.util.TimeZone;
 
 public class NBAbot extends Bot{
 	
-	static LinkedHashMap<String, JSONObject[]> NBAresult = new LinkedHashMap<>();
+	LinkedHashMap<String, JSONObject[]> NBAresult = new LinkedHashMap<>();
+	LinkedHashMap<String, ArrayList<JSONObject>> localData = new LinkedHashMap<>();
 	private AbstractMap<String, String> commandsMap;
+	private int timeDiff = 9;
 	
 	public NBAbot(char id) {
 		super();
 		fetchMatchInfo();
 		commandsMap = new HashMap<>();
 		commandsMap.put("schedule", "A weekly schedule of NBA matches.");
+		this.setBotCharacterId(id);
 	}
 	
 	private void fetchMatchInfo() {
-		String jsonText;
+
 		try {
-			jsonText = readJsonFromUrl("http://matchweb.sports.qq.com/" + 
+			fillMatchInfo(readJsonFromUrl("http://matchweb.sports.qq.com/" + 
 					"kbs/list?from=NBA_PC&columnId=100000&" + 
-					"startTime=2018-11-28&endTime=2018-12-04&" + 
-					"callback=ajaxExec&_=1543372642261");
+					"startTime=2018-12-09&endTime=2018-12-15&" + 
+					"callback=ajaxExec&_=1543705200120"));
 			
-			fillMatchInfo(jsonText);
-			
-			//printMap(NBAresult);
-			//System.out.print(convertTimeZone("2018-11-21 01:33:00"));
+			fillMatchInfo(readJsonFromUrl("http://matchweb.sports.qq.com/" + 
+					"kbs/list?from=NBA_PC&columnId=100000&" + 
+					"startTime=2018-11-25&endTime=2018-12-01&" + 
+					"callback=ajaxExec&_=1543705200118"));
+					
+			fillMatchInfo(readJsonFromUrl("http://matchweb.sports.qq.com/" + 
+					"kbs/list?from=NBA_PC&columnId=100000&" + 
+					"startTime=2018-12-02&endTime=2018-12-08&" + 
+					"callback=ajaxExec&_=1543705200117"));
+					
+			convertMap(NBAresult);
 		} catch (IOException | JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	private static String readAll(Reader reader) throws IOException {
+	
+	
+	private String readAll(Reader reader) throws IOException {
 	    StringBuilder builder = new StringBuilder();
 	    int cp;
 	    while ((cp = reader.read()) != -1) {
@@ -63,7 +75,7 @@ public class NBAbot extends Bot{
 	    return builder.toString();
 	}
 
-	public static String readJsonFromUrl(String url) throws IOException, JSONException {
+	public String readJsonFromUrl(String url) throws IOException, JSONException {
 		InputStream inputStream = new URL(url).openStream();
 		try {
 			BufferedReader rd = new BufferedReader(
@@ -78,26 +90,40 @@ public class NBAbot extends Bot{
 		}
 	}
 	
-	public static void printMap(Map mp) {
+	public void convertMap(Map mp) {
 	    Iterator it = mp.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
-	        System.out.println(pair.getKey() + " = ");
-	        printMatches((JSONObject[])pair.getValue());
-	        //it.remove();
+	        importMatches((JSONObject[])pair.getValue());
+	        it.remove();
 	    }
 	}
 	
-	private static void printMatches(JSONObject[] matches) {
+	private void importMatches(JSONObject[] matches) {
 		for(int i = 0; i < matches.length; i++) {
 			try {
-				System.out.printf("%s %s (%s) : (%s) %s\n", 
+				if(matches[i].get("matchType").equals("2")) {
+					// convert the time into local time, overwrite old data
+					String convertedDate = convertTimeZone((String)matches[i].get("startTime"));
+					matches[i].put("startTime", convertedDate);
+					// organize and put into local map
+					if(!localData.containsKey(convertedDate)) {
+						localData.put(convertedDate, 
+								new ArrayList<JSONObject>(1));
+					} else {
+						localData.get(convertedDate).add(matches[i]);
+					}
+					/*
+					System.out.printf("%s %s (%s) : (%s) %s\n", 
 						//convertTimeZone((String) matches[i].get("startTime")),
-						matches[i].get("startTime"),
+						convertTimeZone((String)matches[i].get("startTime")),
+						//((String)matches[i].get("startTime")).split(" ")[0],
 						matches[i].get("leftEnName"),
 						matches[i].get("leftGoal"),
 						matches[i].get("rightGoal"),
 						matches[i].get("rightEnName"));
+						*/
+				}
 				
 			} catch (JSONException e) {
 				//System.err.println("json field not found");
@@ -106,29 +132,51 @@ public class NBAbot extends Bot{
 		}
 	}
 	
-	private static String convertTimeZone(String dateStr) {
+	private String convertTimeZone(String dateStr) {
+		String[] date = dateStr.split(" ")[0].split("-");
+		String[] time = dateStr.split(" ")[1].split(":");
 		
-		String format = "yyyy-MM-dd HH:mm:ss";
-	    SimpleDateFormat fromTime = new SimpleDateFormat(format);
-	    
-	    fromTime.setTimeZone(TimeZone.getTimeZone("CT"));
-	    Date date = null;
-	    
-		try {
-			date = fromTime.parse(dateStr);
-		} catch (ParseException e) {
-			e.printStackTrace();
+		int hour = Integer.parseInt(time[0]) - timeDiff;
+		int month = Integer.parseInt(date[1]);
+		int day = Integer.parseInt(date[2]);
+		
+		if(hour < 0) {
+			hour += 24;
+			day -= 1;
 		}
-		System.out.println(date);
-	    SimpleDateFormat toTime = new SimpleDateFormat(format);
-	    // convert to local time zone
-	    toTime.setTimeZone(TimeZone.getDefault());
-	    
-	    return toTime.format(date);
+		
+		if(day <= 0) {
+			month -= 1;
+			day = 30;
+		}
+		
+		String hourStr = "";
+		String monthStr = "";
+		String dayStr = "";
+		
+		if(hour < 10) {
+			hourStr = "0" + Integer.toString(hour);
+		} else {
+			hourStr = Integer.toString(hour);
+		}
+		if(day < 10) {
+			dayStr = "0" + Integer.toString(day);
+		} else {
+			dayStr = Integer.toString(day);
+		}
+		if(month < 10) {
+			monthStr = "0" + Integer.toString(month);
+		} else {
+			monthStr = Integer.toString(month);
+		}
+		
+		String finalDate = date[0] + "-" + monthStr + "-" + dayStr
+				 + " " + hourStr + ":" + time[1] + ":" + time[2];
+		return finalDate;
 	    
 	}
 	
-	public static void fillMatchInfo(String jsonText) {
+	public void fillMatchInfo(String jsonText) {
 		// split string by dates
 		String[] jsonArray = jsonText.split("\\:\\[|\\],");
 		for(int i = 0; i < jsonArray.length; i += 2) {
@@ -149,11 +197,7 @@ public class NBAbot extends Bot{
 			NBAresult.put(jsonArray[i].substring(1, 11), matchesJson);
 		}
 	}
-	
-	public static void main(String[] args) throws IOException, JSONException {
-		NBAbot bot = new NBAbot('a');
-	}
-	
+
 	@Override
 	public String getBotSignature() {
 		// TODO Auto-generated method stub
@@ -215,6 +259,9 @@ public class NBAbot extends Bot{
 				case ("whoami"):
 					response += whoamiCommand(user);
 					break;
+				case ("schedule"):
+					//response += ;
+					break;	
 				default:
 					//
 			}
