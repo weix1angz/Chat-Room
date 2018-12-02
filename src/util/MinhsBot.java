@@ -22,6 +22,7 @@ import org.alicebot.ab.MagicBooleans;
 import org.alicebot.ab.MagicStrings;
 import org.alicebot.ab.utils.IOUtils;
 
+import server.Response;
 
 
 /**
@@ -94,9 +95,10 @@ public class MinhsBot extends util.Bot {
 	}
 
 	@Override
-	public String getResponses(String message, User user) {
+	public Response getResponses(String message, User user) {
 		if (message == null || user == null)
-			return "Something wrong happened.";
+			return new Response("Something wrong happened.", null);
+		
 		// Split the command into multiple string delimited by space character.
 		String[] msg_tokens = message.split(" ");
 
@@ -105,6 +107,7 @@ public class MinhsBot extends util.Bot {
 
 		// Response
 		String response = "";
+		String data = null;
 
 		// Need to
 		if (getDefaultCommandsList().containsKey(command)) {
@@ -130,7 +133,7 @@ public class MinhsBot extends util.Bot {
 			}
 
 		}
-		return response;
+		return new Response(response, data);
 	}
 
 	private static String getResourcesPath() {

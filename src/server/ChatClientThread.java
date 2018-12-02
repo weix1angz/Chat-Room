@@ -10,6 +10,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 
@@ -24,6 +25,7 @@ public class ChatClientThread extends ChatServer implements Runnable {
 	String outputLine = null;
 	String inputLine = null;
 	private ObjectInputStream objIn;
+	private ObjectOutputStream objOut;
 	private Bot newBot;
 	private User userObj;
 	private PrintStream logStream;
@@ -62,6 +64,7 @@ public class ChatClientThread extends ChatServer implements Runnable {
 				}
 
 				if (outputLine != null) {
+					
 					broadcastToClients(outputLine);
 				}
 				outputLine = null;
@@ -87,6 +90,10 @@ public class ChatClientThread extends ChatServer implements Runnable {
 		return out;
 	}
 	
+	public ObjectOutputStream getOOS() {
+		return objOut;
+	}
+	
 	/**
 	 * Sends outputLine to every client in the clients list.
 	 * 
@@ -99,6 +106,23 @@ public class ChatClientThread extends ChatServer implements Runnable {
 				if (clientThread.getDOS() != null) {
 					clientThread.getDOS().writeUTF(outputLine + "\r\n");
 					clientThread.getDOS().flush();
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Sends output response to every client in the clients list.
+	 * 
+	 * @param output A Response object.
+	 * @throws IOException
+	 */
+	public void broadcastToClients(Response output) throws IOException {
+		if (output != null) {
+			for (ChatClientThread clientThread : clients) {
+				if (clientThread.getDOS() != null) {
+					clientThread.getOOS().writeObject(output);
+					clientThread.getOOS().flush();
 				}
 			}
 		}

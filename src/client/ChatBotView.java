@@ -24,6 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import client.SignInView;
@@ -128,6 +129,7 @@ public class ChatBotView extends Stage {
 		clear = new Button("Clear");
 		clear.setOnAction(event -> {
 			chatboard.clear();
+			
 		});
 		clear.setPrefWidth(buttonwidth);
 		VBox buttonSet = new VBox(username, chatroom, connect, clear);
@@ -239,6 +241,17 @@ public class ChatBotView extends Stage {
 
 	public void appendMessage(String msg) {
 		chatboard.appendText(msg + "\n");
+	}
+	
+	public void showURL(String url) {
+		Stage youtubePlayer = new Stage();
+		
+		WebView webview = new WebView();
+	    webview.getEngine().load(url);
+	    webview.setPrefSize(640, 390);
+
+	    youtubePlayer.setScene(new Scene(webview));
+	    youtubePlayer.show();
 	}
 
 }

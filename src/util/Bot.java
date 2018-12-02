@@ -2,6 +2,7 @@ package util;
 
 import java.util.AbstractMap;
 import java.util.HashMap;
+import server.Response;
 
 /**
  * This bot class implements basic functionality of the chat bot. 
@@ -67,7 +68,7 @@ public abstract class Bot {
 	 * @param user
 	 * @return
 	 */
-	public abstract String getResponses(String message, User user);
+	public abstract Response getResponses(String message, User user);
 	
 
 	/**

@@ -8,9 +8,11 @@ package client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
+import server.Response;
 
 import util.User;
 
@@ -23,7 +25,9 @@ public class ChatServerThread implements Runnable {
 	private final LinkedList<String> pendingMsgs;
 	private boolean hasMsgs = false;
 	private String inputLine;
+	
 	private ObjectOutputStream objOut;
+	private ObjectInputStream objIn;
 	
 	private ChatBotView view;
 
@@ -54,6 +58,8 @@ public class ChatServerThread implements Runnable {
 			out = new DataOutputStream(socket.getOutputStream());
 			in = new DataInputStream(socket.getInputStream());
 			objOut = new ObjectOutputStream(socket.getOutputStream());
+			objIn = new ObjectInputStream(socket.getInputStream());
+			
 			objOut.writeObject(user);
 			while (!socket.isClosed()) {
 				if (socket.getInputStream().available() > 0) {
@@ -69,8 +75,15 @@ public class ChatServerThread implements Runnable {
 						hasMsgs = !pendingMsgs.isEmpty();
 					}
 
-					out.writeUTF("[" + user.getHandle() + "] " + nextMsg);
-					out.flush();
+					
+					String wholeMsg = "[" + user.getHandle() + "] " + nextMsg;
+					//out.writeUTF(wholeMsg);
+					//out.flush();
+					
+					
+					
+					objOut.writeObject(new Response(wholeMsg, null));
+					objOut.flush();
 				}
 
 			}
