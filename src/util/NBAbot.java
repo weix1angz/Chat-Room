@@ -37,7 +37,12 @@ public class NBAbot extends Bot{
 		super();
 		fetchMatchInfo();
 		commandsMap = new HashMap<>();
-		commandsMap.put("schedule", "A weekly schedule of NBA matches.");
+		commandsMap.put("schedule", "[yyyy-mm-dd] A day schedule of NBA matches.");
+		commandsMap.put("team", "[TEAM NAME] all recent matches of a given team.");
+		commandsMap.put("live", "show all matches that are undergoing.");
+		commandsMap.put("dayrange", "show the range of date that data contains.");
+		commandsMap.put("teamlist", "show a team list in NBA.");
+		//TODO weekly schedule
 		this.setBotCharacterId(id);
 		//printData();
 	}
@@ -48,7 +53,7 @@ public class NBAbot extends Bot{
 		    ArrayList<JSONObject> matches = entry.getValue();
 		    System.out.println("######" + date);
 		    for (int i=0; i<matches.size(); i++)
-				try {
+				try { 
 					System.out.printf("%s %s (%s) : (%s) %s\n", 
 						matches.get(i).get("startTime"),
 						matches.get(i).get("leftEnName"),
@@ -246,17 +251,19 @@ public class NBAbot extends Bot{
 
 	@Override
 	public String getResponses(String message, User user) {
-		if (message == null || user == null)
-			return "Something wrong happened.";
+		
+		//if (message == null || user == null)
+			//return "Something wrong happened.";
 		// Split the command into multiple string delimited by space character.
-		String[] msg_tokens = message.split(" ");
+		String[] msg_tokens = message.split(" ", 2);
 
 		// Get the command.
 		String command = msg_tokens[0].substring(1, msg_tokens[0].length());
 
 		// Response
 		String response = "";
-
+		
+		
 		// if valid command
 		if (!getDefaultCommandsList().containsKey(command)) {
 			switch(command) {
@@ -273,13 +280,25 @@ public class NBAbot extends Bot{
 					response += whoamiCommand(user);
 					break;
 				case ("schedule"):
-					//response += ;
-					break;	
+					if(msg_tokens.length > 1) {
+						response += msg_tokens[1];
+					} else {
+						System.out.println("no team");
+					}
+					break;
+				case("team"):
+					if(msg_tokens.length > 1) {
+						response += msg_tokens[1];
+					} else {
+						System.out.println("no team");
+					}
+					break;
 				default:
 					//
 			}
 			
 		} else {
+			System.out.println("invalid");
 			// TODO: If it's not a default command then find those commands in this bot's
 			// command list.
 			
