@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.TimeZone; 
 
@@ -30,7 +31,7 @@ public class NBAbot extends Bot{
 	LinkedHashMap<String, JSONObject[]> NBAresult = new LinkedHashMap<>();
 	LinkedHashMap<String, ArrayList<JSONObject>> localData = new LinkedHashMap<>();
 	private AbstractMap<String, String> commandsMap;
-	private int timeDiff = 9;
+	private int timeDiff = 15;
 	
 	public NBAbot(char id) {
 		super();
@@ -38,11 +39,33 @@ public class NBAbot extends Bot{
 		commandsMap = new HashMap<>();
 		commandsMap.put("schedule", "A weekly schedule of NBA matches.");
 		this.setBotCharacterId(id);
+		//printData();
 	}
 	
+	private void printData(){
+		for (Entry<String, ArrayList<JSONObject>> entry : localData.entrySet()) {
+		    String date = entry.getKey();
+		    ArrayList<JSONObject> matches = entry.getValue();
+		    System.out.println("######" + date);
+		    for (int i=0; i<matches.size(); i++)
+				try {
+					System.out.printf("%s %s (%s) : (%s) %s\n", 
+						matches.get(i).get("startTime"),
+						matches.get(i).get("leftEnName"),
+						matches.get(i).get("leftGoal"),
+						matches.get(i).get("rightGoal"),
+						matches.get(i).get("rightEnName"));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+					
+		}
+	}
+ 
 	private void fetchMatchInfo() {
-
 		try {
+			
 			fillMatchInfo(readJsonFromUrl("http://matchweb.sports.qq.com/" + 
 					"kbs/list?from=NBA_PC&columnId=100000&" + 
 					"startTime=2018-12-09&endTime=2018-12-15&" + 
@@ -65,7 +88,6 @@ public class NBAbot extends Bot{
 		}
 	}
 	
-	
 	private String readAll(Reader reader) throws IOException {
 	    StringBuilder builder = new StringBuilder();
 	    int cp;
@@ -75,7 +97,7 @@ public class NBAbot extends Bot{
 	    return builder.toString();
 	}
 
-	public String readJsonFromUrl(String url) throws IOException, JSONException {
+	private String readJsonFromUrl(String url) throws IOException, JSONException {
 		InputStream inputStream = new URL(url).openStream();
 		try {
 			BufferedReader rd = new BufferedReader(
@@ -90,7 +112,7 @@ public class NBAbot extends Bot{
 		}
 	}
 	
-	public void convertMap(Map mp) {
+	private void convertMap(Map mp) {
 	    Iterator it = mp.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
@@ -106,23 +128,13 @@ public class NBAbot extends Bot{
 					// convert the time into local time, overwrite old data
 					String convertedDate = convertTimeZone((String)matches[i].get("startTime"));
 					matches[i].put("startTime", convertedDate);
+					String dataStr = convertedDate.split(" ")[0];
 					// organize and put into local map
-					if(!localData.containsKey(convertedDate)) {
-						localData.put(convertedDate, 
+					if(!localData.containsKey(dataStr)) {
+						localData.put(dataStr, 
 								new ArrayList<JSONObject>(1));
-					} else {
-						localData.get(convertedDate).add(matches[i]);
 					}
-					/*
-					System.out.printf("%s %s (%s) : (%s) %s\n", 
-						//convertTimeZone((String) matches[i].get("startTime")),
-						convertTimeZone((String)matches[i].get("startTime")),
-						//((String)matches[i].get("startTime")).split(" ")[0],
-						matches[i].get("leftEnName"),
-						matches[i].get("leftGoal"),
-						matches[i].get("rightGoal"),
-						matches[i].get("rightEnName"));
-						*/
+					localData.get(dataStr).add(matches[i]);
 				}
 				
 			} catch (JSONException e) {
@@ -176,7 +188,7 @@ public class NBAbot extends Bot{
 	    
 	}
 	
-	public void fillMatchInfo(String jsonText) {
+	private void fillMatchInfo(String jsonText) {
 		// split string by dates
 		String[] jsonArray = jsonText.split("\\:\\[|\\],");
 		for(int i = 0; i < jsonArray.length; i += 2) {
@@ -203,6 +215,7 @@ public class NBAbot extends Bot{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 	@Override
 	public String infoCommand(User user) {
 		return "User: " + user.getHandle() + "\t"
