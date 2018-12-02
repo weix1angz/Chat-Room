@@ -50,10 +50,10 @@ public class ChatClientThread extends ChatServer implements Runnable {
 			in = new DataInputStream(socket.getInputStream());
 			objIn = new ObjectInputStream(socket.getInputStream());
 			objOut = new ObjectOutputStream(socket.getOutputStream());
-			
+
 			// Read user's info.
 			userObj = (User) objIn.readObject();
-			
+
 			// Broadcast to all clients that this user's client just log onto the server.
 			broadcastToClients(new Response(userObj.getHandle() + " joined the channel.", null));
 			logStream.println(userObj.getHandle() + " joined the channel.");
@@ -64,7 +64,7 @@ public class ChatClientThread extends ChatServer implements Runnable {
 				Response clientRequestRes = ((Response) objIn.readObject());
 				if (clientRequestRes != null) {
 					inputLine = clientRequestRes.getMessage();
-					
+
 					/**
 					 * inputLine normally has the form of:
 					 * 
@@ -73,10 +73,10 @@ public class ChatClientThread extends ChatServer implements Runnable {
 					if (inputLine != null) {
 						logStream.println(inputLine);
 						String[] input_arr = inputLine.split(" ");
-						
+
 						// text is the actually message.
 						String text = "";
-						
+
 						for (int i = 1; i < input_arr.length; i++) {
 							if (i < input_arr.length - 1)
 								text += input_arr[i] + " ";
@@ -92,7 +92,8 @@ public class ChatClientThread extends ChatServer implements Runnable {
 						if (botsMap.containsKey(text.charAt(0) + "")) {
 							Bot b = botsMap.get(text.charAt(0) + "");
 							botRes = b.getResponses(text, userObj);
-							outputLine += "\n" + b.getBotSignature() + "@" + userObj.getHandle() + " " + botRes.getMessage();
+							outputLine += "\n" + b.getBotSignature() + "@" + userObj.getHandle() + " "
+									+ botRes.getMessage();
 							botRes.setMessage(outputLine);
 						}
 					}
@@ -148,6 +149,10 @@ public class ChatClientThread extends ChatServer implements Runnable {
 		}
 	}
 
+	public User getUser() {
+		return this.userObj;
+	}
+
 	/**
 	 * Sends output response to every client in the clients list.
 	 * 
@@ -158,9 +163,18 @@ public class ChatClientThread extends ChatServer implements Runnable {
 		if (output != null) {
 			for (ChatClientThread clientThread : clients) {
 				if (clientThread.getDOS() != null) {
-					clientThread.getOOS().writeObject(output);
+					// Only send data from Response object to the client that request it.
+					if (output.getData() != null && !output.getData().isEmpty()) {
+						if (clientThread.getUser().equals(this.userObj)) {
+							clientThread.getOOS().writeObject(output);
+						}
+					} else {
+						// Else just relay back the message to other clients.
+						clientThread.getOOS().writeObject(new Response(output.getMessage(), null));
+					}
 					clientThread.getOOS().flush();
 				}
+
 			}
 		}
 	}

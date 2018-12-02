@@ -27,6 +27,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import server.User;
@@ -147,6 +148,7 @@ public class ChatBotView extends Stage {
 		clear = new Button("Clear");
 		clear.setOnAction(event -> {
 			chatboard.clear();
+			//this.openURL("https://dota2.gamepedia.com/Morphling");
 		});
 		clear.setPrefWidth(buttonwidth);
 		VBox buttonSet = new VBox(username, chatroom, clear);
@@ -260,4 +262,12 @@ public class ChatBotView extends Stage {
 		chatboard.appendText(msg + "\n");
 	}
 
+	public void openURL(String url) {
+		Stage newStage = new Stage();
+		WebView webview = new WebView();
+	    webview.getEngine().load(url);
+	    webview.setPrefSize(640, 390);
+	    newStage.setScene(new Scene (webview)); 
+	    newStage.show();
+	}
 }

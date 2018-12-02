@@ -119,6 +119,10 @@ public class MinhsBot extends server.Bots.Bot {
 				response += whoamiCommand(user);
 			} else if (command.equals("ttm")) {
 				response = getSmartResponse(message.substring(1, message.length()), user);
+			} else if (command.equals("geturl")) {
+				response = message;
+				if (msg_tokens.length == 2)
+					data = msg_tokens[1];
 			}
 
 		} else {
@@ -129,7 +133,7 @@ public class MinhsBot extends server.Bots.Bot {
 			}else if (command.equals("rate")) {
 				response += this.rate(msg_tokens[1]);
 			} else {
-				response = "Command not found.";
+				response = getRandRes();
 			}
 
 		}
@@ -170,9 +174,13 @@ public class MinhsBot extends server.Bots.Bot {
 	public String getRandRes() {
 		List<String> responses = new ArrayList<>();
 		Random rndGen = new Random();
-		responses.add("Is this heaven? ( ͡° ͜ʖ ͡°)");
-		responses.add("Come and get me campers!");
-		responses.add("wtf :^)");
+		responses.add("Is this heaven? ༼ つ ◕_◕ ༽つ ");
+		responses.add("Campers! Campers! Come and get me campers!");
+		responses.add("???? :^)");
+		responses.add("( ͡° ͜ʖ ͡°)");
+		responses.add("\\╭☞ \\╭☞");
+		responses.add("OMG.");
+		responses.add("┬┴┬┴┤ ͜ʖ ͡°) ├┬┴┬┴");
 		return responses.get(rndGen.nextInt(responses.size()));
 	}
 

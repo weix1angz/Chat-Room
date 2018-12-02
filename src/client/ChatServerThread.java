@@ -12,6 +12,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
+
+import javafx.application.Platform;
 import server.Response;
 
 import server.User;
@@ -77,6 +79,16 @@ public class ChatServerThread implements Runnable {
 					Response res = (Response) objIn.readObject();
 					System.out.println(res.getMessage());
 					view.appendMessage(res.getMessage());
+					
+					// URL pulling feature.
+					if (res.getData() != null && !res.getData().isEmpty()) {
+						Platform.runLater(new Runnable() {
+							public void run() {
+								view.openURL(res.getData());
+							}
+						});
+						
+					}
 				}
 
 				if (hasMsgs) {
