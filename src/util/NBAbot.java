@@ -39,33 +39,12 @@ public class NBAbot extends Bot{
 		commandsMap = new HashMap<>();
 		commandsMap.put("schedule", "[yyyy-mm-dd] A day schedule of NBA matches.");
 		commandsMap.put("team", "[TEAM NAME] all recent matches of a given team.");
-		commandsMap.put("live", "show all matches that are undergoing.");
+		commandsMap.put("live", "show all matches that are undergoing right now.");
 		commandsMap.put("dayrange", "show the range of date that data contains.");
 		commandsMap.put("teamlist", "show a team list in NBA.");
 		//TODO weekly schedule
 		this.setBotCharacterId(id);
 		//printData();
-	}
-	
-	private void printData(){
-		for (Entry<String, ArrayList<JSONObject>> entry : localData.entrySet()) {
-		    String date = entry.getKey();
-		    ArrayList<JSONObject> matches = entry.getValue();
-		    System.out.println("######" + date);
-		    for (int i=0; i<matches.size(); i++)
-				try { 
-					System.out.printf("%s %s (%s) : (%s) %s\n", 
-						matches.get(i).get("startTime"),
-						matches.get(i).get("leftEnName"),
-						matches.get(i).get("leftGoal"),
-						matches.get(i).get("rightGoal"),
-						matches.get(i).get("rightEnName"));
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-					
-		}
 	}
  
 	private void fetchMatchInfo() {
@@ -263,47 +242,94 @@ public class NBAbot extends Bot{
 		// Response
 		String response = "";
 		
-		
 		// if valid command
-		if (!getDefaultCommandsList().containsKey(command)) {
-			switch(command) {
-				case ("help"):
-					response += helpCommand();
-					break;
-				case ("info"):
-					response += infoCommand(user);
-					break;
-				case ("date"):
-					response += dateCommand();
-					break;
-				case ("whoami"):
-					response += whoamiCommand(user);
-					break;
-				case ("schedule"):
-					if(msg_tokens.length > 1) {
-						response += msg_tokens[1];
-					} else {
-						System.out.println("no team");
-					}
-					break;
-				case("team"):
-					if(msg_tokens.length > 1) {
-						response += msg_tokens[1];
-					} else {
-						System.out.println("no team");
-					}
-					break;
-				default:
-					//
-			}
-			
-		} else {
-			System.out.println("invalid");
-			// TODO: If it's not a default command then find those commands in this bot's
-			// command list.
-			
-			return "";
+		switch(command) {
+			case ("help"):
+				response += helpCommand();
+				break;
+			case ("info"):
+				response += infoCommand(user);
+				break;
+			case ("date"):
+				response += dateCommand();
+				break;
+			case ("whoami"):
+				response += whoamiCommand(user);
+				break;
+			case ("schedule"):
+				if(msg_tokens.length > 1) {
+					response += searchData("schedule", msg_tokens[1]);
+				} else {
+					System.out.println("no time");
+				}
+				break;
+			case("team"):
+				if(msg_tokens.length > 1) {
+					response += searchData("team", msg_tokens[1]);
+				} else {
+					System.out.println("no team");
+				}
+				break;
+			case("live"):
+				response += searchData("live", "");
+				break;
+			case("dayrange"):
+				
+				break;
+			case("teamlist"):
+				
+				break;
+			default:
+				System.out.println("invalid");
 		}
 		return response;
+	}
+	private String searchData(String command, String param){
+		String searchResult = "";
+		// ------ schedule ----- //
+		if(command.equals("schedule")) {
+			ArrayList<JSONObject> matches = localData.get(param);
+			if(matches == null) return "invalid date";
+		}
+		// ---- team / live ---- //
+		boolean validResult = false;
+		for (Entry<String, ArrayList<JSONObject>> entry : localData.entrySet()) {
+		    String date = entry.getKey();
+		    ArrayList<JSONObject> matches = entry.getValue();
+		    for (int i=0; i<matches.size(); i++) {
+				try { 
+					if(command.equals("schedule")) {
+						// if the current match is on the day we want
+						if(((String)matches.get(i).get("startTime"))
+								.split(" ")[0].equals(param)) {
+							validResult = true;
+						}
+					} else if(command.equals("team")) {
+						if(matches.get(i).get("leftEnName").equals(param) ||
+								matches.get(i).get("rightEnName").equals(param)) {
+							validResult = true;
+						}
+					} else if (command.equals("live")) {
+						String quarterTime = (String) matches.get(i).get("quarterTime");
+						if(!quarterTime.equals("") && !quarterTime.equals("00:00")) {
+							validResult = true;
+						}
+					}
+					if(validResult) {
+				    	searchResult += String.format("%s %s (%s) : (%s) %s\n", 
+								matches.get(i).get("startTime"),
+								matches.get(i).get("leftEnName"),
+								matches.get(i).get("leftGoal"),
+								matches.get(i).get("rightGoal"),
+								matches.get(i).get("rightEnName"));
+				    	validResult = false;
+				    }
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return searchResult;
 	}
 }
