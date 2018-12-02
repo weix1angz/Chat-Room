@@ -43,11 +43,14 @@ public class ChatClientThread extends ChatServer implements Runnable {
 			out = new DataOutputStream(socket.getOutputStream());
 			in = new DataInputStream(socket.getInputStream());
 			objIn = new ObjectInputStream(socket.getInputStream());
+			objOut = new ObjectOutputStream(socket.getOutputStream());
 			userObj = (User) objIn.readObject();
-			broadcastToClients(userObj.getHandle() + " joined the channel.");
+			//broadcastToClients(userObj.getHandle() + " joined the channel.");
 			logStream.println(userObj.getHandle() + " joined the channel.");
+			Response botRes = null;
 			while (!socket.isClosed()) {
-				inputLine = in.readUTF();
+				//inputLine = in.readUTF();
+				inputLine = ((Response) objIn.readObject()).getMessage();
 				if (inputLine != null) {
 					logStream.println(inputLine); 
 					String[] input_arr = inputLine.split(" ");
@@ -58,20 +61,25 @@ public class ChatClientThread extends ChatServer implements Runnable {
 					}
 					//String user = inputLine.split(" ")[0];
 					outputLine = "[" + userObj.getHandle() + "]" + " " + text;
+					botRes = new Response(outputLine, null);
+					
 					if (text.charAt(0) == newBot.getBotCharacterId()) {
-						outputLine += "\n\n" + newBot.getBotSignature() + newBot.getResponses(text, userObj);
+						botRes = newBot.getResponses(text, userObj);
+						botRes.setMessage("\n\n" + newBot.getBotSignature() + botRes.getMessage());
+						outputLine += "\n\n" + newBot.getBotSignature() + newBot.getResponses(text, userObj).getMessage();
 					}
 				}
 
-				if (outputLine != null) {
-					
-					broadcastToClients(outputLine);
+				System.out.println(botRes);
+				if (botRes != null) {
+					//broadcastToClients(outputLine);
+					broadcastToClients(botRes);
 				}
 				outputLine = null;
 			}
 			
-			logStream.println(userObj.getHandle() + " left the channel.");
-			broadcastToClients(userObj.getHandle() + " left the channel.");
+			//logStream.println(userObj.getHandle() + " left the channel.");
+			//broadcastToClients(userObj.getHandle() + " left the channel.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {

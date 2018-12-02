@@ -55,17 +55,21 @@ public class ChatServerThread implements Runnable {
 	@Override
 	public void run() {
 		try {
+			/*
 			out = new DataOutputStream(socket.getOutputStream());
 			in = new DataInputStream(socket.getInputStream());
+			*/
 			objOut = new ObjectOutputStream(socket.getOutputStream());
+			objOut.writeObject(user);
 			objIn = new ObjectInputStream(socket.getInputStream());
 			
-			objOut.writeObject(user);
+			System.out.println("sent user info to the server.");
 			while (!socket.isClosed()) {
 				if (socket.getInputStream().available() > 0) {
-					inputLine = in.readUTF();
-					System.out.println(inputLine);
-					view.appendMessage(inputLine);
+					//inputLine = in.readUTF();
+					Response res = (Response) objIn.readObject();
+					System.out.println(res.getMessage());
+					view.appendMessage(res.getMessage());
 				}
 
 				if (hasMsgs) {
@@ -80,16 +84,14 @@ public class ChatServerThread implements Runnable {
 					//out.writeUTF(wholeMsg);
 					//out.flush();
 					
-					
-					
 					objOut.writeObject(new Response(wholeMsg, null));
 					objOut.flush();
 				}
 
 			}
 
-		} catch (IOException e) {
-
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 }

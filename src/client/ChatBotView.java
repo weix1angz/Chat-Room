@@ -197,7 +197,7 @@ public class ChatBotView extends Stage {
 					// chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
 				}
 
-				if (chat != null)
+				if (chat != null && !chat.isEmpty())
 					server.addMsg(chat);
 				message.setText("");
 
@@ -209,7 +209,7 @@ public class ChatBotView extends Stage {
 				String chat = message.getText();
 				String name = username.getText();
 				String chatrooms = chatroom.getText();
-				if (!chat.isEmpty()) {
+				if (!chat.isEmpty() && !chat.isEmpty()) {
 					// chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
 				}
 
