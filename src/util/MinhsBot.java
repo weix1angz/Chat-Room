@@ -1,4 +1,5 @@
 package util;
+
 import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,15 @@ import com.github.axet.vget.VGet;
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFprobe;
 
+import org.alicebot.ab.Bot;
+import org.alicebot.ab.Chat;
+import org.alicebot.ab.History;
+import org.alicebot.ab.MagicBooleans;
+import org.alicebot.ab.MagicStrings;
+import org.alicebot.ab.utils.IOUtils;
+
+
+
 /**
  * A music chat bot by Minh.
  * 
@@ -21,11 +31,14 @@ import net.bramp.ffmpeg.FFprobe;
  *
  */
 
-public class MinhsBot extends Bot {
+public class MinhsBot extends util.Bot {
 	private AbstractMap<String, String> commandsMap;
 	private List<Music> playList;
 	private boolean repeat;
 	private boolean shuffle;
+	
+	 private static final boolean TRACE_MODE = false;
+	 static String botName = "super";
 
 	public MinhsBot(char characterId) {
 		super();
@@ -103,30 +116,92 @@ public class MinhsBot extends Bot {
 				response += dateCommand();
 			} else if (command.equals("whoami")) {
 				response += whoamiCommand(user);
-			}
+			} 
 
 		} else {
 			// TODO: If it's not a default command then find those commands in this bot's
 			// command list.
 			if (command.equals("play")) {
 				this.play(Integer.parseInt(msg_tokens[1]));
+			}else if (command.equals("rate")) {
+				response += this.rate(msg_tokens[1]);
+			} else {
+				response = getSmartResponse(message.substring(1, message.length()), user);
 			}
 
-			return "";
 		}
 		return response;
 	}
 
+	private static String getResourcesPath() {
+        File currDir = new File(".");
+        String path = currDir.getAbsolutePath();
+        path = path.substring(0, path.length() - 2);
+        return path + File.separator + "src" + File.separator + "resources";
+    }
+	
+	public String getSmartResponse(String message, User user) {
+		String response = "Bot is running";
+		System.out.println(message);
+		String resourcesPath = getResourcesPath();
+		System.out.println(resourcesPath);
+		MagicBooleans.trace_mode = TRACE_MODE;
+		Bot bot = new Bot("super", resourcesPath);
+		Chat chatSession = new Chat(bot);
+		bot.brain.nodeStats();
+		response = chatSession.multisentenceRespond(message);
+		System.out.println("Response: " + response);
+		return response;
+	}
+	
+	/**
+	 * Return a random rating for a subject.
+	 * 
+	 * @param subject Could be an user or any kind of topic.
+	 * @return A random rating for a subject.
+	 */
+	public String rate(String subject) {
+		List<String> responses = new ArrayList<>();
+		Random rndGen = new Random();
+		int score = rndGen.nextInt(10) + 1;
+		if (score >= 8) {
+			responses.add(score + "/10. Superb.");
+			responses.add("I like it! :^)");
+			responses.add(" <3 ");
+			responses.add(subject + " is the best!");
+		} else if (score <= 8 && score >= 6) {
+			responses.add(subject + " is okay.");
+			responses.add("I give " + subject + " a score of " + score + "/10.");
+		} else {
+			responses.add(subject + " is meh.");
+			responses.add(subject + " sucks!");
+			responses.add(subject + " is trash. :) Fight me. :)");
+			responses.add("In the trash bin. :^)");
+		}
+		return responses.get(rndGen.nextInt(responses.size()));
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getRandRes() {
+		List<String> responses = new ArrayList<>();
+		Random rndGen = new Random();
+		responses.add("Is this heaven? ( ͡° ͜ʖ ͡°)");
+		responses.add("Come and get me campers!");
+		responses.add("wtf :^)");
+		return responses.get(rndGen.nextInt(responses.size()));
+	}
+
 	@Override
 	public String infoCommand(User user) {
-		return "User: " + user.getHandle() + "\t"
-				+ "Birthday: " + user.getBirthday().toString();
+		return "User: " + user.getHandle() + "\t" + "Birthday: " + user.getBirthday().toString();
 	}
 
 	@Override
 	public String whoamiCommand(User user) {
-		return "User: " + user.getHandle() + "\t" 
-			+ "IP address: " + user.getConnectionInfo();
+		return "User: " + user.getHandle() + "\t" + "IP address: " + user.getConnectionInfo();
 	}
 
 	/**
@@ -160,12 +235,12 @@ public class MinhsBot extends Bot {
 	public void addMusic(String url) {
 		playList.add(new Music(url));
 		try {
-            String path = "./";
-            VGet v = new VGet(new URL(url), new File(path));
-            v.download();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+			String path = "./";
+			VGet v = new VGet(new URL(url), new File(path));
+			v.download();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -184,6 +259,6 @@ public class MinhsBot extends Bot {
 	}
 
 	public void play(int id) {
-		
+
 	}
 }

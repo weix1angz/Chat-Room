@@ -29,5 +29,12 @@
 			<artifactId>vget</artifactId>
 			<version>1.1.34</version>
 		</dependency>
+		<dependency>
+			<groupId>Ab</groupId>
+			<artifactId>com.google</artifactId>
+			<version>0.0.4.3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/Ab.jar</systemPath>
+		</dependency>
 	</dependencies>
 </project>

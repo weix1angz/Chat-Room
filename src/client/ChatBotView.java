@@ -26,10 +26,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import client.SignInView;
 import util.User;
 
-public class ChatBotView extends Application {
+public class ChatBotView extends Stage {
 	private int boardlength = 700;
 	private int boardwidth = 400;
 	private int buttonwidth = 100;
@@ -63,14 +65,36 @@ public class ChatBotView extends Application {
 	 * @param portNumber
 	 */
 	public ChatBotView(String hostName, int portNumber) {
+	
 		this.hostName = hostName;
 		this.portNumber = portNumber;
+		//Parameters params = this.getParameters();
+				//hostName = params.getRaw().get(0);
+				hostName = "localhost";
+				portNumber = 4000;
+				//portNumber = Integer.parseInt(params.getRaw().get(1));
+
+				this.setTitle("Chat client");
+				BorderPane pane = new BorderPane();
+				Scene scene = new Scene(pane, boardlength, boardwidth);
+				// setting the menu bar
+				MenuItem item1 = new MenuItem("New Chat");
+				MenuItem item2 = new MenuItem("History");
+				Menu menu = new Menu("File");
+				menu.getItems().addAll(item1, item2);
+				MenuBar menuBar = new MenuBar(menu);
+				pane.setTop(menuBar);
+				pane.setCenter(layout());
+				messageEvent();
+				this.setScene(scene);
+				this.setResizable(false);
+				this.show();
 	}
 
 	public ChatBotView() {
-
+		
 	}
-
+	/*
 	@Override
 	public void start(Stage stage) throws Exception {
 		//Parameters params = this.getParameters();
@@ -96,7 +120,7 @@ public class ChatBotView extends Application {
 		stage.show();
 
 	}
-
+*/
 	public HBox layout() {
 		VBox buttons = buttonset();// setting the buttonset
 		VBox chatAndSend = Initchatboard();// initialized chatboard
