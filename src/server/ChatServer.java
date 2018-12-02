@@ -44,7 +44,7 @@ public class ChatServer {
 		while (true) {
 			try {
 				Socket socket = serverSocket.accept();
-				ChatClientThread client = new ChatClientThread(socket, bots.get(0));
+				ChatClientThread client = new ChatClientThread(socket);
 				Thread clientThread = new Thread(client);
 				clientThread.start();
 				clients.add(client);

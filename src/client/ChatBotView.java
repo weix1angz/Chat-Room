@@ -41,7 +41,7 @@ public class ChatBotView extends Stage {
 	private MenuItem music;
 	private MenuItem makeup;
 	private MenuItem moba;
-	private Button connect;
+	//private Button connect;
 	private Button clear;
 	private TextArea chatboard;
 	private Button SendButton; // the send button
@@ -136,17 +136,20 @@ public class ChatBotView extends Stage {
 	public VBox buttonset() {
 		VBox chatroom = dropdownButton();
 		VBox username = usernameBox();
+		/*
 		connect = new Button("Connect");
+		
 		connect.setOnAction(event -> {
 			this.ConnectServer();
 		});
-		connect.setPrefWidth(buttonwidth);
+		*/
+		//connect.setPrefWidth(buttonwidth);
 		clear = new Button("Clear");
 		clear.setOnAction(event -> {
 			chatboard.clear();
 		});
 		clear.setPrefWidth(buttonwidth);
-		VBox buttonSet = new VBox(username, chatroom, connect, clear);
+		VBox buttonSet = new VBox(username, chatroom, clear);
 		buttonSet.setSpacing(50);
 		return buttonSet;
 	}
@@ -211,7 +214,7 @@ public class ChatBotView extends Stage {
 						//chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
 					}
 	
-					if (chat != null)
+					if (chat != null && !chat.isEmpty())
 						server.addMsg(chat);
 					message.setText("");
 				}
@@ -227,7 +230,7 @@ public class ChatBotView extends Stage {
 						//chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
 					}
 	
-					if (chat != null)
+					if (chat != null && !chat.isEmpty())
 						server.addMsg(chat);
 					message.setText("");
 				}
@@ -243,7 +246,6 @@ public class ChatBotView extends Stage {
 			server = new ChatServerThread(this, socket, user);
 			Thread serverThread = new Thread(server);
 			serverThread.start();
-			appendMessage("Connected to " + socket.getInetAddress());
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
