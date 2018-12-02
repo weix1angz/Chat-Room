@@ -1,6 +1,5 @@
 package client;
 
-
 /**
  * A view for the chat client.
  * 
@@ -10,7 +9,6 @@ package client;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -53,57 +51,27 @@ public class ChatBotView extends Stage {
 	private Socket socket;
 
 	/**
-	 * For some reasons this is never called with 
+	 * For some reasons this is never called with
 	 * 
 	 * Application.launch(view.getClass(), args);
 	 * 
-	 * That line above always call the default constructor.
-	 * We no default constructor is found, Java throws off
-	 * some weird errors.
+	 * That line above always call the default constructor. We no default
+	 * constructor is found, Java throws off some weird errors.
 	 * 
 	 * @param hostName
 	 * @param portNumber
 	 */
 	public ChatBotView(String hostName, int portNumber) {
-	
+
 		this.hostName = hostName;
 		this.portNumber = portNumber;
-		//Parameters params = this.getParameters();
-				//hostName = params.getRaw().get(0);
-				hostName = "localhost";
-				portNumber = 4000;
-				//portNumber = Integer.parseInt(params.getRaw().get(1));
-
-				this.setTitle("Chat client");
-				BorderPane pane = new BorderPane();
-				Scene scene = new Scene(pane, boardlength, boardwidth);
-				// setting the menu bar
-				MenuItem item1 = new MenuItem("New Chat");
-				MenuItem item2 = new MenuItem("History");
-				Menu menu = new Menu("File");
-				menu.getItems().addAll(item1, item2);
-				MenuBar menuBar = new MenuBar(menu);
-				pane.setTop(menuBar);
-				pane.setCenter(layout());
-				messageEvent();
-				this.setScene(scene);
-				this.setResizable(false);
-				this.show();
-	}
-
-	public ChatBotView() {
-		
-	}
-	/*
-	@Override
-	public void start(Stage stage) throws Exception {
-		//Parameters params = this.getParameters();
-		//hostName = params.getRaw().get(0);
+		// Parameters params = this.getParameters();
+		// hostName = params.getRaw().get(0);
 		hostName = "localhost";
 		portNumber = 4000;
-		//portNumber = Integer.parseInt(params.getRaw().get(1));
+		// portNumber = Integer.parseInt(params.getRaw().get(1));
 
-		stage.setTitle("Chat client");
+		this.setTitle("Chat client");
 		BorderPane pane = new BorderPane();
 		Scene scene = new Scene(pane, boardlength, boardwidth);
 		// setting the menu bar
@@ -115,12 +83,31 @@ public class ChatBotView extends Stage {
 		pane.setTop(menuBar);
 		pane.setCenter(layout());
 		messageEvent();
-		stage.setScene(scene);
-		stage.setResizable(false);
-		stage.show();
+		this.setScene(scene);
+		this.setResizable(false);
+		this.show();
+	}
+
+	public ChatBotView() {
 
 	}
-*/
+
+	/*
+	 * @Override public void start(Stage stage) throws Exception { //Parameters
+	 * params = this.getParameters(); //hostName = params.getRaw().get(0); hostName
+	 * = "localhost"; portNumber = 4000; //portNumber =
+	 * Integer.parseInt(params.getRaw().get(1));
+	 * 
+	 * stage.setTitle("Chat client"); BorderPane pane = new BorderPane(); Scene
+	 * scene = new Scene(pane, boardlength, boardwidth); // setting the menu bar
+	 * MenuItem item1 = new MenuItem("New Chat"); MenuItem item2 = new
+	 * MenuItem("History"); Menu menu = new Menu("File");
+	 * menu.getItems().addAll(item1, item2); MenuBar menuBar = new MenuBar(menu);
+	 * pane.setTop(menuBar); pane.setCenter(layout()); messageEvent();
+	 * stage.setScene(scene); stage.setResizable(false); stage.show();
+	 * 
+	 * }
+	 */
 	public HBox layout() {
 		VBox buttons = buttonset();// setting the buttonset
 		VBox chatAndSend = Initchatboard();// initialized chatboard
@@ -200,13 +187,19 @@ public class ChatBotView extends Stage {
 	public void messageEvent() {
 		message.setOnAction(event -> {
 			// TODO
-			String chat = message.getText();
-			String name = username.getText();
-			String chatrooms = chatroom.getText();
-			if (!chat.isEmpty()) {
-				//chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
+			if (socket != null && socket.isConnected()) {
+				String chat = message.getText();
+				String name = username.getText();
+				String chatrooms = chatroom.getText();
+				if (!chat.isEmpty()) {
+					// chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
+				}
+
+				if (chat != null)
+					server.addMsg(chat);
+				message.setText("");
+
 			}
-			message.setText("");
 		});
 		SendButton.setOnAction(events -> {
 			// TODO
@@ -215,7 +208,7 @@ public class ChatBotView extends Stage {
 				String name = username.getText();
 				String chatrooms = chatroom.getText();
 				if (!chat.isEmpty()) {
-					//chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
+					// chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
 				}
 
 				if (chat != null)
