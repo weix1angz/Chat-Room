@@ -5,8 +5,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.Bot;
-import util.MinhsBot;
+import server.Bots.Bot;
+import server.Bots.MinhsBot;
 
 public class ChatServer {
 

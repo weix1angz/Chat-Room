@@ -3,9 +3,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-import util.Bot;
-import util.MinhsBot;
-import util.User;
+import server.Bots.Bot;
+import server.Bots.MinhsBot;
+import server.User;
 
 /**
  * Driver class to test bots' functionalities.

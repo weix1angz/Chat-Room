@@ -17,8 +17,8 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 
-import util.Bot;
-import util.User;
+import server.Bots.Bot;
+import server.User;
 
 public class ChatClientThread extends ChatServer implements Runnable {
 

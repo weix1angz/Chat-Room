@@ -29,7 +29,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import util.User;
+import server.User;
 
 public class ChatBotView extends Stage {
 	private int boardlength = 700;

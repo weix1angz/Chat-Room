@@ -14,7 +14,7 @@ import java.net.Socket;
 import java.util.LinkedList;
 import server.Response;
 
-import util.User;
+import server.User;
 
 public class ChatServerThread implements Runnable {
 

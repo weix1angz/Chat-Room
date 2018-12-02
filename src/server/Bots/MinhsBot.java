@@ -1,4 +1,4 @@
-package util;
+package server.Bots;
 
 import java.io.File;
 import java.net.URL;
@@ -23,6 +23,7 @@ import org.alicebot.ab.MagicStrings;
 import org.alicebot.ab.utils.IOUtils;
 
 import server.Response;
+import server.User;
 
 
 /**
@@ -32,14 +33,11 @@ import server.Response;
  *
  */
 
-public class MinhsBot extends util.Bot {
+public class MinhsBot extends server.Bots.Bot {
 	private AbstractMap<String, String> commandsMap;
 	private List<Music> playList;
 	private boolean repeat;
 	private boolean shuffle;
-	
-	 private static final boolean TRACE_MODE = false;
-	 static String botName = "super";
 
 	public MinhsBot(char characterId) {
 		super();
@@ -119,7 +117,9 @@ public class MinhsBot extends util.Bot {
 				response += dateCommand();
 			} else if (command.equals("whoami")) {
 				response += whoamiCommand(user);
-			} 
+			} else if (command.equals("ttm")) {
+				response = getSmartResponse(message.substring(1, message.length()), user);
+			}
 
 		} else {
 			// TODO: If it's not a default command then find those commands in this bot's
@@ -129,32 +129,11 @@ public class MinhsBot extends util.Bot {
 			}else if (command.equals("rate")) {
 				response += this.rate(msg_tokens[1]);
 			} else {
-				response = getSmartResponse(message.substring(1, message.length()), user);
+				response = "Command not found.";
 			}
 
 		}
 		return new Response(response, data);
-	}
-
-	private static String getResourcesPath() {
-        File currDir = new File(".");
-        String path = currDir.getAbsolutePath();
-        path = path.substring(0, path.length() - 2);
-        return path + File.separator + "src" + File.separator + "resources";
-    }
-	
-	public String getSmartResponse(String message, User user) {
-		String response = "Bot is running";
-		System.out.println(message);
-		String resourcesPath = getResourcesPath();
-		System.out.println(resourcesPath);
-		MagicBooleans.trace_mode = TRACE_MODE;
-		Bot bot = new Bot("super", resourcesPath);
-		Chat chatSession = new Chat(bot);
-		bot.brain.nodeStats();
-		response = chatSession.multisentenceRespond(message);
-		System.out.println("Response: " + response);
-		return response;
 	}
 	
 	/**
