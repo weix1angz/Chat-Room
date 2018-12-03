@@ -46,7 +46,7 @@ public class NBAbot extends Bot{
 		this.setBotCharacterId(id);
 		//printData();
 	}
- 
+	
 	private void fetchMatchInfo() {
 		try {
 			
@@ -95,7 +95,10 @@ public class NBAbot extends Bot{
 			inputStream.close();
 		}
 	}
-	
+	/**
+	 * Iterate though a map and edit its values (JSONObject[] matches)
+	 * @param mp
+	 */
 	private void convertMap(Map mp) {
 	    Iterator it = mp.entrySet().iterator();
 	    while (it.hasNext()) {
@@ -104,7 +107,10 @@ public class NBAbot extends Bot{
 	        it.remove();
 	    }
 	}
-	
+	/**
+	 * Re-organize a list of matches into the localData map
+	 * @param matches
+	 */
 	private void importMatches(JSONObject[] matches) {
 		for(int i = 0; i < matches.length; i++) {
 			try {
@@ -127,11 +133,17 @@ public class NBAbot extends Bot{
 			}
 		}
 	}
-	
+
+	/**
+	 * Convert a date string in term yyyy-mm-dd hh:mm;ss to another time zone
+	 * @param dateStr
+	 * @return the converted date
+	 */
 	private String convertTimeZone(String dateStr) {
+		
 		String[] date = dateStr.split(" ")[0].split("-");
 		String[] time = dateStr.split(" ")[1].split(":");
-		
+		// calculate the hour.month/day
 		int hour = Integer.parseInt(time[0]) - timeDiff;
 		int month = Integer.parseInt(date[1]);
 		int day = Integer.parseInt(date[2]);
@@ -196,8 +208,7 @@ public class NBAbot extends Bot{
 
 	@Override
 	public String getBotSignature() {
-		// TODO Auto-generated method stub
-		return null;
+		return "[NBAbot]";
 	}
 	
 	@Override
@@ -294,7 +305,7 @@ public class NBAbot extends Bot{
 		// ---- team / live ---- //
 		boolean validResult = false;
 		for (Entry<String, ArrayList<JSONObject>> entry : localData.entrySet()) {
-		    String date = entry.getKey();
+		
 		    ArrayList<JSONObject> matches = entry.getValue();
 		    for (int i=0; i<matches.size(); i++) {
 				try { 
@@ -315,6 +326,7 @@ public class NBAbot extends Bot{
 							validResult = true;
 						}
 					}
+					// append the match info to result
 					if(validResult) {
 				    	searchResult += String.format("%s %s (%s) : (%s) %s\n", 
 								matches.get(i).get("startTime"),
