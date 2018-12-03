@@ -14,6 +14,7 @@ import java.net.UnknownHostException;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,8 +24,10 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
@@ -33,8 +36,8 @@ import javafx.stage.Stage;
 import server.User;
 
 public class ChatBotView extends Stage {
-	private int boardlength = 700;
-	private int boardwidth = 400;
+	private int boardlength = 1000;
+	private int boardwidth = 500;
 	private int buttonwidth = 100;
 	private Label username = null;// username text field
 	private MenuButton chatroom; // chatroom menu button
@@ -53,6 +56,8 @@ public class ChatBotView extends Stage {
 	private String userName;
 	private ChatServerThread server;
 	private Socket socket;
+	int initialX;
+	int initialY;
 
 	/**
 	 * For some reasons this is never called with 
@@ -71,6 +76,7 @@ public class ChatBotView extends Stage {
 		this.hostName = hostName;
 		this.portNumber = portNumber;
 		this.userName = userName;
+		
 		//Parameters params = this.getParameters();
 				//hostName = params.getRaw().get(0);
 				hostName = "localhost";
@@ -81,17 +87,15 @@ public class ChatBotView extends Stage {
 				BorderPane pane = new BorderPane();
 				Scene scene = new Scene(pane, boardlength, boardwidth);
 				// setting the menu bar
-				MenuItem item1 = new MenuItem("New Chat");
-				MenuItem item2 = new MenuItem("History");
-				Menu menu = new Menu("File");
-				menu.getItems().addAll(item1, item2);
+				/*Menu menu = new Menu();
 				MenuBar menuBar = new MenuBar(menu);
-				pane.setTop(menuBar);
+				pane.setTop(menuBar);*/
 				pane.setCenter(layout());
 				messageEvent();
-				this.ConnectServer();
+		        this.ConnectServer();
 				this.setScene(scene);
-				this.setResizable(false);
+				this.setResizable(true);
+				
 				this.show();
 	}
 
@@ -129,13 +133,14 @@ public class ChatBotView extends Stage {
 		VBox buttons = buttonset();// setting the buttonset
 		VBox chatAndSend = Initchatboard();// initialized chatboard
 		HBox Layout = new HBox(buttons, chatAndSend);
-		Layout.setPadding(new Insets(10, 10, 10, 10));
+		Layout.setHgrow(chatAndSend, Priority.ALWAYS);
+		Layout.setPadding(new Insets(30, 30, 20, 20));
 		Layout.setSpacing(20);
 		return Layout;
 	}
 
 	public VBox buttonset() {
-		VBox chatroom = dropdownButton();
+		//VBox chatroom = dropdownButton();
 		VBox username = usernameBox();
 		/*
 		connect = new Button("Connect");
@@ -151,12 +156,12 @@ public class ChatBotView extends Stage {
 			//this.openURL("https://dota2.gamepedia.com/Morphling");
 		});
 		clear.setPrefWidth(buttonwidth);
-		VBox buttonSet = new VBox(username, chatroom, clear);
+		VBox buttonSet = new VBox(username, clear);
 		buttonSet.setSpacing(50);
 		return buttonSet;
 	}
 
-	public VBox dropdownButton() {
+	/*public VBox dropdownButton() {
 		VBox chatroomlabel = new VBox();
 		Text chat = new Text("Chatroom");
 		nba = new MenuItem("NBA");
@@ -181,7 +186,7 @@ public class ChatBotView extends Stage {
 		chatroomlabel.getChildren().add(chat);
 		chatroomlabel.getChildren().add(chatroom);
 		return chatroomlabel;
-	}
+	}*/
 
 	public VBox usernameBox() {
 		Text user = new Text("Username");
@@ -201,6 +206,8 @@ public class ChatBotView extends Stage {
 		SendButton.setPrefWidth(50);
 		HBox hb = new HBox(message, SendButton);
 		VBox vb = new VBox(chatboard, hb);
+		hb.setHgrow(message, Priority.ALWAYS);
+		vb.setVgrow(chatboard, Priority.ALWAYS);
 		vb.setSpacing(30);
 		return vb;
 	}
