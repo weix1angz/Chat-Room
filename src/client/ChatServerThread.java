@@ -77,12 +77,6 @@ public class ChatServerThread implements Runnable {
 			
 			// Send user's info to the server.
 			objOut.writeObject(user);
-			if (socket.getInputStream().available() > 0) {
-				//inputLine = in.readUTF();
-				Response res = (Response) objIn.readObject();
-				System.out.println(res.getMessage());
-				view.appendMessage(res.getMessage());
-			}
 			
 			while (!socket.isClosed()) {
 				if (socket.getInputStream().available() > 0) {

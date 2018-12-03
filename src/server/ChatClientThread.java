@@ -39,6 +39,7 @@ public class ChatClientThread extends ChatServer implements Runnable {
 		for (Bot b : bots) {
 			botsMap.put(b.getBotCharacterId() + "", b);
 		}
+		System.out.println(botsMap);
 		userObj = null;
 		logStream = System.out;
 	}
@@ -70,9 +71,16 @@ public class ChatClientThread extends ChatServer implements Runnable {
 			logStream.println(userObj.getHandle() + " joined the channel.");
 
 			Response botRes = null;
+			
 			while (!socket.isClosed()) {
 				// inputLine = in.readUTF();
-				Response clientRequestRes = ((Response) objIn.readObject());
+				Response clientRequestRes = null;
+				try {
+					clientRequestRes = ((Response) objIn.readObject());
+				} catch (Exception e) {
+					break;
+				}
+				
 				if (clientRequestRes != null) {
 					inputLine = clientRequestRes.getMessage();
 
@@ -101,8 +109,9 @@ public class ChatClientThread extends ChatServer implements Runnable {
 
 						// Message direct to the bot.
 						if (botsMap.containsKey(text.charAt(0) + "")) {
-							Bot b = botsMap.get(text.charAt(0) + "");
-							botRes = b.getResponses(text, userObj);
+							Bot b = botsMap.get(text.charAt(0) + "");						
+							botRes = b.getResponses(text, userObj, clients);
+							
 							outputLine += "\n" + b.getBotSignature() + "@" + userObj.getHandle() + " "
 									+ botRes.getMessage();
 							botRes.setMessage(outputLine);
@@ -121,6 +130,7 @@ public class ChatClientThread extends ChatServer implements Runnable {
 
 			logStream.println(userObj.getHandle() + " left the channel.");
 			broadcastToClients(new Response(userObj.getHandle() + " has left the channel.", null));
+			clients.remove(this);
 			this.close();
 		} catch (IOException e) {
 			e.printStackTrace();

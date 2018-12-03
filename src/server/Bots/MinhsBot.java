@@ -22,6 +22,7 @@ import org.alicebot.ab.MagicBooleans;
 import org.alicebot.ab.MagicStrings;
 import org.alicebot.ab.utils.IOUtils;
 
+import server.ChatClientThread;
 import server.Response;
 import server.User;
 
@@ -107,7 +108,7 @@ public class MinhsBot extends server.Bots.Bot {
 	}
 
 	@Override
-	public Response getResponses(String message, User user) {
+	public Response getResponses(String message, User user, List<ChatClientThread> clients) {
 		if (message == null || user == null)
 			return new Response("Something wrong happened.", null);
 		

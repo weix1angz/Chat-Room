@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import server.Bots.Bot;
+import server.Bots.MakeupBot;
 import server.Bots.MinhsBot;
+import server.Bots.NBAbot;
+import server.Bots.WeixiangBot;
 
 public class ChatServer {
 
@@ -20,9 +23,13 @@ public class ChatServer {
 		serverSocket = null;
 		bots = new ArrayList<>();
 		bots.add(new MinhsBot('!'));
+		bots.add(new WeixiangBot('%'));
+		bots.add(new MakeupBot('*'));
+		bots.add(new NBAbot('#'));
+		System.out.println(bots);
 		try {
 			serverSocket = new ServerSocket(portNumber);
-			acceptClients(bots);
+			acceptClients();
 		} catch (Exception e) {
 
 		} finally {
@@ -35,7 +42,7 @@ public class ChatServer {
 		}
 	}
 
-	public static void acceptClients(List<Bot> botsList) {
+	public static void acceptClients() {
 		clients = new ArrayList<ChatClientThread>();
 		
 		while (true) {

@@ -3,7 +3,7 @@ package server.Bots;
 import java.io.File;
 import java.util.AbstractMap;
 import java.util.HashMap;
-
+import java.util.List;
 
 import org.alicebot.ab.Chat;
 import org.alicebot.ab.History;
@@ -11,6 +11,7 @@ import org.alicebot.ab.MagicBooleans;
 import org.alicebot.ab.MagicStrings;
 import org.alicebot.ab.utils.IOUtils;
 
+import server.ChatClientThread;
 import server.Response;
 
 import server.User;
@@ -84,7 +85,7 @@ public abstract class Bot {
 	 * @param user
 	 * @return
 	 */
-	public abstract Response getResponses(String message, User user);
+	public abstract Response getResponses(String message, User user, List<ChatClientThread> clients);
 	
 
 	/**
