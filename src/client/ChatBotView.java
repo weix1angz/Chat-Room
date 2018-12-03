@@ -70,8 +70,8 @@ public class ChatBotView extends Stage {
 		this.userName = userName;
 		// Parameters params = this.getParameters();
 		// hostName = params.getRaw().get(0);
-		hostName = "localhost";
-		portNumber = 4000;
+		this.hostName = "localhost";
+		this.portNumber = 4000;
 		// portNumber = Integer.parseInt(params.getRaw().get(1));
 
 		this.setTitle("Chat client");
