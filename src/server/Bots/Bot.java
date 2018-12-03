@@ -28,7 +28,7 @@ import server.User;
 public abstract class Bot {
 	
 	// A map of commands with the command names as keys and commands' parameters as values.
-	private AbstractMap<String, String> defaultCommandsList;
+	private static AbstractMap<String, String> defaultCommandsList;
 	
 	// A character that identify the 
 	private char botCharacterId;

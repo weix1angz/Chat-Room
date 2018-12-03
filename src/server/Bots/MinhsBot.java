@@ -35,13 +35,27 @@ import server.User;
 
 public class MinhsBot extends server.Bots.Bot {
 	private AbstractMap<String, String> commandsMap;
+	private AbstractMap<String, AbstractMap<String, Integer>> commandsCounter;
 	private List<Music> playList;
 	private boolean repeat;
 	private boolean shuffle;
+	
+	public AbstractMap<String, Integer> createNewCmdsCounter() {
+		AbstractMap<String, Integer> newCmdsCounter = new HashMap<>();
+		for (String cmd : getDefaultCommandsList().keySet()) {
+			newCmdsCounter.put(cmd, 0);
+		}
+		
+		for (String cmd : this.commandsMap.keySet()) {
+			newCmdsCounter.put(cmd, 0);
+		}
+		
+		return newCmdsCounter;
+	}
 
 	public MinhsBot(char characterId) {
 		super();
-
+		commandsCounter = new HashMap<>();
 		commandsMap = new HashMap<>();
 		commandsMap.put("import", "[URL] - given a Youtube URL, import the URL to the play list.");
 		commandsMap.put("remove", "[ID]/[Name] - given an ID or name, remove the music from the play list.");
@@ -53,10 +67,10 @@ public class MinhsBot extends server.Bots.Bot {
 		commandsMap.put("pause", " - pause the current song");
 		commandsMap.put("repeat", " - toggle repeat mode\n" + "");
 		commandsMap.put("shuffle", " - toggle shuffle mode");
-		commandsMap.put("", "[response] - comments on the reponse of an user.");
 		commandsMap.put("rate",
 				"[User]/[MusicID]/[MusicName] - give a random rate of a music or an user from 0 to 10.");
-
+		
+		
 		playList = new ArrayList<>();
 		repeat = false;
 		this.setBotCharacterId(characterId);
@@ -106,6 +120,10 @@ public class MinhsBot extends server.Bots.Bot {
 		// Response
 		String response = "";
 		String data = null;
+		
+		if (!commandsCounter.containsKey(user.getHandle())) {
+			commandsCounter.put(user.getHandle(), createNewCmdsCounter());
+		}
 
 		// Need to
 		if (getDefaultCommandsList().containsKey(command)) {
@@ -137,6 +155,16 @@ public class MinhsBot extends server.Bots.Bot {
 			}
 
 		}
+		
+		// Update commands counter.
+		if (commandsCounter.get(user.getHandle()).containsKey(command)) {
+			int oldValue = commandsCounter.get(user.getHandle()).get(command);
+			commandsCounter.get(user.getHandle()).put(command, oldValue + 1);
+			if ((oldValue + 1) % 5 == 0) {
+				response += "\n" + this.getBotSignature() + command + " has been used the fifth time by " + user.getHandle();
+			}
+		}
+		
 		return new Response(response, data);
 	}
 	

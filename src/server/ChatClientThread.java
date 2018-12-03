@@ -42,6 +42,17 @@ public class ChatClientThread extends ChatServer implements Runnable {
 		userObj = null;
 		logStream = System.out;
 	}
+	
+	public void close() {
+		try {
+			if (objIn != null) objIn.close();
+			if (objOut != null) objOut.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	@Override
 	public void run() {
@@ -110,6 +121,7 @@ public class ChatClientThread extends ChatServer implements Runnable {
 
 			logStream.println(userObj.getHandle() + " left the channel.");
 			broadcastToClients(new Response(userObj.getHandle() + " has left the channel.", null));
+			this.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -167,7 +179,8 @@ public class ChatClientThread extends ChatServer implements Runnable {
 					if (output.getData() != null && !output.getData().isEmpty()) {
 						if (clientThread.getUser().equals(this.userObj)) {
 							clientThread.getOOS().writeObject(output);
-						}
+						} else
+							clientThread.getOOS().writeObject(new Response(output.getMessage(), null));
 					} else {
 						// Else just relay back the message to other clients.
 						clientThread.getOOS().writeObject(new Response(output.getMessage(), null));

@@ -20,7 +20,6 @@ public class ChatServer {
 		serverSocket = null;
 		bots = new ArrayList<>();
 		bots.add(new MinhsBot('!'));
-		Socket clientSocket = null;
 		try {
 			serverSocket = new ServerSocket(portNumber);
 			acceptClients(bots);
@@ -30,8 +29,6 @@ public class ChatServer {
 			try {
 				if (serverSocket != null)
 					serverSocket.close();
-				if (clientSocket != null)
-					clientSocket.close();
 			} catch (Exception e) {
 
 			}

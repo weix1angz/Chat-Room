@@ -39,6 +39,17 @@ public class ChatServerThread implements Runnable {
 		pendingMsgs = new LinkedList<String>();
 		this.user = user;
 	}
+	
+	public void close() {
+			try {
+				if (objOut != null) objOut.close();
+				if (objIn != null) objIn.close();
+				if (socket != null) socket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
 
 	/**
 	 * Push a pending message onto the stack. The reason behind this is
@@ -108,7 +119,7 @@ public class ChatServerThread implements Runnable {
 				}
 
 			}
-
+			this.close();
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
