@@ -129,8 +129,8 @@ public class ChatClientThread extends ChatServer implements Runnable {
 			}
 
 			logStream.println(userObj.getHandle() + " left the channel.");
-			broadcastToClients(new Response(userObj.getHandle() + " has left the channel.", null));
 			clients.remove(this);
+			broadcastToClients(new Response(userObj.getHandle() + " has left the channel.", null));
 			this.close();
 		} catch (IOException e) {
 			e.printStackTrace();

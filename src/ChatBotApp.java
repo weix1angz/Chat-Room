@@ -22,7 +22,7 @@ public class ChatBotApp {
 		do {
 			System.out.print("> ");
 			input = in.next();
-			System.out.println(mb1.getResponses(input, new User("defaultUser", new Socket("localhost", 4000))));
+			System.out.println(mb1.getResponses(input, new User("defaultUser", new Socket("localhost", 4000)), null));
 		} while (input != "logout");
 		in.close();
 	}
