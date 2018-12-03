@@ -138,9 +138,9 @@ public class MakeupBot extends Bot {
 					String brand = msg_tokens[1];
 					String cate = msg_tokens[2];
 					String num = msg_tokens[3];
-					data += lip.getImageurl(brand, cate, num);
+					data = lip.getImageurl(brand, cate, num);
 					if(lip.Isurl() == true) {
-						response+=lip.getNum(brand, cate);	
+						response += lip.getNum(brand, cate) ;
 					}else {
 						data = null;
 						response+=lip.getImageurl(brand, cate, num);

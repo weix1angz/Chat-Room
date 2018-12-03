@@ -20,7 +20,7 @@ public class ChatServer {
 		int portNumber = 4000;
 		serverSocket = null;
 		bots = new ArrayList<>();
-		bots.add(new MakeupBot('!'));
+		bots.add(new MakeupBot('*'));
 		Socket clientSocket = null;
 		try {
 			serverSocket = new ServerSocket(portNumber);
