@@ -86,10 +86,6 @@ public class ChatBotView extends Stage {
 				this.setTitle("Chat client");
 				BorderPane pane = new BorderPane();
 				Scene scene = new Scene(pane, boardlength, boardwidth);
-				// setting the menu bar
-				/*Menu menu = new Menu();
-				MenuBar menuBar = new MenuBar(menu);
-				pane.setTop(menuBar);*/
 				pane.setCenter(layout());
 				messageEvent();
 		        this.ConnectServer();
@@ -129,19 +125,17 @@ public class ChatBotView extends Stage {
 
 	}
 */
-	public HBox layout() {
-		VBox buttons = buttonset();// setting the buttonset
+	public VBox layout() {
+		HBox buttons = buttonset();// setting the buttonset
 		VBox chatAndSend = Initchatboard();// initialized chatboard
-		HBox Layout = new HBox(buttons, chatAndSend);
-		Layout.setHgrow(chatAndSend, Priority.ALWAYS);
-		Layout.setPadding(new Insets(30, 30, 20, 20));
+		VBox Layout = new VBox(buttons, chatAndSend);
+		Layout.setVgrow(chatAndSend, Priority.ALWAYS);
+		Layout.setPadding(new Insets(30, 40, 20, 20));
 		Layout.setSpacing(20);
 		return Layout;
 	}
 
-	public VBox buttonset() {
-		//VBox chatroom = dropdownButton();
-		VBox username = usernameBox();
+	public HBox buttonset() {
 		/*
 		connect = new Button("Connect");
 		
@@ -156,42 +150,18 @@ public class ChatBotView extends Stage {
 			//this.openURL("https://dota2.gamepedia.com/Morphling");
 		});
 		clear.setPrefWidth(buttonwidth);
-		VBox buttonSet = new VBox(username, clear);
-		buttonSet.setSpacing(50);
+		HBox user = usernameBox();
+		HBox buttonSet = new HBox(user,clear);
+		buttonSet.setHgrow(user,Priority.ALWAYS);
+		buttonSet.setSpacing(750);
 		return buttonSet;
 	}
 
-	/*public VBox dropdownButton() {
-		VBox chatroomlabel = new VBox();
-		Text chat = new Text("Chatroom");
-		nba = new MenuItem("NBA");
-		music = new MenuItem("Music");
-		moba = new MenuItem("LOL game");
-		makeup = new MenuItem("Lip products");
-		// menuitem get selected
-		makeup.setOnAction(event -> {
-			chatroom.setText(makeup.getText());
-		});
-		moba.setOnAction(event -> {
-			chatroom.setText(moba.getText());
-		});
-		music.setOnAction(event -> {
-			chatroom.setText(music.getText());
-		});
-		nba.setOnAction(event -> {
-			chatroom.setText(nba.getText());
-		});
-		chatroom = new MenuButton("NBA", null, nba, music, moba, makeup);
-		chatroom.setPrefWidth(buttonwidth);
-		chatroomlabel.getChildren().add(chat);
-		chatroomlabel.getChildren().add(chatroom);
-		return chatroomlabel;
-	}*/
 
-	public VBox usernameBox() {
-		Text user = new Text("Username");
+	public HBox usernameBox() {
+		Text user = new Text("Username: ");
 		username = new Label(userName);
-		VBox userset = new VBox(user, username);
+		HBox userset = new HBox(user, username);
 		return userset;
 	}
 
@@ -217,12 +187,6 @@ public class ChatBotView extends Stage {
 			if(message.getText() != null) {
 				if (socket != null && socket.isConnected()) {
 					String chat = message.getText();
-					String name = username.getText();
-					String chatrooms = chatroom.getText();
-					if (!chat.isEmpty()) {
-						//chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
-					}
-	
 					if (chat != null && !chat.isEmpty())
 						server.addMsg(chat);
 					message.setText("");
@@ -233,12 +197,6 @@ public class ChatBotView extends Stage {
 			if(message.getText() != null) {
 				if (socket != null && socket.isConnected()) {
 					String chat = message.getText();
-					String name = username.getText();
-					String chatrooms = chatroom.getText();
-					if (!chat.isEmpty()) {
-						//chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
-					}
-	
 					if (chat != null && !chat.isEmpty())
 						server.addMsg(chat);
 					message.setText("");
