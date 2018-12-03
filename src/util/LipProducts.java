@@ -14,6 +14,7 @@ public class LipProducts {
 	private String rate = "";
 	private String url = "";
 	private String price = "";
+	private Lipnum Lipnum;
 	private HashMap<String, HashMap<String, String[]>> brandsAndCate; // the key is brand, the value is cate
 	public LipProducts() {
 		brandsAndCate.put("Dior", Dior());
@@ -23,7 +24,7 @@ public class LipProducts {
 		brandsAndCate.put("Tom_Ford",Tom_Ford());
 		brandsAndCate.put("YSL", YSL());
 		brandsAndCate.put("Nars",Nars());
-		
+		Lipnum = new Lipnum();
 		
 	}
 	public HashMap<String, String[]> Giorgio_Armani_beauty(){
@@ -173,6 +174,12 @@ public class LipProducts {
 	}
 	public String geturl() {
 		return url;
+	}
+	public String getNum(String brand, String cate) {
+		return Lipnum.getNum(brand, cate);
+	}
+	public String getImageurl(String brand, String cate, String num) {
+		return Lipnum.Imageurl(brand, cate, num);
 	}
 
 }
