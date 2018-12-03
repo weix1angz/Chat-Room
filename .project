@@ -1,3 +1,16 @@
+<<<<<<< HEAD
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>csc335-teamproject-chat-final-zham-gymf1010-mdbui-weixiangz</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+</projectDescription>
+=======
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>csc335-teamproject-chat-final-zham-gymf1010-mdbui-weixiangz</name>
@@ -21,3 +34,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 </projectDescription>
+>>>>>>> branch 'master' of https://github.com/CSC335Fall2018/csc335-teamproject-chat-final-zham-gymf1010-mdbui-weixiangz.git
