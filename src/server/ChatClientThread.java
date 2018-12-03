@@ -10,11 +10,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.List;
 
-import util.Bot;
-import util.User;
+import server.Bots.Bot;
+import server.User;
 
 public class ChatClientThread extends ChatServer implements Runnable {
 
@@ -24,13 +28,17 @@ public class ChatClientThread extends ChatServer implements Runnable {
 	String outputLine = null;
 	String inputLine = null;
 	private ObjectInputStream objIn;
-	private Bot newBot;
+	private ObjectOutputStream objOut;
+	private AbstractMap<String, Bot> botsMap;
 	private User userObj;
 	private PrintStream logStream;
 
-	public ChatClientThread(Socket socket, Bot bot) {
+	public ChatClientThread(Socket socket) {
+		botsMap = new HashMap<String, Bot>();
 		this.socket = socket;
-		this.newBot = bot;
+		for (Bot b : bots) {
+			botsMap.put(b.getBotCharacterId() + "", b);
+		}
 		userObj = null;
 		logStream = System.out;
 	}
@@ -41,34 +49,67 @@ public class ChatClientThread extends ChatServer implements Runnable {
 			out = new DataOutputStream(socket.getOutputStream());
 			in = new DataInputStream(socket.getInputStream());
 			objIn = new ObjectInputStream(socket.getInputStream());
-			userObj = (User) objIn.readObject();
-			broadcastToClients(userObj.getHandle() + " joined the channel.");
-			logStream.println(userObj.getHandle() + " joined the channel.");
-			while (!socket.isClosed()) {
-				inputLine = in.readUTF();
-				if (inputLine != null) {
-					logStream.println(inputLine); 
-					String[] input_arr = inputLine.split(" ");
-					String text = "";
-					for (int i = 1; i < input_arr.length; i++) {
-						if (i < input_arr.length - 1) text += input_arr[i] + " ";
-						else text += input_arr[i];
-					}
-					//String user = inputLine.split(" ")[0];
-					outputLine = "[" + userObj.getHandle() + "]" + " " + text;
-					if (text.charAt(0) == newBot.getBotCharacterId()) {
-						outputLine += "\n\n" + newBot.getBotSignature() + newBot.getResponses(text, userObj);
-					}
-				}
+			objOut = new ObjectOutputStream(socket.getOutputStream());
 
-				if (outputLine != null) {
-					broadcastToClients(outputLine);
+			// Read user's info.
+			userObj = (User) objIn.readObject();
+
+			// Broadcast to all clients that this user's client just log onto the server.
+			broadcastToClients(new Response(userObj.getHandle() + " joined the channel.", null));
+			logStream.println(userObj.getHandle() + " joined the channel.");
+
+			Response botRes = null;
+			while (!socket.isClosed()) {
+				// inputLine = in.readUTF();
+				Response clientRequestRes = ((Response) objIn.readObject());
+				if (clientRequestRes != null) {
+					inputLine = clientRequestRes.getMessage();
+
+					/**
+					 * inputLine normally has the form of:
+					 * 
+					 * [user's handle] [message]
+					 */
+					if (inputLine != null) {
+						logStream.println(inputLine);
+						String[] input_arr = inputLine.split(" ");
+
+						// text is the actually message.
+						String text = "";
+
+						for (int i = 1; i < input_arr.length; i++) {
+							if (i < input_arr.length - 1)
+								text += input_arr[i] + " ";
+							else
+								text += input_arr[i];
+						}
+
+						// Normal message
+						outputLine = "[" + userObj.getHandle() + "]" + " " + text;
+						botRes = new Response(outputLine, null);
+
+						// Message direct to the bot.
+						if (botsMap.containsKey(text.charAt(0) + "")) {
+							Bot b = botsMap.get(text.charAt(0) + "");
+							botRes = b.getResponses(text, userObj);
+							outputLine += "\n" + b.getBotSignature() + "@" + userObj.getHandle() + " "
+									+ botRes.getMessage();
+							botRes.setMessage(outputLine);
+						}
+					}
+
+					System.out.println(botRes);
+					if (botRes != null) {
+						// broadcastToClients(outputLine);
+						broadcastToClients(botRes);
+					}
+					botRes = null;
+					outputLine = null;
 				}
-				outputLine = null;
 			}
-			
+
 			logStream.println(userObj.getHandle() + " left the channel.");
-			broadcastToClients(userObj.getHandle() + " left the channel.");
+			broadcastToClients(new Response(userObj.getHandle() + " has left the channel.", null));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -86,7 +127,11 @@ public class ChatClientThread extends ChatServer implements Runnable {
 	public DataOutputStream getDOS() {
 		return out;
 	}
-	
+
+	public ObjectOutputStream getOOS() {
+		return objOut;
+	}
+
 	/**
 	 * Sends outputLine to every client in the clients list.
 	 * 
@@ -100,6 +145,36 @@ public class ChatClientThread extends ChatServer implements Runnable {
 					clientThread.getDOS().writeUTF(outputLine + "\r\n");
 					clientThread.getDOS().flush();
 				}
+			}
+		}
+	}
+
+	public User getUser() {
+		return this.userObj;
+	}
+
+	/**
+	 * Sends output response to every client in the clients list.
+	 * 
+	 * @param output A Response object.
+	 * @throws IOException
+	 */
+	public void broadcastToClients(Response output) throws IOException {
+		if (output != null) {
+			for (ChatClientThread clientThread : clients) {
+				if (clientThread.getDOS() != null) {
+					// Only send data from Response object to the client that request it.
+					if (output.getData() != null && !output.getData().isEmpty()) {
+						if (clientThread.getUser().equals(this.userObj)) {
+							clientThread.getOOS().writeObject(output);
+						}
+					} else {
+						// Else just relay back the message to other clients.
+						clientThread.getOOS().writeObject(new Response(output.getMessage(), null));
+					}
+					clientThread.getOOS().flush();
+				}
+
 			}
 		}
 	}

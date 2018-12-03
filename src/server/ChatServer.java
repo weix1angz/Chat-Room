@@ -5,8 +5,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.Bot;
-import util.MakeupBot;
+import server.Bots.Bot;
+import server.Bots.MinhsBot;
 
 public class ChatServer {
 
@@ -19,7 +19,7 @@ public class ChatServer {
 		int portNumber = 4000;
 		serverSocket = null;
 		bots = new ArrayList<>();
-		bots.add(new MakeupBot('!'));
+		bots.add(new MinhsBot('!'));
 		Socket clientSocket = null;
 		try {
 			serverSocket = new ServerSocket(portNumber);
@@ -44,7 +44,7 @@ public class ChatServer {
 		while (true) {
 			try {
 				Socket socket = serverSocket.accept();
-				ChatClientThread client = new ChatClientThread(socket, bots.get(0));
+				ChatClientThread client = new ChatClientThread(socket);
 				Thread clientThread = new Thread(client);
 				clientThread.start();
 				clients.add(client);

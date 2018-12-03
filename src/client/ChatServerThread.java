@@ -8,22 +8,28 @@ package client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 
-import util.User;
+import javafx.application.Platform;
+import server.Response;
+
+import server.User;
 
 public class ChatServerThread implements Runnable {
 
 	private Socket socket;
 	private User user;
-	private DataInputStream in;
-	private DataOutputStream out;
+	//private DataInputStream in;
+	//private DataOutputStream out;
 	private final LinkedList<String> pendingMsgs;
 	private boolean hasMsgs = false;
-	private String inputLine;
+	//private String inputLine;
+	
 	private ObjectOutputStream objOut;
+	private ObjectInputStream objIn;
 	
 	private ChatBotView view;
 
@@ -44,22 +50,45 @@ public class ChatServerThread implements Runnable {
 		synchronized (pendingMsgs) {
 			hasMsgs = true;
 			pendingMsgs.push(msg);
-			inputLine = null;
+			//inputLine = null;
 		}
 	}
 
 	@Override
 	public void run() {
 		try {
+			/*
 			out = new DataOutputStream(socket.getOutputStream());
 			in = new DataInputStream(socket.getInputStream());
-			objOut = new ObjectOutputStream(socket.getOutputStream());
+			*/
+			objOut = new ObjectOutputStream(socket.getOutputStream());			
+			objIn = new ObjectInputStream(socket.getInputStream());
+			
+			// Send user's info to the server.
 			objOut.writeObject(user);
+			if (socket.getInputStream().available() > 0) {
+				//inputLine = in.readUTF();
+				Response res = (Response) objIn.readObject();
+				System.out.println(res.getMessage());
+				view.appendMessage(res.getMessage());
+			}
+			
 			while (!socket.isClosed()) {
 				if (socket.getInputStream().available() > 0) {
-					inputLine = in.readUTF();
-					System.out.println(inputLine);
-					view.appendMessage(inputLine);
+					//inputLine = in.readUTF();
+					Response res = (Response) objIn.readObject();
+					System.out.println(res.getMessage());
+					view.appendMessage(res.getMessage());
+					
+					// URL pulling feature.
+					if (res.getData() != null && !res.getData().isEmpty()) {
+						Platform.runLater(new Runnable() {
+							public void run() {
+								view.openURL(res.getData());
+							}
+						});
+						
+					}
 				}
 
 				if (hasMsgs) {
@@ -69,14 +98,19 @@ public class ChatServerThread implements Runnable {
 						hasMsgs = !pendingMsgs.isEmpty();
 					}
 
-					out.writeUTF("[" + user.getHandle() + "] " + nextMsg);
-					out.flush();
+					
+					String wholeMsg = "[" + user.getHandle() + "] " + nextMsg;
+					//out.writeUTF(wholeMsg);
+					//out.flush();
+					
+					objOut.writeObject(new Response(wholeMsg, null));
+					objOut.flush();
 				}
 
 			}
 
-		} catch (IOException e) {
-
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 }
