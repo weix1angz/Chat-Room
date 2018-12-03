@@ -1,4 +1,4 @@
-package util;
+package server.Bots;
 
 import java.util.HashMap;
 
@@ -19,6 +19,7 @@ public class Lipnum {
 	private HashMap<String, String> DLipStick;
 	private HashMap<String, String> DLipLiner;
 	private HashMap<String, String> DLipGlow;
+	private Boolean ISurl = false;
 
 	public Lipnum() {
 		ALipMas = new HashMap<>();
@@ -267,18 +268,23 @@ public class Lipnum {
 				if(ALipStick.containsKey(num)) {
 					url += ALipStick.get(num);
 					url += "-main-Lhero.jpg";
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}
 			} else if (cate.equals("LipStain")) {
 				if(ALipMas.containsKey(num)) {
 					url += ALipMas.get(num);
-					url += "-main-Lhero.jpg";		
+					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}
 			} else {
 				url = "NO such category";
+				ISurl = false;
 			}
 		} else if (brand.equals("Fenty_Beauty_By_Rihanna")) {
 			url = "https://www.sephora.com/productimages/sku/s";
@@ -286,19 +292,24 @@ public class Lipnum {
 				if(FLipStick.containsKey(num)) {
 					url+= FLipStick.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}
 			} else if (cate.equals("LipStain")) {
 				num = FLipBalm.keySet().toString();
 				if(FLipBalm.containsKey(num)) {
 					url += FLipBalm.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 			} else {
 				url = "No such category";
+				ISurl = false;
 			}
 		} else if (brand.equals("Dior")) {
 			url = "https://www.sephora.com/productimages/sku/s";
@@ -306,22 +317,28 @@ public class Lipnum {
 				if(DLipStick.containsKey(num)) {
 					url += DLipStick.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 			} else if (cate.equals("LipLiner")) {
 				if(DLipLiner.containsKey(num)) {
 					url += DLipLiner.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 			} else if (cate.equals("LipGlow")) {
 				if(DLipGlow.containsKey(num)) {
 					url += DLipGlow.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 			} else {
 				url = "NO such category";
@@ -332,18 +349,23 @@ public class Lipnum {
 				if(GLipStick.containsKey(num)) {
 					url += GLipStick.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 			} else if (cate.equals("LipBalm")) {
 				if(GLipBalm.containsKey(num)) {
 					url += GLipBalm.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 			} else {
 				url = "NO such category";
+				ISurl = false;
 			}
 		} else if (brand.equals("Tom_Ford")) {
 			url = "https://www.sephora.com/productimages/sku/s";
@@ -351,18 +373,23 @@ public class Lipnum {
 				if(TLipStick.containsKey(num)) {
 					url += TLipStick.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 			} else if (cate.equals("LipGloss")) {
 				if(TLipGloss.containsKey(num)) {
 					url += TLipGloss.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 			} else {
 				url = "NO such category";
+				ISurl = false;
 			}
 			
 		} else if (brand.equals("YSL")) {
@@ -371,18 +398,23 @@ public class Lipnum {
 				if(YLipStick.containsKey(num)) {
 					url += YLipStick.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 			} else if (cate.equals("LipStain")) {
 				if(YLipStain.containsKey(num)) {
 					url += YLipStain.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 			} else {
 				url = "No such category";
+				ISurl = false;
 			}
 
 		} else if (brand.equals("Nars")) {
@@ -391,30 +423,43 @@ public class Lipnum {
 				if(NLipStick.containsKey(num)) {
 					url += NLipStick.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 				
 			} else if (cate.equals("LipBalm")) {
 				if(NLipBalm.containsKey(num)) {
 					url += NLipBalm.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 			} else if (cate.equals("LipGloss")) {
 				if(NLipGloss.containsKey(num)) {
 					url += NLipGloss.get(num);
 					url += "-main-Lhero.jpg";	
+					ISurl = true;
 				}else {
 					url = "No such color number";
+					ISurl = false;
 				}	
 			} else {
 				url = "NO such category";
+				ISurl = false;
 			}
+		}
+		else {
+			ISurl = false;
 		}
 		return url;
 		
+	}
+	public Boolean geturl() {
+		return ISurl;
 	}
 
 	//public String Imageurl() {
