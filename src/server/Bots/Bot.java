@@ -45,7 +45,7 @@ public abstract class Bot {
 		defaultCommandsList.put("date", " - prints out the current date.");
 		defaultCommandsList.put("whoami", " - prints out the user's client info such as IP addresses, ...");
 		defaultCommandsList.put("ttm", " - abbreviation for \"talk to me\".");
-		//defaultCommandsList.put("geturl", "[URL] - pull web resource through url.");
+		defaultCommandsList.put("geturl", "[URL] - pull web resource through url.");
 	}
 	
 	/**

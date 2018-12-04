@@ -150,14 +150,19 @@ public class MinhsBot extends server.Bots.Bot {
 			// command list.
 			if (command.equals("play")) {
 				//this.play(Integer.parseInt(msg_tokens[1]));
-				response = "play";
+				response = this.getBotCharacterId() + "play " + msg_tokens[1];
 				if (msg_tokens.length == 2)
 					data = msg_tokens[1];
 				Response resP = new Response(response, data);
 				resP.setUrl(false);
+				return resP;	
+			} else if (command.equals("pause") || command.equals("resume")) {
+				response = command;
+				data = response;
+				Response resP = new Response(response, data);
+				resP.setUrl(false);
 				return resP;
-				
-			}else if (command.equals("rate")) {
+			} else if (command.equals("rate")) {
 				response += this.rate(msg_tokens[1]);
 			}  else if (command.equals("systemcmd_kick")) {
 				response = message;
@@ -226,9 +231,9 @@ public class MinhsBot extends server.Bots.Bot {
 		responses.add("Is this heaven? ༼ つ ◕_◕ ༽つ ");
 		responses.add("Campers! Campers! Come and get me campers!");
 		responses.add("???? :^)");
-		responses.add("( ͡° ͜ʖ ͡°)");
-		responses.add("\\╭☞ \\╭☞");
-		responses.add("OMG.");
+		responses.add("Wat ( ͡° ͜ʖ ͡°)");
+		responses.add("Are you sure you had the right command? ¯\\_(ツ)_/¯");
+		responses.add("Wrong command OMG.");
 		responses.add("┬┴┬┴┤ ͜ʖ ͡°) ├┬┴┬┴");
 		responses.add("............................................________ \n" + 
 				"....................................,.-'\"...................``~., \n" + 

@@ -51,6 +51,8 @@ public class ChatBotView extends Stage {
 
 	private String userName;
 	private ChatServerThread server;
+	private MusicThread msThread;
+	private Thread actualMsThread;
 
 	/**
 	 * For some reasons this is never called with
@@ -221,39 +223,35 @@ public class ChatBotView extends Stage {
 		newStage.setScene(new Scene(webview));
 		newStage.show();
 	}
+	
+	public void pauseMusic() {
+		if (msThread != null)
+			msThread.pause();
+	}
+	
+	public void resumeMusic() {
+		if (msThread != null) {
+			Thread actualMsThread = new Thread(msThread);
+			actualMsThread.start();
+		}
+	}
 
 	public void playMusic(String name) {
-		String musicFile = name; // For example
-		FileInputStream fis;
-		try {
-			fis = new FileInputStream("./SampleMusic/" + musicFile);
-			System.out.println(fis);
-			AdvancedPlayer player = new AdvancedPlayer(fis);
-			player.setPlayBackListener(new PlaybackListener() {
-				@Override
-				public void playbackFinished(PlaybackEvent event) {
-					// pausedOnFrame = event.getFrame();
-				}
-			});
-			Thread playerThread = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						player.play();
-					} catch (JavaLayerException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
-			playerThread.start();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JavaLayerException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} 
-
+		String musicFile = "./SampleMusic/" + name; // For example
+		if (msThread == null) {
+			msThread = new MusicThread(musicFile);
+			actualMsThread = new Thread(msThread);
+			actualMsThread.start();
+		} else {
+			try {
+				if (msThread.isPlaying())
+				msThread.pause();
+			} catch (Exception e) {
+				
+			}
+			msThread = new MusicThread(musicFile);
+			actualMsThread = new Thread(msThread);
+			actualMsThread.start();
+		}
 	}
 }

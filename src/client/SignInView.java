@@ -112,15 +112,15 @@ public class SignInView extends Application {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				System.out.println(Thread.currentThread().getName() + " is a connectingThread and is done.");
 			}
 		});
-
-	connectingThread.start();
+		
+		connectingThread.start();
 
 	}
-	
+
 	public SignUpView getSignUpView() {
 		return this.signUpView;
 	}
@@ -128,14 +128,14 @@ public class SignInView extends Application {
 	public ChatBotView getChatBotView() {
 		return chatView;
 	}
-	
+
 	public ChatBotView successSignedIn() {
 		System.out.println("Log on success!");
 		chatView = new ChatBotView(hostName, portNumber, userName, clientThread);
 		priStage.close();
 		return chatView;
 	}
-	
+
 	public void backToSignIn() {
 		priStage.show();
 	}

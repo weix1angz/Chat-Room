@@ -71,7 +71,6 @@ public class ChatServerThread implements Runnable {
 	 * @param msg
 	 */
 	public void addMsg(String msg) {
-		System.out.println("addMsg was called.");
 		hasMsgs = true;
 		this.msg = msg;
 	}
@@ -125,15 +124,24 @@ public class ChatServerThread implements Runnable {
 
 						view.appendMessage(res.getMessage());
 
-						// URL pulling feature.
+						// URL/music pulling feature.
 						if (res.getData() != null && !res.getData().isEmpty()) {
 							String data = res.getData();
 							String msg = res.getMessage();
 							boolean isUrl = res.isUrl();
 							Platform.runLater(new Runnable() {
 								public void run() {
-									if (!isUrl) view.playMusic(data);
-									else view.openURL(data);
+									if (!isUrl) { 
+										if (data.equals("pause")) 
+											view.pauseMusic();
+										else if (data.equals("resume"))
+											view.resumeMusic();
+										else {
+											view.playMusic(data);
+										}
+									} else { 
+										view.openURL(data);
+									}
 								}
 							});
 						}
