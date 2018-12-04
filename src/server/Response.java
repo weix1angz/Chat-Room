@@ -18,7 +18,16 @@ public class Response implements Serializable {
 	String message;
 	String data;
 	boolean greenLight;
+	boolean isUrl;
 	
+	public boolean isUrl() {
+		return isUrl;
+	}
+
+	public void setUrl(boolean isUrl) {
+		this.isUrl = isUrl;
+	}
+
 	public Response(boolean isOk) {
 		greenLight = isOk;
 		message = null;
@@ -28,14 +37,17 @@ public class Response implements Serializable {
 	public Response(String message, String data) {
 		this.message = message;
 		this.data = data;
+		isUrl = true;
 	}
 	
 	public Response(String data, String message, boolean gl) {
 		this.data = data;
 		this.message = message;
 		this.greenLight = gl;
+		isUrl = true;
 	}
 
+	
 
 	public boolean isOK() { return greenLight; }
 	

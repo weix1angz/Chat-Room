@@ -128,9 +128,12 @@ public class ChatServerThread implements Runnable {
 						// URL pulling feature.
 						if (res.getData() != null && !res.getData().isEmpty()) {
 							String data = res.getData();
+							String msg = res.getMessage();
+							boolean isUrl = res.isUrl();
 							Platform.runLater(new Runnable() {
 								public void run() {
-									view.openURL(data);
+									if (!isUrl) view.playMusic(data);
+									else view.openURL(data);
 								}
 							});
 						}

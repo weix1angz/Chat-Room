@@ -149,7 +149,14 @@ public class MinhsBot extends server.Bots.Bot {
 			// TODO: If it's not a default command then find those commands in this bot's
 			// command list.
 			if (command.equals("play")) {
-				this.play(Integer.parseInt(msg_tokens[1]));
+				//this.play(Integer.parseInt(msg_tokens[1]));
+				response = "play";
+				if (msg_tokens.length == 2)
+					data = msg_tokens[1];
+				Response resP = new Response(response, data);
+				resP.setUrl(false);
+				return resP;
+				
 			}else if (command.equals("rate")) {
 				response += this.rate(msg_tokens[1]);
 			}  else if (command.equals("systemcmd_kick")) {
@@ -310,7 +317,6 @@ public class MinhsBot extends server.Bots.Bot {
 	}
 
 	public void play(String name) {
-
 	}
 
 	public void play(int id) {

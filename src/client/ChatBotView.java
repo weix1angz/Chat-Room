@@ -1,16 +1,15 @@
 package client;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 /**
  * A view for the chat client.
  * 
  * @author Mingjun Zha, Minh Bui
  */
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,11 +23,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import server.User;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
+
 
 public class ChatBotView extends Stage {
 	private int boardlength = 700;
@@ -217,5 +220,40 @@ public class ChatBotView extends Stage {
 		webview.setPrefSize(640, 390);
 		newStage.setScene(new Scene(webview));
 		newStage.show();
+	}
+
+	public void playMusic(String name) {
+		String musicFile = name; // For example
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream("./SampleMusic/" + musicFile);
+			System.out.println(fis);
+			AdvancedPlayer player = new AdvancedPlayer(fis);
+			player.setPlayBackListener(new PlaybackListener() {
+				@Override
+				public void playbackFinished(PlaybackEvent event) {
+					// pausedOnFrame = event.getFrame();
+				}
+			});
+			Thread playerThread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						player.play();
+					} catch (JavaLayerException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+			playerThread.start();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JavaLayerException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
+
 	}
 }
