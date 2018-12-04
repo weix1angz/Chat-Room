@@ -7,6 +7,7 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -151,9 +152,21 @@ public class MinhsBot extends server.Bots.Bot {
 				this.play(Integer.parseInt(msg_tokens[1]));
 			}else if (command.equals("rate")) {
 				response += this.rate(msg_tokens[1]);
-			} else {
+			}  else if (command.equals("systemcmd_kick")) {
+				response = message;
+				if (msg_tokens.length == 2) {
+					Iterator<ChatClientThread> iter = clients.iterator();
+					while (iter.hasNext()) {
+					    ChatClientThread client = iter.next();
+					    if (client.getUser().getHandle().equals(msg_tokens[1])) {
+					        iter.remove();
+					        client.close();
+					    }
+					}
+				}
+			}else {
 				response = getRandRes();
-			}
+			} 
 
 		}
 		

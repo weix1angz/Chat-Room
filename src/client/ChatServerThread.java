@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import server.Response;
 
@@ -59,7 +60,7 @@ public class ChatServerThread implements Runnable {
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+
 		}
 	}
 
@@ -140,6 +141,7 @@ public class ChatServerThread implements Runnable {
 						if (res.isOK()) {
 							this.user.setUserCode(User.UserCode.signedInUser);
 							Platform.runLater(new Runnable() {
+
 								public void run() {
 									view = signInView.successSignedIn();
 								}
@@ -147,7 +149,7 @@ public class ChatServerThread implements Runnable {
 						} else {
 							// Shoot a message dialog to the signInView saying that
 							// the server doesn't recognize the user's credential.
-							
+
 							Platform.runLater(new Runnable() {
 								public void run() {
 									signInView.signInFail();
@@ -165,6 +167,7 @@ public class ChatServerThread implements Runnable {
 							// If this user's not in the database.
 							// this.user.setUserCode(User.UserCode.signingInUser);
 							Platform.runLater(new Runnable() {
+
 								public void run() {
 									signUpView = signInView.getSignUpView();
 									signUpView.signUpSuccess();
@@ -175,6 +178,7 @@ public class ChatServerThread implements Runnable {
 							// The user's already in the database. Notify the sign up view.
 							Platform.runLater(new Runnable() {
 								public void run() {
+									signUpView = signInView.getSignUpView();
 									signUpView.signUpFail();
 								}
 							});
@@ -197,7 +201,15 @@ public class ChatServerThread implements Runnable {
 			}
 			this.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("You have been disconnected from server.");
+			this.close();
+			
+			Platform.runLater(new Runnable() {
+				public void run() {
+					new Alert(Alert.AlertType.WARNING, "Disconnected from server.").showAndWait();
+				}
+			});
+			
 		}
 	}
 }

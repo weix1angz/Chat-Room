@@ -135,6 +135,10 @@ public class SignInView extends Application {
 		priStage.close();
 		return chatView;
 	}
+	
+	public void backToSignIn() {
+		priStage.show();
+	}
 
 	public void signInFail() {
 		new Alert(Alert.AlertType.WARNING, "user not found or wrong password").showAndWait();
