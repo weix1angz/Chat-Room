@@ -93,8 +93,8 @@ public class ChatClientThread extends ChatServer implements Runnable {
 					Response clientRequestRes = null;
 					try {
 						Object dataObj = objIn.readObject();
-						if (dataObj instanceof Response) 
-							clientRequestRes =  (Response) dataObj;
+						if (dataObj instanceof Response)
+							clientRequestRes = (Response) dataObj;
 					} catch (EOFException e) {
 						break;
 					} catch (ClassCastException e1) {
@@ -158,8 +158,10 @@ public class ChatClientThread extends ChatServer implements Runnable {
 						// Broadcast to all clients that this user's client just log onto the server.
 						broadcastToClients(new Response(userObj.getHandle() + " joined the channel.", null));
 						logStream.println(userObj.getHandle() + " joined the channel.");
-					} else
+					} else {
 						objOut.writeObject(new Response(userIsInDB));
+						userObj = null;
+					}
 
 				} else {
 					// Received User object is attempting to sign up as a new user.
@@ -210,7 +212,8 @@ public class ChatClientThread extends ChatServer implements Runnable {
 	private boolean checkUserName(String userName) {
 		Scanner sc = null;
 		try {
-			File file = new File("userInfo.txt");
+			File file = new File(new java.io.File( "." ).getCanonicalPath() + File.separator + "userInfo.txt");
+			file.createNewFile();
 			sc = new Scanner(file);
 			while (sc.hasNextLine()) {
 				String line = sc.nextLine();
@@ -233,7 +236,8 @@ public class ChatClientThread extends ChatServer implements Runnable {
 	private boolean checkUserName(String userName, String password) {
 		Scanner sc = null;
 		try {
-			File file = new File("userInfo.txt");
+			File file = new File(new java.io.File( "." ).getCanonicalPath() + File.separator + "userInfo.txt");
+			file.createNewFile();
 			sc = new Scanner(file);
 			while (sc.hasNextLine()) {
 				String line = sc.nextLine();

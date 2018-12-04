@@ -120,6 +120,10 @@ public class SignInView extends Application {
 	connectingThread.start();
 
 	}
+	
+	public SignUpView getSignUpView() {
+		return this.signUpView;
+	}
 
 	public ChatBotView getChatBotView() {
 		return chatView;

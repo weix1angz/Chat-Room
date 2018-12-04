@@ -96,8 +96,13 @@ public class SignUpView extends Stage {
 	 * Called when signing up fails.
 	 */
 	public void signUpFail() {
-		new Alert(Alert.AlertType.INFORMATION, "user name has been used").showAndWait();
+		new Alert(Alert.AlertType.INFORMATION, "User name has been used").showAndWait();
 		System.out.println("Sign up failed.");
+	}
+	
+	public void signUpSuccess() {
+		new Alert(Alert.AlertType.INFORMATION, "Sign up successfull. Please log in with the new account.").showAndWait();
+		System.out.println("Sign up successfull.");
 	}
 
 }

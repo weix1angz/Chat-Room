@@ -25,8 +25,14 @@ public class ChatServer {
 		bots.add(new MinhsBot('!'));
 		bots.add(new WeixiangBot('%'));
 		bots.add(new MakeupBot('*'));
+		try {
+			System.out.println(new java.io.File( "." ).getCanonicalPath());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		//bots.add(new NBAbot('#'));
-		System.out.println(bots);
+
 		try {
 			serverSocket = new ServerSocket(portNumber);
 			acceptClients();

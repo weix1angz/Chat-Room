@@ -46,10 +46,8 @@ public class ChatBotView extends Stage {
 	private Button SendButton; // the send button
 	private TextField message; // the message we want to sent
 
-
 	private String userName;
 	private ChatServerThread server;
-	private Socket socket;
 
 	/**
 	 * For some reasons this is never called with
@@ -78,12 +76,11 @@ public class ChatBotView extends Stage {
 		pane.setTop(menuBar);
 		pane.setCenter(layout());
 		messageEvent();
-		
+
 		this.setOnCloseRequest(e -> {
 			server.close();
 		});
-		
-		
+
 		this.setScene(scene);
 		this.setResizable(false);
 		this.show();
@@ -174,39 +171,40 @@ public class ChatBotView extends Stage {
 	public void messageEvent() {
 		message.setOnAction(event -> {
 			if (message.getText() != null) {
-				if (socket != null && socket.isConnected()) {
-					String chat = message.getText();
-					String name = username.getText();
-					String chatrooms = chatroom.getText();
-					if (!chat.isEmpty()) {
-						//chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
-					}
 
-					if (chat != null && !chat.isEmpty())
-						server.addMsg(chat);
-					message.setText("");
+				String chat = message.getText();
+				String name = username.getText();
+				String chatrooms = chatroom.getText();
+				if (!chat.isEmpty()) {
+					// chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
 				}
+
+				if (chat != null && !chat.isEmpty())
+					server.addMsg(chat);
+				message.setText("");
+
 			}
 		});
-		
-		SendButton.setOnAction(events -> {
-			if (message.getText() != null) {
-				if (socket != null && socket.isConnected()) {
-					String chat = message.getText();
-					String name = username.getText();
-					String chatrooms = chatroom.getText();
-					if (!chat.isEmpty()) {
-						//chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
-					}
 
-					if (chat != null && !chat.isEmpty())
-						server.addMsg(chat);
-					message.setText("");
+		SendButton.setOnAction(events -> {
+
+			if (message.getText() != null) {
+
+				String chat = message.getText();
+				String name = username.getText();
+				String chatrooms = chatroom.getText();
+				if (!chat.isEmpty()) {
+					// chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
 				}
+				System.out.println(server);
+				if (chat != null && !chat.isEmpty())
+					server.addMsg(chat);
+				message.setText("");
+
 			}
+
 		});
 	}
-
 
 	public void appendMessage(String msg) {
 		chatboard.appendText(msg + "\n");

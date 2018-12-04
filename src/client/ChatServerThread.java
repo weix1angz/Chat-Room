@@ -112,7 +112,7 @@ public class ChatServerThread implements Runnable {
 			System.out.println(Thread.currentThread().getName() + " is a ChatServerThread and is running.");
 			objOut = new ObjectOutputStream(socket.getOutputStream());
 			objIn = new ObjectInputStream(socket.getInputStream());
-
+			Response oldRes = null;
 			while (!socket.isClosed()) {
 				if (socket.getInputStream().available() > 0) {
 					Response res = recvResponse();
@@ -136,7 +136,7 @@ public class ChatServerThread implements Runnable {
 						// This means this thread is sending an User object to the server
 						// for verification with the database. If the credential match,
 						// change the user's status of signing in to signed in and update the GUI.
-					} else if (user.getUserCode() == User.UserCode.signingInUser) {
+					} else if (user.getUserCode() == User.UserCode.signingInUser && !res.equals(oldRes)) {
 						if (res.isOK()) {
 							this.user.setUserCode(User.UserCode.signedInUser);
 							Platform.runLater(new Runnable() {
@@ -147,13 +147,15 @@ public class ChatServerThread implements Runnable {
 						} else {
 							// Shoot a message dialog to the signInView saying that
 							// the server doesn't recognize the user's credential.
+							
 							Platform.runLater(new Runnable() {
 								public void run() {
 									signInView.signInFail();
 								}
 							});
 						}
-					} else if (this.user.getUserCode() == User.UserCode.signingUpUser) {
+						oldRes = res;
+					} else if (this.user.getUserCode() == User.UserCode.signingUpUser && !res.equals(oldRes)) {
 						// This means this thread is trying to create a new User within the server
 						// database.
 						// If res.isOk() returns false, it means the server can't find the user. If so,
@@ -161,9 +163,11 @@ public class ChatServerThread implements Runnable {
 						// the GUI. Else make the GUI pop up an error message.
 						if (!res.isOK()) {
 							// If this user's not in the database.
-							this.user.setUserCode(User.UserCode.signingInUser);
+							// this.user.setUserCode(User.UserCode.signingInUser);
 							Platform.runLater(new Runnable() {
 								public void run() {
+									signUpView = signInView.getSignUpView();
+									signUpView.signUpSuccess();
 									signUpView.close();
 								}
 							});
@@ -171,10 +175,11 @@ public class ChatServerThread implements Runnable {
 							// The user's already in the database. Notify the sign up view.
 							Platform.runLater(new Runnable() {
 								public void run() {
-									signInView.signInFail();
+									signUpView.signUpFail();
 								}
 							});
 						}
+						oldRes = res;
 					}
 				}
 

@@ -29,6 +29,13 @@ public class Response implements Serializable {
 		this.message = message;
 		this.data = data;
 	}
+	
+	public Response(String data, String message, boolean gl) {
+		this.data = data;
+		this.message = message;
+		this.greenLight = gl;
+	}
+
 
 	public boolean isOK() { return greenLight; }
 	
@@ -52,6 +59,5 @@ public class Response implements Serializable {
 	public void setData(String data) {
 		this.data = data;
 	}
-	
 	
 }
