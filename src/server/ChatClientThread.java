@@ -9,6 +9,7 @@ package server;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -91,9 +92,15 @@ public class ChatClientThread extends ChatServer implements Runnable {
 					// inputLine = in.readUTF();
 					Response clientRequestRes = null;
 					try {
-						clientRequestRes = ((Response) objIn.readObject());
-					} catch (Exception e) {
+						Object dataObj = objIn.readObject();
+						if (dataObj instanceof Response) 
+							clientRequestRes =  (Response) dataObj;
+					} catch (EOFException e) {
 						break;
+					} catch (ClassCastException e1) {
+						continue;
+					} catch (ClassNotFoundException e) {
+						continue;
 					}
 
 					if (clientRequestRes != null && clientRequestRes.getMessage() != null) {
@@ -147,12 +154,12 @@ public class ChatClientThread extends ChatServer implements Runnable {
 					boolean userIsInDB = checkUserName(userObj.getHandle(), userObj.getPassword());
 					if (userIsInDB) {
 						this.userObj.setUserCode(User.UserCode.signedInUser);
-						
+						objOut.writeObject(new Response(userIsInDB));
 						// Broadcast to all clients that this user's client just log onto the server.
 						broadcastToClients(new Response(userObj.getHandle() + " joined the channel.", null));
 						logStream.println(userObj.getHandle() + " joined the channel.");
-					}
-					objOut.writeObject(new Response(userIsInDB));
+					} else
+						objOut.writeObject(new Response(userIsInDB));
 
 				} else {
 					// Received User object is attempting to sign up as a new user.

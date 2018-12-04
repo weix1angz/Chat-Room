@@ -101,17 +101,19 @@ public class SignInView extends Application {
 
 			@Override
 			public void run() {
+				System.out.println(Thread.currentThread().getName() + " is a connectingThread and is running.");
 
 				try {
 					while (socket == null || !socket.isConnected() || socket.isClosed()) {
 						connectServer();
-						Thread.sleep(70000);
+						Thread.sleep(7000);
 					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-
 				}
+				
+				System.out.println(Thread.currentThread().getName() + " is a connectingThread and is done.");
 			}
 		});
 
@@ -119,10 +121,15 @@ public class SignInView extends Application {
 
 	}
 
-	public void successSignedIn() {
+	public ChatBotView getChatBotView() {
+		return chatView;
+	}
+	
+	public ChatBotView successSignedIn() {
 		System.out.println("Log on success!");
-		chatView = new ChatBotView(hostName, portNumber, userName);
+		chatView = new ChatBotView(hostName, portNumber, userName, clientThread);
 		priStage.close();
+		return chatView;
 	}
 
 	public void signInFail() {

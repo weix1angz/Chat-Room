@@ -10,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.Queue;
 
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
@@ -21,7 +22,9 @@ public class ChatServerThread implements Runnable {
 
 	private Socket socket;
 	private User user;
-	private final LinkedList<String> pendingMsgs;
+	// private final LinkedList<String> pendingMsgs;
+	// private Queue<String> viewPendingMsgs;
+	private String msg;
 	private boolean hasMsgs = false;
 
 	private ObjectOutputStream objOut;
@@ -37,7 +40,8 @@ public class ChatServerThread implements Runnable {
 		signInView = siView;
 		signUpView = suView;
 		this.socket = socket;
-		pendingMsgs = new LinkedList<String>();
+		// pendingMsgs = new LinkedList<String>();
+		// viewPendingMsgs = new LinkedList<String>();
 		this.user = user;
 	}
 
@@ -52,14 +56,6 @@ public class ChatServerThread implements Runnable {
 				objIn.close();
 			if (socket != null) {
 				socket.close();
-
-				Platform.runLater(new Runnable() {
-					public void run() {
-						signInView.getConnectionStatus().setTextFill(Color.RED);
-						signInView.getConnectionStatus().setText("\t\t	Offline");
-					}
-				});
-
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -74,11 +70,9 @@ public class ChatServerThread implements Runnable {
 	 * @param msg
 	 */
 	public void addMsg(String msg) {
-		synchronized (pendingMsgs) {
-			hasMsgs = true;
-			pendingMsgs.push(msg);
-			// inputLine = null;
-		}
+		System.out.println("addMsg was called.");
+		hasMsgs = true;
+		this.msg = msg;
 	}
 
 	/**
@@ -91,12 +85,13 @@ public class ChatServerThread implements Runnable {
 			this.user = user;
 			try {
 				objOut.writeObject(user);
+				objOut.flush();
 			} catch (IOException e) {
 
 			}
 		}
 	}
-	
+
 	public Response recvResponse() {
 		Response res = null;
 		// Keep reading Response from the server until it's not null.
@@ -114,6 +109,7 @@ public class ChatServerThread implements Runnable {
 	@Override
 	public void run() {
 		try {
+			System.out.println(Thread.currentThread().getName() + " is a ChatServerThread and is running.");
 			objOut = new ObjectOutputStream(socket.getOutputStream());
 			objIn = new ObjectInputStream(socket.getInputStream());
 
@@ -123,40 +119,20 @@ public class ChatServerThread implements Runnable {
 					// If this client's user object is already signed in,
 					// then response from the server is a broadcasted message.
 					// Allow user to send/receive message from the server.
-					if (user.getUserCode() == User.UserCode.signedInUser) {
-						sendUserObject(user);
-						if (socket.getInputStream().available() > 0) {
-							if (res.getMessage() == null) break;
-							System.out.println(res.getMessage());
-							view.appendMessage(res.getMessage());
+					if (user.getUserCode() == User.UserCode.signedInUser && view != null) {
+						// sendUserObject(user);
 
-							// URL pulling feature.
-							if (res.getData() != null && !res.getData().isEmpty()) {
-								String data = res.getData();
-								Platform.runLater(new Runnable() {
-									public void run() {
-										view.openURL(data);
-									}
-								});
+						view.appendMessage(res.getMessage());
 
-							}
+						// URL pulling feature.
+						if (res.getData() != null && !res.getData().isEmpty()) {
+							String data = res.getData();
+							Platform.runLater(new Runnable() {
+								public void run() {
+									view.openURL(data);
+								}
+							});
 						}
-
-						if (hasMsgs) {
-							String nextMsg = "";
-							synchronized (pendingMsgs) {
-								nextMsg = pendingMsgs.pop();
-								hasMsgs = !pendingMsgs.isEmpty();
-							}
-
-							String wholeMsg = "[" + user.getHandle() + "] " + nextMsg;
-							// out.writeUTF(wholeMsg);
-							// out.flush();
-
-							objOut.writeObject(new Response(wholeMsg, null));
-							objOut.flush();
-						}
-
 						// This means this thread is sending an User object to the server
 						// for verification with the database. If the credential match,
 						// change the user's status of signing in to signed in and update the GUI.
@@ -165,7 +141,7 @@ public class ChatServerThread implements Runnable {
 							this.user.setUserCode(User.UserCode.signedInUser);
 							Platform.runLater(new Runnable() {
 								public void run() {
-									signInView.successSignedIn();
+									view = signInView.successSignedIn();
 								}
 							});
 						} else {
@@ -177,7 +153,7 @@ public class ChatServerThread implements Runnable {
 								}
 							});
 						}
-					} else {
+					} else if (this.user.getUserCode() == User.UserCode.signingUpUser) {
 						// This means this thread is trying to create a new User within the server
 						// database.
 						// If res.isOk() returns false, it means the server can't find the user. If so,
@@ -200,7 +176,18 @@ public class ChatServerThread implements Runnable {
 							});
 						}
 					}
+				}
 
+				if (hasMsgs) {
+					String nextMsg = msg;
+					hasMsgs = !hasMsgs;
+
+					String wholeMsg = "[" + user.getHandle() + "] " + nextMsg;
+					// out.writeUTF(wholeMsg);
+					// out.flush();
+
+					objOut.writeObject(new Response(wholeMsg, null));
+					objOut.flush();
 				}
 			}
 			this.close();

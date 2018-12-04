@@ -46,8 +46,7 @@ public class ChatBotView extends Stage {
 	private Button SendButton; // the send button
 	private TextField message; // the message we want to sent
 
-	private String hostName;
-	private int portNumber;
+
 	private String userName;
 	private ChatServerThread server;
 	private Socket socket;
@@ -63,16 +62,9 @@ public class ChatBotView extends Stage {
 	 * @param hostName
 	 * @param portNumber
 	 */
-	public ChatBotView(String hostName, int portNumber, String userName) {
-
-		this.hostName = hostName;
-		this.portNumber = portNumber;
+	public ChatBotView(String hostName, int portNumber, String userName, ChatServerThread server) {
+		this.server = server;
 		this.userName = userName;
-		// Parameters params = this.getParameters();
-		// hostName = params.getRaw().get(0);
-		this.hostName = "localhost";
-		this.portNumber = 4000;
-		// portNumber = Integer.parseInt(params.getRaw().get(1));
 
 		this.setTitle("Chat client");
 		BorderPane pane = new BorderPane();
@@ -187,7 +179,7 @@ public class ChatBotView extends Stage {
 					String name = username.getText();
 					String chatrooms = chatroom.getText();
 					if (!chat.isEmpty()) {
-						// chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
+						//chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
 					}
 
 					if (chat != null && !chat.isEmpty())
@@ -196,6 +188,7 @@ public class ChatBotView extends Stage {
 				}
 			}
 		});
+		
 		SendButton.setOnAction(events -> {
 			if (message.getText() != null) {
 				if (socket != null && socket.isConnected()) {
@@ -203,7 +196,7 @@ public class ChatBotView extends Stage {
 					String name = username.getText();
 					String chatrooms = chatroom.getText();
 					if (!chat.isEmpty()) {
-						// chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
+						//chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
 					}
 
 					if (chat != null && !chat.isEmpty())
