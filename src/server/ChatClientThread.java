@@ -163,7 +163,7 @@ public class ChatClientThread extends ChatServer implements Runnable {
 						userObj = null;
 					}
 
-				} else {
+				} else if (userObj.getUserCode() == User.UserCode.signingUpUser) {
 					// Received User object is attempting to sign up as a new user.
 					// Once the database is updated with the new user or if something goes wrong,
 					// send back a response.
@@ -172,6 +172,7 @@ public class ChatClientThread extends ChatServer implements Runnable {
 						createUser(userObj.getHandle(), userObj.getPassword(), userObj.getFirstName(),
 								userObj.getLastName(), userObj.getAge() + "", userObj.getMajor());
 					}
+					userObj = null;
 					objOut.writeObject(new Response(userIsInDB));
 
 				}

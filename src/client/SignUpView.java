@@ -89,6 +89,7 @@ public class SignUpView extends Stage {
 	public void okAction(String userName, String password, String firstName, String lastName, String age,
 			String major) {
 		User newUser = new User(userName, password, firstName, lastName, age, major);
+		newUser.setUserCode(User.UserCode.signingUpUser);
 		clientThread.sendUserObject(newUser);
 	}
 

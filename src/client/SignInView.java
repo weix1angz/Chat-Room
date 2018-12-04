@@ -87,8 +87,8 @@ public class SignInView extends Application {
 		});
 
 		signUp.setOnAction(MouseClicked -> {
-			SignUpView signup = new SignUpView(clientThread, socket);
-			signup.show();
+			signUpView = new SignUpView(clientThread, socket);
+			signUpView.show();
 		});
 
 		signInWindow.getChildren().addAll(welcome, connectionStatus, userName, password, button);

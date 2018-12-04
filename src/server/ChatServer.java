@@ -25,13 +25,14 @@ public class ChatServer {
 		bots.add(new MinhsBot('!'));
 		bots.add(new WeixiangBot('%'));
 		bots.add(new MakeupBot('*'));
+		//bots.add(new NBAbot('#'));
 		try {
 			System.out.println(new java.io.File( "." ).getCanonicalPath());
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		//bots.add(new NBAbot('#'));
+		
 
 		try {
 			serverSocket = new ServerSocket(portNumber);
