@@ -17,12 +17,22 @@ public class Response implements Serializable {
 	private static final long serialVersionUID = -7022035661052276058L;
 	String message;
 	String data;
+	boolean greenLight;
+	
+	public Response(boolean isOk) {
+		greenLight = isOk;
+		message = null;
+		data = null;
+	}
 	
 	public Response(String message, String data) {
 		this.message = message;
 		this.data = data;
 	}
 
+	public boolean isOK() { return greenLight; }
+	
+	public void setVerdict(boolean value) { this.greenLight = value; }
 
 	public String getMessage() {
 		return message;

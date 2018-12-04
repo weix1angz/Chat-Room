@@ -161,8 +161,8 @@ public class MakeupBot extends Bot {
 	@Override
 	public String infoCommand(User user) {
 		System.out.println(1+" "+user.getHandle());
-		System.out.println(2+" "+user.getBirthday());
-		return "User: " + user.getHandle() + "\t" + "Birthday: " + user.getBirthday().toString();
+		System.out.println(2+" "+user.getAge());
+		return "User: " + user.getHandle() + "\t" + "Birthday: " + user.getAge();
 	}
 
 	@Override

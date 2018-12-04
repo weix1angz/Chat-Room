@@ -6,17 +6,23 @@ package server;
  * client's message and the current server thread's message to every other client.
  */
 
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.AbstractMap;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
+import javafx.scene.control.Alert;
 import server.Bots.Bot;
 import server.User;
 
@@ -43,16 +49,28 @@ public class ChatClientThread extends ChatServer implements Runnable {
 		userObj = null;
 		logStream = System.out;
 	}
-	
+
 	public void close() {
 		try {
-			if (objIn != null) objIn.close();
-			if (objOut != null) objOut.close();
+			if (objIn != null)
+				objIn.close();
+			if (objOut != null)
+				objOut.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
+	}
+
+	public void recvUserObject() {
+		try {
+			// Read user's info.
+			userObj = (User) objIn.readObject();
+		} catch (Exception e) {
+
+		}
+
 	}
 
 	@Override
@@ -63,82 +81,168 @@ public class ChatClientThread extends ChatServer implements Runnable {
 			objIn = new ObjectInputStream(socket.getInputStream());
 			objOut = new ObjectOutputStream(socket.getOutputStream());
 
-			// Read user's info.
-			userObj = (User) objIn.readObject();
-
-			// Broadcast to all clients that this user's client just log onto the server.
-			broadcastToClients(new Response(userObj.getHandle() + " joined the channel.", null));
-			logStream.println(userObj.getHandle() + " joined the channel.");
-
-			Response botRes = null;
-			
 			while (!socket.isClosed()) {
-				// inputLine = in.readUTF();
-				Response clientRequestRes = null;
-				try {
-					clientRequestRes = ((Response) objIn.readObject());
-				} catch (Exception e) {
-					break;
+				while (userObj == null) {
+					recvUserObject();
 				}
-				
-				if (clientRequestRes != null) {
-					inputLine = clientRequestRes.getMessage();
 
-					/**
-					 * inputLine normally has the form of:
-					 * 
-					 * [user's handle] [message]
-					 */
-					if (inputLine != null) {
-						logStream.println(inputLine);
-						String[] input_arr = inputLine.split(" ");
-
-						// text is the actually message.
-						String text = "";
-
-						for (int i = 1; i < input_arr.length; i++) {
-							if (i < input_arr.length - 1)
-								text += input_arr[i] + " ";
-							else
-								text += input_arr[i];
-						}
-
-						// Normal message
-						outputLine = "[" + userObj.getHandle() + "]" + " " + text;
-						botRes = new Response(outputLine, null);
-
-						// Message direct to the bot.
-						if (botsMap.containsKey(text.charAt(0) + "")) {
-							Bot b = botsMap.get(text.charAt(0) + "");						
-							botRes = b.getResponses(text, userObj, clients);
-							
-							outputLine += "\n" + b.getBotSignature() + "@" + userObj.getHandle() + " "
-									+ botRes.getMessage();
-							botRes.setMessage(outputLine);
-						}
+				if (userObj.getUserCode() == User.UserCode.signedInUser) {
+					Response botRes = null;
+					// inputLine = in.readUTF();
+					Response clientRequestRes = null;
+					try {
+						clientRequestRes = ((Response) objIn.readObject());
+					} catch (Exception e) {
+						break;
 					}
 
-					System.out.println(botRes);
-					if (botRes != null) {
-						// broadcastToClients(outputLine);
-						broadcastToClients(botRes);
+					if (clientRequestRes != null && clientRequestRes.getMessage() != null) {
+						inputLine = clientRequestRes.getMessage();
+
+						/**
+						 * inputLine normally has the form of:
+						 * 
+						 * [user's handle] [message]
+						 */
+						if (inputLine != null) {
+							logStream.println(inputLine);
+							String[] input_arr = inputLine.split(" ");
+
+							// text is the actually message.
+							String text = "";
+
+							for (int i = 1; i < input_arr.length; i++) {
+								if (i < input_arr.length - 1)
+									text += input_arr[i] + " ";
+								else
+									text += input_arr[i];
+							}
+
+							// Normal message
+							outputLine = "[" + userObj.getHandle() + "]" + " " + text;
+							botRes = new Response(outputLine, null);
+
+							// Message direct to the bot.
+							if (botsMap.containsKey(text.charAt(0) + "")) {
+								Bot b = botsMap.get(text.charAt(0) + "");
+								botRes = b.getResponses(text, userObj, clients);
+
+								outputLine += "\n" + b.getBotSignature() + "@" + userObj.getHandle() + " "
+										+ botRes.getMessage();
+								botRes.setMessage(outputLine);
+							}
+						}
+
+						System.out.println(botRes);
+						if (botRes != null) {
+							// broadcastToClients(outputLine);
+							broadcastToClients(botRes);
+						}
+						botRes = null;
+						outputLine = null;
 					}
-					botRes = null;
-					outputLine = null;
+				} else if (userObj.getUserCode() == User.UserCode.signingInUser) {
+					// Received User object is attempting to sign in.
+					// Verify the User object within the server's database and send back a response.
+					boolean userIsInDB = checkUserName(userObj.getHandle(), userObj.getPassword());
+					if (userIsInDB) {
+						this.userObj.setUserCode(User.UserCode.signedInUser);
+						
+						// Broadcast to all clients that this user's client just log onto the server.
+						broadcastToClients(new Response(userObj.getHandle() + " joined the channel.", null));
+						logStream.println(userObj.getHandle() + " joined the channel.");
+					}
+					objOut.writeObject(new Response(userIsInDB));
+
+				} else {
+					// Received User object is attempting to sign up as a new user.
+					// Once the database is updated with the new user or if something goes wrong,
+					// send back a response.
+					boolean userIsInDB = checkUserName(userObj.getHandle());
+					if (!userIsInDB) {
+						createUser(userObj.getHandle(), userObj.getPassword(), userObj.getFirstName(),
+								userObj.getLastName(), userObj.getAge() + "", userObj.getMajor());
+					}
+					objOut.writeObject(new Response(userIsInDB));
+
 				}
 			}
 
-			logStream.println(userObj.getHandle() + " left the channel.");
-			clients.remove(this);
-			broadcastToClients(new Response(userObj.getHandle() + " has left the channel.", null));
-			this.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} finally {
+			logStream.println(userObj.getHandle() + " left the channel.");
+			clients.remove(this);
+			try {
+				broadcastToClients(new Response(userObj.getHandle() + " has left the channel.", null));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.close();
+		}
+	}
+
+	private boolean createUser(String userName, String password, String firstName, String lastName, String age,
+			String major) {
+		if (checkUserName(userName))
+			return false;
+		try {
+			File file = new File("userInfo.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+			String userInfo = userName + " " + password + " " + firstName + " " + lastName + " " + age + " " + major
+					+ "\n";
+			writer.append(userInfo);
+			writer.close();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		return true;
+	}
+
+	private boolean checkUserName(String userName) {
+		Scanner sc = null;
+		try {
+			File file = new File("userInfo.txt");
+			sc = new Scanner(file);
+			while (sc.hasNextLine()) {
+				String line = sc.nextLine();
+				String[] info = line.split(" ");
+				if (userName.equals(info[0])) {
+					return true;
+				}
+			}
+
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			if (sc != null)
+				sc.close();
 		}
 
+		return false;
+	}
+
+	private boolean checkUserName(String userName, String password) {
+		Scanner sc = null;
+		try {
+			File file = new File("userInfo.txt");
+			sc = new Scanner(file);
+			while (sc.hasNextLine()) {
+				String line = sc.nextLine();
+				String[] info = line.split(" ");
+				System.out.println(info);
+				if (userName.equals(info[0]) && password.equals(info[1]))
+					return true;
+			}
+
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			if (sc != null)
+				sc.close();
+		}
+		return false;
 	}
 
 	/**

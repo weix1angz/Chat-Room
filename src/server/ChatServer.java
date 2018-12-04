@@ -25,7 +25,7 @@ public class ChatServer {
 		bots.add(new MinhsBot('!'));
 		bots.add(new WeixiangBot('%'));
 		bots.add(new MakeupBot('*'));
-		bots.add(new NBAbot('#'));
+		//bots.add(new NBAbot('#'));
 		System.out.println(bots);
 		try {
 			serverSocket = new ServerSocket(portNumber);
@@ -44,7 +44,6 @@ public class ChatServer {
 
 	public static void acceptClients() {
 		clients = new ArrayList<ChatClientThread>();
-		
 		while (true) {
 			try {
 				Socket socket = serverSocket.accept();
@@ -52,6 +51,7 @@ public class ChatServer {
 				Thread clientThread = new Thread(client);
 				clientThread.start();
 				clients.add(client);
+				System.out.println(socket.getInetAddress() + " connected.");
 			} catch (IOException e) {
 				System.err.println(e.getStackTrace());
 			}

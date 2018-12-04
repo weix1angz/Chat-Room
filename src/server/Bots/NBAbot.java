@@ -400,7 +400,7 @@ public class NBAbot extends Bot{
 	}
 	@Override
 	public String infoCommand(User user) {
-		return "User: " + user.getHandle() + "\t" + "Birthday: " + user.getBirthday().toString();
+		return "User: " + user.getHandle() + "\t" + "Birthday: " + user.getAge();
 	}
 
 	@Override

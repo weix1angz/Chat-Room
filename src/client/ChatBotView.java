@@ -86,7 +86,6 @@ public class ChatBotView extends Stage {
 		pane.setTop(menuBar);
 		pane.setCenter(layout());
 		messageEvent();
-		this.ConnectServer();
 		
 		this.setOnCloseRequest(e -> {
 			server.close();
@@ -102,22 +101,6 @@ public class ChatBotView extends Stage {
 
 	}
 
-	/*
-	 * @Override public void start(Stage stage) throws Exception { //Parameters
-	 * params = this.getParameters(); //hostName = params.getRaw().get(0); hostName
-	 * = "localhost"; portNumber = 4000; //portNumber =
-	 * Integer.parseInt(params.getRaw().get(1));
-	 * 
-	 * stage.setTitle("Chat client"); BorderPane pane = new BorderPane(); Scene
-	 * scene = new Scene(pane, boardlength, boardwidth); // setting the menu bar
-	 * MenuItem item1 = new MenuItem("New Chat"); MenuItem item2 = new
-	 * MenuItem("History"); Menu menu = new Menu("File");
-	 * menu.getItems().addAll(item1, item2); MenuBar menuBar = new MenuBar(menu);
-	 * pane.setTop(menuBar); pane.setCenter(layout()); messageEvent();
-	 * stage.setScene(scene); stage.setResizable(false); stage.show();
-	 * 
-	 * }
-	 */
 	public HBox layout() {
 		VBox buttons = buttonset();// setting the buttonset
 		VBox chatAndSend = Initchatboard();// initialized chatboard
@@ -231,23 +214,6 @@ public class ChatBotView extends Stage {
 		});
 	}
 
-	public void ConnectServer() {
-		try {
-			socket = new Socket(hostName, portNumber);
-			User user = new User(username.getText(), socket);
-
-			server = new ChatServerThread(this, socket, user);
-			Thread serverThread = new Thread(server);
-			serverThread.start();
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
 
 	public void appendMessage(String msg) {
 		chatboard.appendText(msg + "\n");
