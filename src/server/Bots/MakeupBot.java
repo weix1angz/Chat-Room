@@ -91,7 +91,7 @@ public class MakeupBot extends Bot {
 			} else if (command.equals("whoami")) {
 				response += whoamiCommand(user);
 			} else if (command.equals("ttm")) {
-				//response = getSmartResponse(message.substring(1, message.length()), user);
+				response = getSmartResponse(message.substring(1, message.length()), user);
 			} else if (command.equals("geturl")) {
 				response = message;
 				if (msg_tokens.length == 2)

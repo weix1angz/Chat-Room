@@ -5,11 +5,11 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 
 
-/*import org.alicebot.ab.Chat;
+import org.alicebot.ab.Chat;
 import org.alicebot.ab.History;
 import org.alicebot.ab.MagicBooleans;
 import org.alicebot.ab.MagicStrings;
-import org.alicebot.ab.utils.IOUtils;*/
+import org.alicebot.ab.utils.IOUtils;
 
 import server.Response;
 
@@ -131,7 +131,7 @@ public abstract class Bot {
 	 * @param user
 	 * @return
 	 */
-	/**public String getSmartResponse(String message, User user) {
+	public String getSmartResponse(String message, User user) {
 		String response = "Bot is running";
 		System.out.println(message);
 		String resourcesPath = getResourcesPath();
@@ -143,5 +143,5 @@ public abstract class Bot {
 		response = chatSession.multisentenceRespond(message);
 		System.out.println("Response: " + response);
 		return response;
-	}**/
+	}
 }
