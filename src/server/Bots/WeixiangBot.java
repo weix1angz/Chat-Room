@@ -43,6 +43,7 @@ public class WeixiangBot extends Bot {
 	 */
 	public WeixiangBot(char characterId) {
 		commandsMap = new HashMap<>();
+		commandsCounter = new HashMap<>();
 		commandsMap.put("help", " - list out the available commands for the current bot. ");
 		commandsMap.put("info", "[USER] - prints out the information of User.");
 		commandsMap.put("date", " - prints out the current date.");
@@ -175,8 +176,12 @@ public class WeixiangBot extends Bot {
 					responseText += this.responseMap.get(command)
 							.get(rndGen.nextInt(this.responseMap.get(command).size()));
 				} else {
-					responseText += "loading image";
-					data = "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + msg_tokens[1] + "_0.jpg";
+					if(msg_tokens.length > 1) {
+						responseText += "loading image";
+						data = "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + msg_tokens[1] + "_0.jpg";
+					}else {
+						responseText += "Invalid Command";
+					}
 				}
 			} else {
 				responseText += "Invalid Command";

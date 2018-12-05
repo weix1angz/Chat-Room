@@ -104,26 +104,7 @@ public class SignInView extends Application {
 							Thread.sleep(7000);
 						}
 
-						try {
-							if (socket.getInputStream().read() == -1) {
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										connectionStatus = new Label("\t\t	Offline");
-										connectionStatus.setTextFill(Color.RED);
-									}
-								});
-							}
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									connectionStatus = new Label("\t\t	Offline");
-									connectionStatus.setTextFill(Color.RED);
-								}
-							});
-						}
+					
 					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block

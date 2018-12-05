@@ -3,19 +3,21 @@ package server.Bots;
 import java.util.HashMap;
 
 /**
- * 
+ * This Program is the store the each LipProducts information and get the Lip products'
+ * price, rate, and Lip color numbers
  * @author Mingjun Zha
  *
  */
 public class LipProducts {
-	/**
-	 * 
-	 */
 	private String rate = "";
 	private String url = "";
 	private String price = "";
 	private Lipnum Lipnum;
 	private HashMap<String, HashMap<String, String[]>> brandsAndCate; // the key is brand, the value is cate
+	/**
+	 * initializing the Lipproducts depending upon the each brand, and the brand as
+	 * the key into the HashMap, the category as the value.
+	 */
 	public LipProducts() {
 		brandsAndCate = new HashMap<>();
 		brandsAndCate.put("Dior", Dior());
@@ -25,9 +27,15 @@ public class LipProducts {
 		brandsAndCate.put("Tom_Ford",Tom_Ford());
 		brandsAndCate.put("YSL", YSL());
 		brandsAndCate.put("Nars",Nars());
-		Lipnum = new Lipnum();
+		Lipnum = new Lipnum(); //the Lipnum program
 		
 	}
+	/**
+	 * Return a Giorgio_Armani_beauty hashMap that the store the information of the Lip
+	 * products
+	 * @return HashMap<String, String[]>, the category as the key, and the price, rate
+	 * list as the value
+	 */
 	public HashMap<String, String[]> Giorgio_Armani_beauty(){
 		HashMap<String,String[]> cate = new HashMap<>();
 		String cate1 = "Lipstick"; //38
@@ -42,6 +50,14 @@ public class LipProducts {
 		cate.put(cate2,LipStain);
 		return cate;
 	}
+	
+	/**
+	 * Return a Fenty_Beauty_By_Rihanna hashMap that the store the information of the Lip
+	 * products
+	 * 
+	 * @return HashMap<String, String[]>, the category as the key, and the price, rate
+	 * list as the value
+	 */
 	public HashMap<String, String[]> Fenty_Beauty_By_Rihanna() {
 		HashMap<String,String[]> cate = new HashMap<>();
 		String cate1 = "Lipstick"; //18
@@ -57,7 +73,13 @@ public class LipProducts {
 		cate.put(cate2, LipStain);
 		return cate;
 	}
-	
+	/**
+	 * Return a Givenchy hashMap that the store the information of the Lip
+	 * products
+	 * 
+	 * @return HashMap<String, String[]>, the category as the key, and the price, rate
+	 * list as the value
+	 */
 	public HashMap<String, String[]> Givenchy() {
 		HashMap<String,String[]> cate = new HashMap<>();
 		String cate1 = "Lipstick"; //37
@@ -73,7 +95,13 @@ public class LipProducts {
 		cate.put(cate2, LipBalm);
 		return cate;
 	}
-	
+	/**
+	 *  Return a Tom_Ford hashMap that the store the information of the Lip
+	 * products
+	 * 
+	 * @return HashMap<String, String[]>, the category as the key, and the price, rate
+	 * list as the value
+	 */
 	public HashMap<String, String[]> Tom_Ford() {
 		HashMap<String,String[]> cate = new HashMap<>();
 		String cate1 = "Lipstick"; //55
@@ -89,7 +117,13 @@ public class LipProducts {
 		return cate;
 	}
 	
-	
+	/**
+	 * Return a YSL hashMap that the store the information of the Lip
+	 * products
+	 * 
+	 * @return HashMap<String, String[]>, the category as the key, and the price, rate
+	 * list as the value
+	 */
 	public HashMap<String, String[]> YSL() {
 		HashMap<String,String[]> cate = new HashMap<>();;
 		String cate1 = "Lipstick";
@@ -105,7 +139,13 @@ public class LipProducts {
 		cate.put(cate2, LipStain);
 		return cate;
 	}
-	
+	/**
+	 * Return a Nars hashMap that the store the information of the Lip
+	 * products
+	 * 
+	 * @return HashMap<String, String[]>, the category as the key, and the price, rate
+	 * list as the value
+	 */
 	public HashMap<String, String[]> Nars(){
 		HashMap<String,String[]> cate = new HashMap<>();;
 		String cate1 = "Lipstick";
@@ -128,6 +168,13 @@ public class LipProducts {
 		cate.put(cate3, LipGloss);
 		return cate;	
 	}
+	/**
+	 * Return a Dior hashMap that the store the information of the Lip
+	 * products
+	 * 
+	 * @return HashMap<String, String[]>, the category as the key, and the price, rate
+	 * list as the value
+	 */
 	public HashMap<String, String[]> Dior(){
 		HashMap<String,String[]> cate = new HashMap<>();;
 		String cate1 = "Lipstick";
@@ -151,6 +198,12 @@ public class LipProducts {
 		return cate;
 		
 	}
+	/**
+	 * This function is dpending upon the brand and category to construct the hashmap
+	 * that contains price, url and rate
+	 * @param brand, the brand String
+	 * @param cate, the String category 
+	 */
 	public void geteverything(String brand,String cate) {
 		HashMap<String, String[]> map;
 		if(brandsAndCate.containsKey(brand)) {
@@ -173,24 +226,57 @@ public class LipProducts {
 			rate = "No such brand";			
 		}
 	}
+	/**
+	 * This function get the brand array into strings
+	 * @return the keySet of the brand
+	 */
 	public String getbrand() {
 		return brandsAndCate.keySet().toString();
 	}
+	/**
+	 * This function get the price array into String
+	 * @return price, the price of the each product
+	 */
 	public String getprice() {
 		return price;
 	}
+	/**
+	 * This function get the rate array into String
+	 * @return rate, the rate of the each product 
+	 */
 	public String getrate() {
 		return rate;
 	}
+	/**
+	 * This function is return the url string
+	 * @return url, the url of each product
+	 */
 	public String geturl() {
 		return url;
 	}
+	/**
+	 * getting the color number of specific product
+	 * @param brand, brand String
+	 * @param cate, category String
+	 * @return the color Num String
+	 */
 	public String getNum(String brand, String cate) {
 		return Lipnum.getNum(brand, cate);
 	}
+	/**
+	 * This function is return the image url 
+	 * @param brand, String brand
+	 * @param cate, String category
+	 * @param num, String color number
+	 * @return imageurl by using the brand, cate and num
+	 */
 	public String getImageurl(String brand, String cate, String num) {
 		return Lipnum.Imageurl(brand, cate, num);
 	}
+	/**
+	 * Distinguish if the command is valid that we can get the right url of image
+	 * @return boolean to distinguish the url we can use or not
+	 */
 	public boolean Isurl() {
 		return Lipnum.geturl();
 	}

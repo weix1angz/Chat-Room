@@ -1,7 +1,12 @@
 package server.Bots;
 
 import java.util.HashMap;
-
+/**
+ * This function is the collection for storing the information of color number for 
+ * each brands
+ * @author Mingjun Zha
+ *
+ */
 public class Lipnum {
 	private HashMap<String, String> ALipMas;
 	private HashMap<String, String> ALipStick;
@@ -20,7 +25,10 @@ public class Lipnum {
 	private HashMap<String, String> DLipLiner;
 	private HashMap<String, String> DLipGlow;
 	private Boolean ISurl = false;
-
+	/**
+	 * the constructor of lip num class, initializing each field and execute every
+	 * function
+	 */
 	public Lipnum() {
 		ALipMas = new HashMap<>();
 		ALipStick = new HashMap<>();
@@ -46,7 +54,10 @@ public class Lipnum {
 		this.YSLNum();
 		this.Tom_FordNum();
 	}
-
+	/**
+	 * Store the Armani Lip number into the hashmap, the lipnumber as the key
+	 * the item number as the value
+	 */
 	public void ArmaniLipNum() {
 		ALipMas.put("507", "1755685");
 		ALipMas.put("406", "1664275");
@@ -77,7 +88,10 @@ public class Lipnum {
 		ALipStick.put("506", "2104412");
 		ALipStick.put("600", "2104420");
 	}
-
+	/**
+	 * Store the Fenty Lip number into the hashmap, the lipnumber as the key
+	 * the item number as the value
+	 */
 	public void FentyLipnum() {
 		FLipStick.put("Spanked", "2018224");
 		FLipStick.put("Ma'Damn", "2018190");
@@ -93,7 +107,10 @@ public class Lipnum {
 		FLipBalm.put("Unbutton", "2094282");
 		FLipBalm.put("Uninvited", "2150019");
 	}
-
+	/**
+	 * Store the Givenchy Lip number into the hashmap, the lipnumber as the key
+	 * the item number as the value
+	 */
 	public void GivenchyLipNum() {
 		GLipStick.put("204", "1602341");
 		GLipStick.put("201", "1497502");
@@ -106,7 +123,10 @@ public class Lipnum {
 		GLipBalm.put("03", "2091585");
 		GLipBalm.put("04", "2091577");
 	}
-
+	/**
+	 * Store the Tom_ford Lip number into the hashmap, the lipnumber as the key
+	 * the item number as the value
+	 */
 	public void Tom_FordNum() {
 		TLipStick.put("Naked-Coral", "1917053");
 		TLipStick.put("Twist-of-Fate", "1917004");
@@ -128,7 +148,10 @@ public class Lipnum {
 		TLipGloss.put("10", "1987221");
 
 	}
-
+	/**
+	 * Store the Ysl Lip number into the hashmap, the lipnumber as the key
+	 * the item number as the value
+	 */
 	public void YSLNum() {
 		YLipStick.put("04", "1484773");
 		YLipStick.put("06", "1484781");
@@ -150,7 +173,10 @@ public class Lipnum {
 		YLipStain.put("204", "1694520");
 
 	}
-
+	/**
+	 * Store the Nars Lip number into the hashmap, the lipnumber as the key
+	 * the item number as the value
+	 */
 	public void NarsNum() {
 		NLipStick.put("Brigitte", "1637156");
 		NLipStick.put("Natalie", "1637651");
@@ -168,7 +194,10 @@ public class Lipnum {
 		NLipGloss.put("Super-Orgasm", "1596402");
 
 	}
-
+	/**
+	 * Store the Dior Lip number into the hashmap, the lipnumber as the key
+	 * the item number as the value
+	 */
 	public void DiorNum() {
 		DLipStick.put("325", "2104800");
 		DLipStick.put("450", "2104834");
@@ -191,7 +220,12 @@ public class Lipnum {
 		DLipGlow.put("005", "1781210");
 
 	}
-
+	/**
+	 * This function is getting the color number by using brand and category
+	 * @param brand
+	 * @param cate
+	 * @return the string of color number
+	 */
 	public String getNum(String brand, String cate) {
 		String num = "NO such brands";
 		if (brand.equals("Giorgio_Armani_beauty")) {
@@ -260,6 +294,13 @@ public class Lipnum {
 		return num;
 
 	}
+	/**
+	 * The function is using the brand, category and color number to get the image url
+	 * @param brand which is the brand
+	 * @param cate which is the category
+	 * @param num which is the color number
+	 * @return imageurl which is the imageurl of image
+	 */
 	public String Imageurl(String brand, String cate, String num) {
 		String url = "No such Brands";
 		if (brand.equals("Giorgio_Armani_beauty")) {
@@ -448,7 +489,7 @@ public class Lipnum {
 					ISurl = false;
 				}	
 			} else {
-				url = "NO such category";
+				url = "No such category";
 				ISurl = false;
 			}
 		}
@@ -458,12 +499,13 @@ public class Lipnum {
 		return url;
 		
 	}
+	/**
+	 * distinguish if the url can be valid
+	 * @return isurl which is a boolean value to distinguish if the url can be valid
+	 */
 	public Boolean geturl() {
 		return ISurl;
 	}
 
-	//public String Imageurl() {
-//https://www.sephora.com/productimages/sku/s2015634-main-Lhero.jpg
-	//}
 
 }
