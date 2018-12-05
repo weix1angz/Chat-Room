@@ -7,11 +7,15 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import server.Response;
+import server.User;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -212,13 +216,13 @@ public class NBAbot extends Bot{
 	}
 	
 	@Override
-	public String infoCommand(User user) {
+	public String infoCommand(util.User user) {
 		return "User: " + user.getHandle() + "\t"
 				+ "Birthday: " + user.getBirthday().toString();
 	}
 
 	@Override
-	public String whoamiCommand(User user) {
+	public String whoamiCommand(util.User user) {
 		return "User: " + user.getHandle() + "\t" 
 			+ "IP address: " + user.getConnectionInfo();
 	}
@@ -240,7 +244,7 @@ public class NBAbot extends Bot{
 	}
 
 	@Override
-	public String getResponses(String message, User user) {
+	public String getResponses(String message, util.User user) {
 		
 		//if (message == null || user == null)
 			//return "Something wrong happened.";
@@ -270,29 +274,39 @@ public class NBAbot extends Bot{
 			case ("schedule"):
 				if(msg_tokens.length > 1) {
 					response += searchData("schedule", msg_tokens[1]);
+					if(response.length() <= 2) response += "Invalid Date";
 				} else {
-					System.out.println("no time");
+					response += "Give me the date you want to know";
 				}
 				break;
 			case("team"):
 				if(msg_tokens.length > 1) {
 					response += searchData("team", msg_tokens[1]);
+					if(response.length() <= 2) response += "Invalid Team";
 				} else {
-					System.out.println("no team");
+					response += "Give me the team you want to know";
 				}
 				break;
 			case("live"):
 				response += searchData("live", "");
+				if(response.length() <= 2) response += "No match is playing.";
 				break;
 			case("dayrange"):
-				
+				response += "I can remember NBA Match info\nFrom: 2018-11-25\nTo: 2018-12-15";
 				break;
 			case("teamlist"):
-				
+				response += NBAteamList();
+				break;
+			case("today"):
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				Date date = new Date();
+				response += searchData("schedule", dateFormat.format(date));
+				if(response.length() <= 2) response += "No match today.";
 				break;
 			default:
-				System.out.println("invalid");
+				response += "invalid command.";
 		}
+		//return response;
 		return response;
 	}
 	private String searchData(String command, String param){
@@ -308,7 +322,7 @@ public class NBAbot extends Bot{
 		
 		    ArrayList<JSONObject> matches = entry.getValue();
 		    for (int i=0; i<matches.size(); i++) {
-				try { 
+				try {
 					if(command.equals("schedule")) {
 						// if the current match is on the day we want
 						if(((String)matches.get(i).get("startTime"))
@@ -316,12 +330,14 @@ public class NBAbot extends Bot{
 							validResult = true;
 						}
 					} else if(command.equals("team")) {
+						// if one of the two teams are what user want
 						if(matches.get(i).get("leftEnName").equals(param) ||
 								matches.get(i).get("rightEnName").equals(param)) {
 							validResult = true;
 						}
 					} else if (command.equals("live")) {
 						String quarterTime = (String) matches.get(i).get("quarterTime");
+						// if the game is not playing
 						if(!quarterTime.equals("") && !quarterTime.equals("00:00")) {
 							validResult = true;
 						}
@@ -344,4 +360,47 @@ public class NBAbot extends Bot{
 		}
 		return searchResult;
 	}
+
+	private String NBAteamList() {
+		return  "Eastern Conference\r\n\n" + 
+				"Atlantic Division\r\n" + 
+				"\t(Boston) Celtics\r\n" + 
+				"\t(Brooklyn) Nets\r\n" + 
+				"\t(New York) Knicks\r\n" + 
+				"\t(Philadelphia) 76ers\r\n" + 
+				"\t(Toronto) Raptors\r\n" + 
+				"Central Division\r\n" + 
+				"\t(Chicago) Bulls\r\n" + 
+				"\t(Cleveland) Cavaliers\r\n" + 
+				"\t(Detroit) Pistons\r\n" + 
+				"\t(Indiana) Pacers\r\n" + 
+				"\t(Milwaukee) Bucks\r\n" + 
+				"Southeast Division\r\n" + 
+				"\t(Atlanta) Hawks\r\n" + 
+				"\t(Charlotte) Hornets\r\n" + 
+				"\t(Miami) Heat\r\n" + 
+				"\t(Orlando) Magic\r\n" + 
+				"\t(Washington) Wizards\r\n" + 
+				"\nWestern Conference\r\n\n" + 
+				"Southwest Division\r\n" + 
+				"\t(Dallas) Mavericks\r\n" + 
+				"\t(Houston) Rockets\r\n" + 
+				"\t(Memphis) Grizzlies\r\n" + 
+				"\t(New Orleans) Pelicans\r\n" + 
+				"\t(San Antonio) Spurs\r\n" + 
+				"Northwest Division\r\n" + 
+				"\t(Denver) Nuggets\r\n" + 
+				"\t(Minnesota) Timberwolves\r\n" + 
+				"\t(Oklahoma City) Thunder\r\n" + 
+				"\t(Portland) Trail Blazers\r\n" + 
+				"\t(Utah) Jazz\r\n" + 
+				"Pacific Division\r\n" + 
+				"\t(Golden State) Warriors\r\n" + 
+				"\t(LA Clippers)Los Angeles Clippers\r\n" + 
+				"\t(L.A. Lakers)Los Angeles Lakers\r\n" + 
+				"\t(Phoenix) Suns\r\n" + 
+				"\t(Sacramento) Kings\n\n" + 
+				"* When searching, please use the name in the (parentheses)";
+	}
+
 }
