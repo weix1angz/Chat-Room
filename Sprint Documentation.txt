@@ -1,0 +1,38 @@
+Sprint planning:
+
+1st Sprint:
+    a. UML diagram
+    b. Commands/responses for each bot
+    c. A topic for each bot
+    
+2nd Sprint:
+    a. Superbot implementation
+    b. Expected commands should be responded
+    c. Basic GUI of the chatting room
+
+3rd Sprint:
+    a. One bot fully implemented
+    b. Enable users authentication
+    c. SignIn/signUp GUI 
+
+4th Sprint:
+    a. Networking works
+    b. All bots are fully implemented 
+    c. Documentations 
+    d. potenial Wow factors 
+        port forwarding that enable the server can be connected from different Internet
+        NLU chatbot invoked by !ttm [message] using aim and alive bot's library.
+        
+
+Sprint Review:
+
+1st Sprint:
+In the first sprint, we have showed our UML diagram to the SL and each of us has picked a topic. We have topics about moba game, NBA, music player and makeups. The SL thought we were kind of ahead. 
+
+2nd Sprint:
+In the second sprint, we have implemented one bot that can respond some default commands in a chatroom. Michael told us to implement all four bots for the next sprints.
+
+3rd Sprint:
+We were a little bit delayed since we did not have four fully implemented bots. However, we have done with the signIn and signUp. 
+
+
