@@ -421,7 +421,6 @@
 0,GIVES YOU *,*,*,<srai>I AM GIVING YOU <star/></srai>,reductions_update.aiml
 0,HAVE YOU EVER BEEN TO THE *,*,*,<srai>HAVE YOU BEEN TO THE <star/></srai>,reductions_update.aiml
 0,HOW DO YOU SAY I LOVE YOU IN SPANISH,*,*,<srai>TRANSLATE I LOVE YOU TO SPANISH</srai>,reductions_update.aiml
-0,I AM MALE,*,*,<srai>MY GENDER IS MALE</srai>,reductions_update.aiml
 0,I AM SO TIRED,*,*,<srai>I AM TIRED</srai>,reductions_update.aiml
 0,I DID NOT SAY THAT I SAID *,*,*,<srai>I DID NOT SAY THAT</srai> <srai>I SAID <star/></srai>,reductions_update.aiml
 0,I DO NOT KNOW I DO NOT *,*,*,<srai>I DO NOT KNOW</srai> <srai>I DO NOT <star/></srai>,reductions_update.aiml
@@ -785,7 +784,6 @@
 0,AH *,*,*,<sr/>,reductions_update.aiml
 0,$SEND TEXT MESSAGE TO *,*,*,<srai>SMS <star/></srai>,reductions_update.aiml
 0,TU *,*,*,<srai>LANGUAGE</srai>,reductions_update.aiml
-0,YOUR MOTHER,*,*,<srai>MOTHER</srai>,reductions_update.aiml
 0,FACEBOOK *,*,*,<srai>OPEN FACEBOOK</srai>,reductions_update.aiml
 0,WELL THEN *,*,*,<sr/>,reductions_update.aiml
 0,FUNNY *,*,*,<srai>LOL</srai> <sr/>,reductions_update.aiml
@@ -866,7 +864,6 @@
 0,YOU CAN *,*,*,<srai>CAN YOU <star/></srai>,reductions_update.aiml
 0,TELL ME A *,*,*,<srai>WHAT IS A <star/></srai>,reductions_update.aiml
 0,I DO NOT KNOW *,*,*,<srai>I DO NOT KNOW</srai>,reductions_update.aiml
-0,YOUR MOM,*,*,<srai>MOTHER</srai>,reductions_update.aiml
 0,HAWAII,*,*,<srai>MAP HAWAII</srai>,reductions_update.aiml
 0,WHAT IS MY *,*,*,<srai>MY <star/></srai>,reductions_update.aiml
 0,REALLY,*,*,<srai>INTERJECTION</srai>,reductions_update.aiml
@@ -943,7 +940,6 @@
 0,YOU ARE SUCH A *,*,*,<srai>YOU ARE A <star/></srai>,reductions_update.aiml
 0,YOU THINK *,*,*,<srai>DO YOU THINK <star/></srai>,reductions_update.aiml
 0,YOU HAVE TO *,*,*,<srai>YOU MUST <star/></srai>,reductions_update.aiml
-0,YOUR MOM *,*,*,<srai>YOUR MOTHER <star/></srai>,reductions_update.aiml
 0,NEVERMIND *,*,*,<srai>NEVERMIND</srai> <sr/>,reductions_update.aiml
 0,OPEN THE *,*,*,<srai>OPEN <star/></srai>,reductions_update.aiml
 0,CAN YOU TELL *,*,*,<srai>TELL <star/></srai>,reductions_update.aiml

@@ -30,12 +30,12 @@ public class SignUpView extends Stage {
 		Scene scene = new Scene(signInWindow);
 
 		HBox userName = new HBox();
-		Label userNameLabel = new Label("USERNAME:\t");
+		Label userNameLabel = new Label("USERNAME*:\t");
 		TextField userNameText = new TextField();
 		userName.getChildren().addAll(userNameLabel, userNameText);
 
 		HBox password = new HBox();
-		Label passwordLabel = new Label("PASSWORD:\t");
+		Label passwordLabel = new Label("PASSWORD*:\t");
 		TextField passwordText = new TextField();
 		password.getChildren().addAll(passwordLabel, passwordText);
 
@@ -60,7 +60,15 @@ public class SignUpView extends Stage {
 		ok = new Button("OK");
 		ok.setOnAction(MouseClicked -> {
 			if (socket != null && socket.isConnected()) {
-				okAction(userNameText.getText(), passwordText.getText(), firstNameText.getText(),
+				if ((userNameText.getText() == null || userNameText.getText().isEmpty()) ||
+						(passwordText.getText() == null || passwordText.getText() == null) ||
+						(userAgeText.getText() == null || userAgeText.getText() == null) ||
+						(firstNameText.getText() == null || lastNameText.getText() == null) ||
+						(userAgeText.getText() == null || userAgeText.getText() == null) ||
+						(userMajorText.getText() == null || userMajorText.getText() == null))
+					new Alert(Alert.AlertType.ERROR, "Please fill out all fields.").showAndWait();
+				else 
+					okAction(userNameText.getText(), passwordText.getText(), firstNameText.getText(),
 						lastNameText.getText(), userAgeText.getText(), userMajorText.getText());
 			}
 		});

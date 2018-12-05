@@ -46,7 +46,6 @@ public class ChatClientThread extends ChatServer implements Runnable {
 		for (Bot b : bots) {
 			botsMap.put(b.getBotCharacterId() + "", b);
 		}
-		System.out.println(botsMap);
 		userObj = null;
 		logStream = System.out;
 	}
@@ -154,6 +153,7 @@ public class ChatClientThread extends ChatServer implements Runnable {
 					boolean userIsInDB = checkUserName(userObj.getHandle(), userObj.getPassword());
 					if (userIsInDB) {
 						this.userObj.setUserCode(User.UserCode.signedInUser);
+						this.userObj.setConnectionInfo(socket);
 						objOut.writeObject(new Response(userIsInDB));
 						// Broadcast to all clients that this user's client just log onto the server.
 						broadcastToClients(new Response(userObj.getHandle() + " joined the channel.", null));

@@ -85,7 +85,7 @@ public class MakeupBot extends Bot {
 			if (command.equals("help")) {
 				response += helpCommand();
 			} else if (command.equals("info")) {
-				response += infoCommand(user);
+				response += infoCommand(msg_tokens[1]);
 			} else if (command.equals("date")) {
 				response += dateCommand();
 			} else if (command.equals("whoami")) {
@@ -158,13 +158,7 @@ public class MakeupBot extends Bot {
 		return new Response(response, data);
 	}
 
-	@Override
-	public String infoCommand(User user) {
-		System.out.println(1+" "+user.getHandle());
-		System.out.println(2+" "+user.getAge());
-		return "User: " + user.getHandle() + "\t" + "Birthday: " + user.getAge();
-	}
-
+	
 	@Override
 	public String whoamiCommand(User user) {
 		return "User: " + user.getHandle() + "\t" + "IP address: " + user.getConnectionInfo();

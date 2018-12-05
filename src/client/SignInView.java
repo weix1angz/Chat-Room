@@ -1,14 +1,8 @@
 package client;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
-
 import client.ChatBotView;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -160,7 +154,6 @@ public class SignInView extends Application {
 					connectionStatus.setText("\t\t	Online");
 				}
 			});
-
 		} catch (UnknownHostException e) {
 		} catch (IOException e) {
 		}

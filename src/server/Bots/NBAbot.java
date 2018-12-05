@@ -259,7 +259,7 @@ public class NBAbot extends Bot{
 				response += helpCommand();
 				break;
 			case ("info"):
-				response += infoCommand(user);
+				response += infoCommand(msg_tokens[1]);
 				break;
 			case ("date"):
 				response += dateCommand();
@@ -398,10 +398,7 @@ public class NBAbot extends Bot{
 				"\t(Sacramento) Kings\n\n" + 
 				"* When searching, please use the name in the (parentheses)";
 	}
-	@Override
-	public String infoCommand(User user) {
-		return "User: " + user.getHandle() + "\t" + "Birthday: " + user.getAge();
-	}
+
 
 	@Override
 	public String whoamiCommand(User user) {

@@ -71,11 +71,6 @@ public class WeixiangBot extends Bot{
 		return "[WXBOT]";
 	}
 
-	@Override
-	public String infoCommand(User user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String dateCommand() {
@@ -119,7 +114,7 @@ public class WeixiangBot extends Bot{
 			if (command.equals("help")) {
 				responseText += helpCommand();
 			} else if (command.equals("info")) {
-				responseText += infoCommand(user);
+				responseText += infoCommand(msg_tokens[1]);
 			} else if (command.equals("date")) {
 				responseText += dateCommand();
 			} else if (command.equals("whoami")) {

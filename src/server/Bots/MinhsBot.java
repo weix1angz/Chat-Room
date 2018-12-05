@@ -132,7 +132,7 @@ public class MinhsBot extends server.Bots.Bot {
 			if (command.equals("help")) {
 				response += helpCommand();
 			} else if (command.equals("info")) {
-				response += infoCommand(user);
+				response += infoCommand(msg_tokens[1]);
 			} else if (command.equals("date")) {
 				response += dateCommand();
 			} else if (command.equals("whoami")) {
@@ -261,10 +261,6 @@ public class MinhsBot extends server.Bots.Bot {
 		return responses.get(rndGen.nextInt(responses.size()));
 	}
 
-	@Override
-	public String infoCommand(User user) {
-		return "User: " + user.getHandle() + "\t" + "Birthday: " + user.getAge();
-	}
 
 	@Override
 	public String whoamiCommand(User user) {
