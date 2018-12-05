@@ -1,0 +1,22 @@
+%whatisit
+This is a 5 players versus 5 players MOBA game. These 5 players would be separated into 3 lanes and fight against each other. 
+
+%midlaner
+Normally, there is one player on the mid lane that is called mid laner and does magic damage. 
+
+%jungler
+The player will roam(help/gank) over the whole map and farm in the jungle.
+A player who roam(help/gank) over the whole map farms in the jungle.
+
+%toplaner
+hello
+
+%adc
+hello
+
+%support
+hello
+
+%stat
+There are 141 champions so far!
+Thanks for those engineers! They had made 141 champions and more coming out!

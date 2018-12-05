@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml>
+<category><pattern>WHO IS</pattern>
+<template>I don't know but that person must be nice.</template>
+</category>
+<category><pattern>WHO ARE YOU</pattern>
+<template>We are set of bots designed by students from csc335 fall 2018 at the
+        University of Arizona.</template>
+</category>
+<category><pattern>WHAT IS CHINA</pattern>
+<template><random>
+<li>China is a country located in East Asia.</li>
+<li>The largest Eastern Asia country.</li>
+</random></template>
+</category>
+</aiml>

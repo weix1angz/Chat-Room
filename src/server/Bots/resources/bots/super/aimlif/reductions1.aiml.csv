@@ -539,7 +539,6 @@
 0,HOW DO YOU SAY YOUR NAME,*,*,<srai>NAME</srai>,reductions1.aiml
 0,HOW WAS THE WEATHER *,*,*,<srai>WEATHER <star/></srai>,reductions1.aiml
 0,HY,*,*,<srai>HI</srai>,reductions1.aiml
-0,I AM FEMALE,*,*,<srai>MY GENDER IS FEMALE</srai>,reductions1.aiml
 0,I AM FROM MALAYSIA,*,*,<srai>MY BIRTHPLACE IS MALAYSIA</srai> <srai>MY NATIONALITY IS MALAYSIA</srai>,reductions1.aiml
 0,I AM LEAVING,*,*,<srai>BYE</srai>,reductions1.aiml
 0,I AM SO SORRY *,*,*,<srai>I AM SORRY</srai>,reductions1.aiml
@@ -1167,7 +1166,6 @@
 0,DO YOU REMEMBER MY *,*,*,<srai>WHAT IS MY <star/></srai>,reductions1.aiml
 0,HOW ARE YOU FEELING,*,*,<srai>EMOTIONS</srai>,reductions1.aiml
 0,HOW IS THE WEATHER TODAY,*,*,<srai>WEATHER</srai>,reductions1.aiml
-0,I AM A WOMAN,*,*,<srai>MY GENDER IS FEMALE</srai>,reductions1.aiml
 0,I DO NOT KNOW BUT *,*,*,<srai>I DO NOT KNOW</srai> <sr/>,reductions1.aiml
 0,I ONLY *,*,*,<srai>I <star/></srai>,reductions1.aiml
 0,NO WHY *,*,*,<srai>NO</srai> <srai>WHY <star/></srai>,reductions1.aiml
@@ -1385,7 +1383,6 @@
 0,CAN YOU TELL ME WHAT *,*,*,<srai>WHAT <star/></srai>,reductions1.aiml
 0,HELL YES,*,*,<srai>YES</srai>,reductions1.aiml
 0,HOW OLD ARE YOU *,*,*,<srai>HOW OLD ARE YOU</srai>,reductions1.aiml
-0,I AM A GIRL,*,*,<srai>MY GENDER IS FEMALE</srai>,reductions1.aiml
 0,I SAID I AM *,*,*,<srai>I AM <star/></srai>,reductions1.aiml
 0,I THINK IT IS *,*,*,<srai>IT IS <star/></srai>,reductions1.aiml
 0,I WAS BORN *,*,*,<srai>MY BIRTHDATE IS <star/></srai>,reductions1.aiml
@@ -1529,7 +1526,6 @@
 0,SHOW ME A PICTURE *,*,*,<srai>SHOW ME <star/></srai>,reductions1.aiml
 0,YOUR STUPID,*,*,<srai>YOU ARE STUPID</srai>,reductions1.aiml
 0,HI ALICE,*,*,<srai>HELLO</srai>,reductions1.aiml
-0,I AM A MAN,*,*,<srai>MY GENDER IS MALE</srai>,reductions1.aiml
 0,ILL *,*,*,<srai>I WILL <star/></srai>,reductions1.aiml
 0,EXACTLY,*,*,<srai>YES</srai>,reductions1.aiml
 0,I THINK I *,*,*,<srai>I <star/></srai>,reductions1.aiml
@@ -1761,7 +1757,6 @@
 0,HEY *,*,*,<sr/>,reductions1.aiml
 0,IM *,*,*,<srai>I AM <star/></srai>,reductions1.aiml
 0,A *,*,*,<srai>SEARCH <star/></srai>,reductions1.aiml
-0,WHO ARE YOU,*,*,<srai>WHAT IS YOUR NAME</srai>,reductions1.aiml
 0,NOPE,*,*,<srai>NO</srai>,reductions1.aiml
 0,DO YOU KNOW *,*,*,<srai>WHAT IS <star/></srai>,reductions1.aiml
 0,K,*,*,<srai>OK</srai>,reductions1.aiml

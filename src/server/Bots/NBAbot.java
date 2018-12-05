@@ -1,3 +1,9 @@
+/**
+ * A chatbot that can respond to user message and 
+ * provide various NBA match info
+ * @author Yang Hu
+ */
+
 package server.Bots;
 
 import java.io.BufferedReader;
@@ -14,6 +20,7 @@ import java.text.SimpleDateFormat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import server.ChatClientThread;
 import server.Response;
 import server.User;
 
@@ -39,7 +46,10 @@ public class NBAbot extends Bot{
 	LinkedHashMap<String, ArrayList<JSONObject>> localData = new LinkedHashMap<>();
 	private AbstractMap<String, String> commandsMap;
 	private int timeDiff = 15;
-	
+	/**
+	 * constructor of NBA bot, generates all commands and fetch/store match info
+	 * @param id bot's id that will be used to identify bot
+	 */
 	public NBAbot(char id) {
 		super();
 		fetchMatchInfo();
@@ -50,24 +60,26 @@ public class NBAbot extends Bot{
 		commandsMap.put("live", " - show all matches that are playing right now.");
 		commandsMap.put("dayrange", " - show the range of date that I can remember.");
 		commandsMap.put("teamlist", " - show the team list in NBA.");
-		//TODO weekly schedule
+		
 		this.setBotCharacterId(id);
-		//printData();
+		
 	}
-	
+	/**
+	 * fetch recent 3 weeks NBA match schedule
+	 */
 	private void fetchMatchInfo() {
 		try {
-			
+			// week before
 			fillMatchInfo(readJsonFromUrl("http://matchweb.sports.qq.com/" + 
 					"kbs/list?from=NBA_PC&columnId=100000&" + 
 					"startTime=2018-12-09&endTime=2018-12-15&" + 
 					"callback=ajaxExec&_=1543705200120"));
-			
+			// this week
 			fillMatchInfo(readJsonFromUrl("http://matchweb.sports.qq.com/" + 
 					"kbs/list?from=NBA_PC&columnId=100000&" + 
 					"startTime=2018-11-25&endTime=2018-12-01&" + 
 					"callback=ajaxExec&_=1543705200118"));
-					
+			// next week
 			fillMatchInfo(readJsonFromUrl("http://matchweb.sports.qq.com/" + 
 					"kbs/list?from=NBA_PC&columnId=100000&" + 
 					"startTime=2018-12-02&endTime=2018-12-08&" + 
@@ -79,7 +91,12 @@ public class NBAbot extends Bot{
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * read all text on a website (text json)
+	 * @param reader web reader
+	 * @return the crawled string
+	 * @throws IOException if read failed
+	 */
 	private String readAll(Reader reader) throws IOException {
 	    StringBuilder builder = new StringBuilder();
 	    int cp;
@@ -88,7 +105,13 @@ public class NBAbot extends Bot{
 	    }
 	    return builder.toString();
 	}
-
+	/**
+	 * read all text from a url and extract the json from it
+	 * @param url the target url
+	 * @return the valid string that represets a json
+	 * @throws IOException
+	 * @throws JSONException
+	 */
 	private String readJsonFromUrl(String url) throws IOException, JSONException {
 		InputStream inputStream = new URL(url).openStream();
 		try {
@@ -105,10 +128,10 @@ public class NBAbot extends Bot{
 	}
 	/**
 	 * Iterate though a map and edit its values (JSONObject[] matches)
-	 * @param mp
+	 * @param map
 	 */
-	private void convertMap(Map mp) {
-	    Iterator it = mp.entrySet().iterator();
+	private void convertMap(Map map) {
+	    Iterator it = map.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
 	        importMatches((JSONObject[])pair.getValue());
@@ -191,7 +214,10 @@ public class NBAbot extends Bot{
 		return finalDate;
 	    
 	}
-	
+	/**
+	 * read the json and re-organize it into match info
+	 * @param jsonText a string in the json format
+	 */
 	private void fillMatchInfo(String jsonText) {
 		// split string by dates
 		String[] jsonArray = jsonText.split("\\:\\[|\\],");
@@ -213,12 +239,17 @@ public class NBAbot extends Bot{
 			NBAresult.put(jsonArray[i].substring(1, 11), matchesJson);
 		}
 	}
-
+	/**
+	 * @return the not's signature
+	 */
 	@Override
 	public String getBotSignature() {
 		return "[NBAbot]";
 	}
 	
+	/**
+	 * @return a string that represents today's date
+	 */
 	@Override
 	public String dateCommand() {
 		Date today = new Date();
@@ -235,8 +266,15 @@ public class NBAbot extends Bot{
 		return DateResponses.get(rndGen.nextInt(DateResponses.size()));
 	}
 
+	/**
+	 * 
+	 * @param message the message from the user
+	 * @param user the user object
+	 * @param clients a list of client threads that is listening to the chatroom
+	 * @return response Response object that contains bot response
+	 */
 	@Override
-	public Response getResponses(String message, User user) {
+	public Response getResponses(String message, User user, List<ChatClientThread> clients) {
 		
 		if (message == null || user == null)
 			return new Response("Something wrong happened.", null);
@@ -258,7 +296,7 @@ public class NBAbot extends Bot{
 				response += helpCommand();
 				break;
 			case ("info"):
-				response += infoCommand(user);
+				response += infoCommand(msg_tokens[1]);
 				break;
 			case ("date"):
 				response += dateCommand();
@@ -304,6 +342,13 @@ public class NBAbot extends Bot{
 		//return response;
 		return new Response(response, null);
 	}
+	
+	/**
+	 * search through the saved data and provide various response
+	 * @param command the user command
+	 * @param param the second parameter of the command, for example, data
+	 * @return the search result
+	 */
 	private String searchData(String command, String param){
 		String searchResult = "";
 		// ------ schedule ----- //
@@ -355,7 +400,10 @@ public class NBAbot extends Bot{
 		}
 		return searchResult;
 	}
-
+	/**
+	 * return the complete NBA teamlist (string)
+	 * @return string teamlist
+	 */
 	private String NBAteamList() {
 		return  "Eastern Conference\r\n\n" + 
 				"Atlantic Division\r\n" + 
@@ -397,16 +445,20 @@ public class NBAbot extends Bot{
 				"\t(Sacramento) Kings\n\n" + 
 				"* When searching, please use the name in the (parentheses)";
 	}
-	@Override
-	public String infoCommand(User user) {
-		return "User: " + user.getHandle() + "\t" + "Birthday: " + user.getBirthday().toString();
-	}
 
+	/**
+	 * @param user the user that asks
+	 * @return the string response
+	 */
 	@Override
 	public String whoamiCommand(User user) {
 		return "User: " + user.getHandle() + "\t" + "IP address: " + user.getConnectionInfo();
 	}
 	
+	/**
+	 * return a list of command
+	 * @return string a list of available command and explanation
+	 */
 	@Override
 	public String helpCommand() {
 		String helpCommandStr = "List of available commands: \n";

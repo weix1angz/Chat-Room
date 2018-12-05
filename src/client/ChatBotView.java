@@ -1,5 +1,7 @@
 package client;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 /**
  * A view for the chat client.
@@ -7,12 +9,7 @@ package client;
  * @author Mingjun Zha, Minh Bui
  */
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
-
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,11 +23,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import server.User;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
+
 
 public class ChatBotView extends Stage {
 	private int boardlength = 700;
@@ -42,72 +43,33 @@ public class ChatBotView extends Stage {
 	private MenuItem music;
 	private MenuItem makeup;
 	private MenuItem moba;
-	//private Button connect;
+	// private Button connect;
 	private Button clear;
 	private TextArea chatboard;
 	private Button SendButton; // the send button
 	private TextField message; // the message we want to sent
 
-	private String hostName;
-	private int portNumber;
 	private String userName;
 	private ChatServerThread server;
-	private Socket socket;
+	private MusicThread msThread;
+	private Thread actualMsThread;
 
 	/**
-	 * For some reasons this is never called with 
+	 * For some reasons this is never called with
 	 * 
 	 * Application.launch(view.getClass(), args);
 	 * 
-	 * That line above always call the default constructor.
-	 * We no default constructor is found, Java throws off
-	 * some weird errors.
+	 * That line above always call the default constructor. We no default
+	 * constructor is found, Java throws off some weird errors.
 	 * 
 	 * @param hostName
 	 * @param portNumber
 	 */
-	public ChatBotView(String hostName, int portNumber, String userName) {
-	
-		this.hostName = hostName;
-		this.portNumber = portNumber;
+	public ChatBotView(String hostName, int portNumber, String userName, ChatServerThread server) {
+		this.server = server;
 		this.userName = userName;
-		//Parameters params = this.getParameters();
-				//hostName = params.getRaw().get(0);
-				hostName = "localhost";
-				portNumber = 4000;
-				//portNumber = Integer.parseInt(params.getRaw().get(1));
 
-				this.setTitle("Chat client");
-				BorderPane pane = new BorderPane();
-				Scene scene = new Scene(pane, boardlength, boardwidth);
-				// setting the menu bar
-				MenuItem item1 = new MenuItem("New Chat");
-				MenuItem item2 = new MenuItem("History");
-				Menu menu = new Menu("File");
-				menu.getItems().addAll(item1, item2);
-				MenuBar menuBar = new MenuBar(menu);
-				pane.setTop(menuBar);
-				pane.setCenter(layout());
-				messageEvent();
-				this.ConnectServer();
-				this.setScene(scene);
-				this.setResizable(false);
-				this.show();
-	}
-
-	public ChatBotView() {
-		
-	}
-	/*
-	@Override
-	public void start(Stage stage) throws Exception {
-		//Parameters params = this.getParameters();
-		//hostName = params.getRaw().get(0);
-		hostName = "localhost";
-		portNumber = 4000;
-		//portNumber = Integer.parseInt(params.getRaw().get(1));
-
-		stage.setTitle("Chat client");
+		this.setTitle("Chat client");
 		BorderPane pane = new BorderPane();
 		Scene scene = new Scene(pane, boardlength, boardwidth);
 		// setting the menu bar
@@ -119,12 +81,20 @@ public class ChatBotView extends Stage {
 		pane.setTop(menuBar);
 		pane.setCenter(layout());
 		messageEvent();
-		stage.setScene(scene);
-		stage.setResizable(false);
-		stage.show();
+
+		this.setOnCloseRequest(e -> {
+			server.close();
+		});
+
+		this.setScene(scene);
+		this.setResizable(false);
+		this.show();
+	}
+
+	public ChatBotView() {
 
 	}
-*/
+
 	public HBox layout() {
 		VBox buttons = buttonset();// setting the buttonset
 		VBox chatAndSend = Initchatboard();// initialized chatboard
@@ -138,17 +108,15 @@ public class ChatBotView extends Stage {
 		VBox chatroom = dropdownButton();
 		VBox username = usernameBox();
 		/*
-		connect = new Button("Connect");
-		
-		connect.setOnAction(event -> {
-			this.ConnectServer();
-		});
-		*/
-		//connect.setPrefWidth(buttonwidth);
+		 * connect = new Button("Connect");
+		 * 
+		 * connect.setOnAction(event -> { this.ConnectServer(); });
+		 */
+		// connect.setPrefWidth(buttonwidth);
 		clear = new Button("Clear");
 		clear.setOnAction(event -> {
 			chatboard.clear();
-			//this.openURL("https://dota2.gamepedia.com/Morphling");
+			// this.openURL("https://dota2.gamepedia.com/Morphling");
 		});
 		clear.setPrefWidth(buttonwidth);
 		VBox buttonSet = new VBox(username, chatroom, clear);
@@ -207,55 +175,40 @@ public class ChatBotView extends Stage {
 
 	public void messageEvent() {
 		message.setOnAction(event -> {
-			if(message.getText() != null) {
-				if (socket != null && socket.isConnected()) {
-					String chat = message.getText();
-					String name = username.getText();
-					String chatrooms = chatroom.getText();
-					if (!chat.isEmpty()) {
-						//chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
-					}
-	
-					if (chat != null && !chat.isEmpty())
-						server.addMsg(chat);
-					message.setText("");
+			if (message.getText() != null) {
+
+				String chat = message.getText();
+				String name = username.getText();
+				String chatrooms = chatroom.getText();
+				if (!chat.isEmpty()) {
+					// chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
 				}
+
+				if (chat != null && !chat.isEmpty())
+					server.addMsg(chat);
+				message.setText("");
+
 			}
 		});
+
 		SendButton.setOnAction(events -> {
-			if(message.getText() != null) {
-				if (socket != null && socket.isConnected()) {
-					String chat = message.getText();
-					String name = username.getText();
-					String chatrooms = chatroom.getText();
-					if (!chat.isEmpty()) {
-						//chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
-					}
-	
-					if (chat != null && !chat.isEmpty())
-						server.addMsg(chat);
-					message.setText("");
+
+			if (message.getText() != null) {
+
+				String chat = message.getText();
+				String name = username.getText();
+				String chatrooms = chatroom.getText();
+				if (!chat.isEmpty()) {
+					// chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
 				}
+				System.out.println(server);
+				if (chat != null && !chat.isEmpty())
+					server.addMsg(chat);
+				message.setText("");
+
 			}
+
 		});
-	}
-
-	public void ConnectServer() {
-		try {
-			socket = new Socket(hostName, portNumber);
-			User user = new User(username.getText(), socket);
-
-			server = new ChatServerThread(this, socket, user);
-			Thread serverThread = new Thread(server);
-			serverThread.start();
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
 	public void appendMessage(String msg) {
@@ -265,9 +218,40 @@ public class ChatBotView extends Stage {
 	public void openURL(String url) {
 		Stage newStage = new Stage();
 		WebView webview = new WebView();
-	    webview.getEngine().load(url);
-	    webview.setPrefSize(640, 390);
-	    newStage.setScene(new Scene (webview)); 
-	    newStage.show();
+		webview.getEngine().load(url);
+		webview.setPrefSize(640, 390);
+		newStage.setScene(new Scene(webview));
+		newStage.show();
+	}
+	
+	public void pauseMusic() {
+		if (msThread != null)
+			msThread.pause();
+	}
+	
+	public void resumeMusic() {
+		if (msThread != null) {
+			Thread actualMsThread = new Thread(msThread);
+			actualMsThread.start();
+		}
+	}
+
+	public void playMusic(String name) {
+		String musicFile = "./SampleMusic/" + name; // For example
+		if (msThread == null) {
+			msThread = new MusicThread(musicFile);
+			actualMsThread = new Thread(msThread);
+			actualMsThread.start();
+		} else {
+			try {
+				if (msThread.isPlaying())
+				msThread.pause();
+			} catch (Exception e) {
+				
+			}
+			msThread = new MusicThread(musicFile);
+			actualMsThread = new Thread(msThread);
+			actualMsThread.start();
+		}
 	}
 }

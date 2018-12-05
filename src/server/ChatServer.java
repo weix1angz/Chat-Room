@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import server.Bots.Bot;
+import server.Bots.MakeupBot;
+import server.Bots.MinhsBot;
 import server.Bots.NBAbot;
+import server.Bots.WeixiangBot;
 
 public class ChatServer {
 
@@ -19,28 +22,35 @@ public class ChatServer {
 		int portNumber = 4000;
 		serverSocket = null;
 		bots = new ArrayList<>();
-		bots.add(new NBAbot('%'));
-		Socket clientSocket = null;
+		bots.add(new MinhsBot('!'));
+		bots.add(new WeixiangBot('%'));
+		bots.add(new MakeupBot('*'));
+		//bots.add(new NBAbot('#'));
+		try {
+			System.out.println(new java.io.File( "." ).getCanonicalPath());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+
 		try {
 			serverSocket = new ServerSocket(portNumber);
-			acceptClients(bots);
+			acceptClients();
 		} catch (Exception e) {
 
 		} finally {
 			try {
 				if (serverSocket != null)
 					serverSocket.close();
-				if (clientSocket != null)
-					clientSocket.close();
 			} catch (Exception e) {
 
 			}
 		}
 	}
 
-	public static void acceptClients(List<Bot> botsList) {
+	public static void acceptClients() {
 		clients = new ArrayList<ChatClientThread>();
-		
 		while (true) {
 			try {
 				Socket socket = serverSocket.accept();
@@ -48,6 +58,7 @@ public class ChatServer {
 				Thread clientThread = new Thread(client);
 				clientThread.start();
 				clients.add(client);
+				System.out.println(socket.getInetAddress() + " connected.");
 			} catch (IOException e) {
 				System.err.println(e.getStackTrace());
 			}

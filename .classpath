@@ -2,7 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/gymf1/git/csc335-teamproject-chat-final-zham-gymf1010-mdbui-weixiangz/src/java-json.jar"/>
 	<classpathentry kind="lib" path="C:/Users/gymf1/git/csc335-teamproject-chat-final-zham-gymf1010-mdbui-weixiangz/lib/Ab.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gymf1/git/csc335-teamproject-chat-final-zham-gymf1010-mdbui-weixiangz/lib/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gymf1/git/csc335-teamproject-chat-final-zham-gymf1010-mdbui-weixiangz/lib/cleverbotapi-1.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gymf1/git/csc335-teamproject-chat-final-zham-gymf1010-mdbui-weixiangz/lib/jl1.0.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
