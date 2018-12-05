@@ -59,7 +59,7 @@ public class SignUpView extends Stage {
 		HBox button = new HBox(120);
 		ok = new Button("OK");
 		ok.setOnAction(MouseClicked -> {
-			if (socket != null && socket.isConnected()) {
+			if (this.socket != null && this.socket.isConnected()) {
 				if ((userNameText.getText() == null || userNameText.getText().isEmpty()) ||
 						(passwordText.getText() == null || passwordText.getText() == null) ||
 						(userAgeText.getText() == null || userAgeText.getText() == null) ||

@@ -136,7 +136,22 @@ public class ChatClientThread extends ChatServer implements Runnable {
 								outputLine += "\n" + b.getBotSignature() + "@" + userObj.getHandle() + " "
 										+ botRes.getMessage();
 								botRes.setMessage(outputLine);
+							}else {
+								for(int i = 0; i < input_arr.length; i++) {
+									if(asciiMap.containsKey(input_arr[i])) 
+										input_arr[i] = asciiMap.get(input_arr[i]);
+								}
+								text = "";								
+								for (int i = 1; i < input_arr.length; i++) {
+									if (i < input_arr.length - 1)
+										text += input_arr[i] + " ";
+									else
+										text += input_arr[i];
+								}
+								// Normal message
+								outputLine = "[" + userObj.getHandle() + "]" + " " + text;
 							}
+							botRes.setMessage(outputLine);
 						}
 
 						System.out.println(botRes);

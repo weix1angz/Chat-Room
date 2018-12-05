@@ -1,48 +1,48 @@
 package client;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
 /**
  * A view for the chat client.
  * 
  * @author Mingjun Zha, Minh Bui
  */
 
+import java.io.File;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.advanced.AdvancedPlayer;
-import javazoom.jl.player.advanced.PlaybackEvent;
-import javazoom.jl.player.advanced.PlaybackListener;
+import javafx.util.Duration;
 
 
 public class ChatBotView extends Stage {
-	private int boardlength = 700;
-	private int boardwidth = 400;
+	private MusicThread msThread;
+	private Thread actualMsThread;
+
+	private int boardlength = 1150;
+	private int boardwidth = 500;
 	private int buttonwidth = 100;
 	private Label username = null;// username text field
-	private MenuButton chatroom; // chatroom menu button
-	private MenuItem nba;
-	private MenuItem music;
-	private MenuItem makeup;
-	private MenuItem moba;
+	
 	// private Button connect;
 	private Button clear;
 	private TextArea chatboard;
@@ -51,8 +51,20 @@ public class ChatBotView extends Stage {
 
 	private String userName;
 	private ChatServerThread server;
-	private MusicThread msThread;
-	private Thread actualMsThread;
+
+	private Canvas canvas;
+	private GraphicsContext gc;
+	int initialX;
+	int initialY;
+	@FXML
+	private ImageView imageviewNBA;
+	private ImageView imageviewMus;
+	private ImageView imageviewLOL;
+	private ImageView imageviewLip;
+	private Image nba;
+	private Image music;
+	private Image makeup;
+	private Image lol;
 
 	/**
 	 * For some reasons this is never called with
@@ -72,89 +84,130 @@ public class ChatBotView extends Stage {
 		this.setTitle("Chat client");
 		BorderPane pane = new BorderPane();
 		Scene scene = new Scene(pane, boardlength, boardwidth);
-		// setting the menu bar
-		MenuItem item1 = new MenuItem("New Chat");
-		MenuItem item2 = new MenuItem("History");
-		Menu menu = new Menu("File");
-		menu.getItems().addAll(item1, item2);
-		MenuBar menuBar = new MenuBar(menu);
-		pane.setTop(menuBar);
-		pane.setCenter(layout());
+		pane.setCenter(images());
 		messageEvent();
+
+		this.setScene(scene);
+		this.setResizable(true);
+
+		this.show();
 
 		this.setOnCloseRequest(e -> {
 			server.close();
 		});
 
 		this.setScene(scene);
-		this.setResizable(false);
-		this.show();
+
 	}
 
 	public ChatBotView() {
 
 	}
 
-	public HBox layout() {
-		VBox buttons = buttonset();// setting the buttonset
+	public VBox layout() {
+		HBox buttons = buttonset();// setting the buttonset
 		VBox chatAndSend = Initchatboard();// initialized chatboard
-		HBox Layout = new HBox(buttons, chatAndSend);
-		Layout.setPadding(new Insets(10, 10, 10, 10));
+		VBox Layout = new VBox(buttons, chatAndSend);
+		Layout.setVgrow(chatAndSend, Priority.ALWAYS);
+		Layout.setPadding(new Insets(30, 40, 20, 20));
 		Layout.setSpacing(20);
 		return Layout;
 	}
+	public HBox images() {
+		this.GIF();
+		canvas =  new Canvas(100,500);
+		gc = canvas.getGraphicsContext2D();
+		
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(300),
+			new AnimationHandler()));
+		timeline.setCycleCount(timeline.INDEFINITE);
+		timeline.play();
+		
+		VBox vb = new VBox(imageviewNBA,imageviewMus,imageviewLip,imageviewLOL);
+		vb.setVgrow(imageviewNBA, Priority.ALWAYS);
+		vb.setVgrow(imageviewMus, Priority.ALWAYS);
+		vb.setVgrow(imageviewLip, Priority.ALWAYS);
+		vb.setVgrow(imageviewLOL, Priority.ALWAYS);
+		vb.setSpacing(20);
+		VBox layou = layout();
+		HBox hb = new HBox(canvas,layou);
+		hb.setHgrow(canvas, Priority.ALWAYS);
+		hb.setHgrow(layou, Priority.ALWAYS);
+		hb.setPadding(new Insets(10,10,10,10));
+		return hb;
+	}
 
-	public VBox buttonset() {
-		VBox chatroom = dropdownButton();
-		VBox username = usernameBox();
+	private class AnimationHandler implements EventHandler<ActionEvent> {
 		/*
-		 * connect = new Button("Connect");
+		 * /public AnimationHandler() { System.out.println("here");
+		 * gc.drawImage(nba,0,0); gc.clearRect(0, 0, 100, 100); gc.drawImage(nba,0,0);
 		 * 
-		 * connect.setOnAction(event -> { this.ConnectServer(); });
+		 * }
 		 */
-		// connect.setPrefWidth(buttonwidth);
+		int tick = 0;
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			tick++;
+			if (tick > 0) {
+				gc.drawImage(nba, 0, 0);
+
+			}
+			if (tick > 8) {
+				gc.clearRect(0, 0, 100, 100);
+				gc.drawImage(lol, 0, 120);
+			}
+			if (tick > 16) {
+				gc.clearRect(0, 120, 100, 100);
+				gc.drawImage(makeup, 0, 240);
+			}
+			if (tick > 24) {
+				gc.clearRect(0, 240, 100, 100);
+				gc.drawImage(music, 0, 360);
+			}
+			if (tick >= 30) {
+				gc.clearRect(0, 360, 100, 100);
+				tick = 1;
+			}
+
+		}
+
+	}
+
+	public void GIF() {
+		imageviewNBA = new ImageView();
+		imageviewMus = new ImageView();
+		imageviewLOL = new ImageView();
+		imageviewLip = new ImageView();
+		nba = new Image(new File("nba.gif").toURI().toString());
+		lol = new Image(new File("lol.gif").toURI().toString());
+		makeup = new Image(new File("makeup.gif").toURI().toString());
+		music = new Image(new File("music.gif").toURI().toString());
+		imageviewNBA.setImage(nba);
+		imageviewMus.setImage(music);
+		imageviewLOL.setImage(lol);
+		imageviewLip.setImage(makeup);
+
+	}
+
+	public HBox buttonset() {
 		clear = new Button("Clear");
 		clear.setOnAction(event -> {
 			chatboard.clear();
-			// this.openURL("https://dota2.gamepedia.com/Morphling");
+
 		});
 		clear.setPrefWidth(buttonwidth);
-		VBox buttonSet = new VBox(username, chatroom, clear);
-		buttonSet.setSpacing(50);
+		HBox user = usernameBox();
+		HBox buttonSet = new HBox(user, clear);
+		buttonSet.setHgrow(user, Priority.ALWAYS);
+		buttonSet.setSpacing(700);
 		return buttonSet;
 	}
 
-	public VBox dropdownButton() {
-		VBox chatroomlabel = new VBox();
-		Text chat = new Text("Chatroom");
-		nba = new MenuItem("NBA");
-		music = new MenuItem("Music");
-		moba = new MenuItem("LOL game");
-		makeup = new MenuItem("Lip products");
-		// menuitem get selected
-		makeup.setOnAction(event -> {
-			chatroom.setText(makeup.getText());
-		});
-		moba.setOnAction(event -> {
-			chatroom.setText(moba.getText());
-		});
-		music.setOnAction(event -> {
-			chatroom.setText(music.getText());
-		});
-		nba.setOnAction(event -> {
-			chatroom.setText(nba.getText());
-		});
-		chatroom = new MenuButton("NBA", null, nba, music, moba, makeup);
-		chatroom.setPrefWidth(buttonwidth);
-		chatroomlabel.getChildren().add(chat);
-		chatroomlabel.getChildren().add(chatroom);
-		return chatroomlabel;
-	}
-
-	public VBox usernameBox() {
-		Text user = new Text("Username");
+	public HBox usernameBox() {
+		Text user = new Text("Username: ");
 		username = new Label(userName);
-		VBox userset = new VBox(user, username);
+		HBox userset = new HBox(user, username);
 		return userset;
 	}
 
@@ -169,6 +222,8 @@ public class ChatBotView extends Stage {
 		SendButton.setPrefWidth(50);
 		HBox hb = new HBox(message, SendButton);
 		VBox vb = new VBox(chatboard, hb);
+		hb.setHgrow(message, Priority.ALWAYS);
+		vb.setVgrow(chatboard, Priority.ALWAYS);
 		vb.setSpacing(30);
 		return vb;
 	}
@@ -178,36 +233,21 @@ public class ChatBotView extends Stage {
 			if (message.getText() != null) {
 
 				String chat = message.getText();
-				String name = username.getText();
-				String chatrooms = chatroom.getText();
-				if (!chat.isEmpty()) {
-					// chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
-				}
-
 				if (chat != null && !chat.isEmpty())
 					server.addMsg(chat);
 				message.setText("");
 
 			}
 		});
-
 		SendButton.setOnAction(events -> {
-
 			if (message.getText() != null) {
 
 				String chat = message.getText();
-				String name = username.getText();
-				String chatrooms = chatroom.getText();
-				if (!chat.isEmpty()) {
-					// chatboard.appendText(name + "@" + chatrooms + " : " + chat + "\n");
-				}
-				System.out.println(server);
 				if (chat != null && !chat.isEmpty())
 					server.addMsg(chat);
 				message.setText("");
 
 			}
-
 		});
 	}
 
@@ -223,12 +263,12 @@ public class ChatBotView extends Stage {
 		newStage.setScene(new Scene(webview));
 		newStage.show();
 	}
-	
+
 	public void pauseMusic() {
 		if (msThread != null)
 			msThread.pause();
 	}
-	
+
 	public void resumeMusic() {
 		if (msThread != null) {
 			Thread actualMsThread = new Thread(msThread);
@@ -245,9 +285,9 @@ public class ChatBotView extends Stage {
 		} else {
 			try {
 				if (msThread.isPlaying())
-				msThread.pause();
+					msThread.pause();
 			} catch (Exception e) {
-				
+
 			}
 			msThread = new MusicThread(musicFile);
 			actualMsThread = new Thread(msThread);

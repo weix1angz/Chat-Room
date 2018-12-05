@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import server.Bots.Bot;
@@ -16,16 +17,17 @@ public class ChatServer {
 	private static ServerSocket serverSocket;
 	protected static List<ChatClientThread> clients;
 	protected static List<Bot> bots;
-
+	protected static HashMap<String , String> asciiMap;
+	
 	public static void main(String[] args) {
-		// int portNumber = Integer.parseInt(args[0]);
+		constructAsciiMap();
 		int portNumber = 4000;
 		serverSocket = null;
 		bots = new ArrayList<>();
 		bots.add(new MinhsBot('!'));
 		bots.add(new WeixiangBot('%'));
 		bots.add(new MakeupBot('*'));
-		//bots.add(new NBAbot('#'));
+		bots.add(new NBAbot('#'));
 		try {
 			System.out.println(new java.io.File( "." ).getCanonicalPath());
 		} catch (IOException e1) {
@@ -47,6 +49,23 @@ public class ChatServer {
 
 			}
 		}
+	}
+	
+	private static void constructAsciiMap() {
+		asciiMap = new HashMap<>();
+		asciiMap.put("/acid" , "	⊂(◉‿◉)つ");
+		asciiMap.put("/afraid" , "(ㆆ _ ㆆ)");
+		asciiMap.put("/angel" , "☜(⌒▽⌒)☞");
+		asciiMap.put("/angry" , "•`_´•");
+		asciiMap.put("/happy" , "٩( ๑╹ ꇴ╹)۶");
+		asciiMap.put("/mad" , "t(ಠ益ಠt)");
+		asciiMap.put("/sad" , "ε(´סּ︵סּ`)з");
+		asciiMap.put("/shrug" , "¯\\_(ツ)_/¯");
+		asciiMap.put("/shy" , "=^_^=");
+		asciiMap.put("/strong" , "ᕙ(⇀‸↼‶)ᕗ");
+		asciiMap.put("/zombie" , "[¬º-°]¬");
+		asciiMap.put("/yuno" , "(•̀ᴗ•́)و ̑̑");
+		asciiMap.put("/no" , "→_←");
 	}
 
 	public static void acceptClients() {
