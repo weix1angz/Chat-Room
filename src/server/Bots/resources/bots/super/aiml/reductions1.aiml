@@ -1638,9 +1638,6 @@
 <category><pattern>HY</pattern>
 <template><srai>HI</srai></template>
 </category>
-<category><pattern>I AM FEMALE</pattern>
-<template><srai>MY GENDER IS FEMALE</srai></template>
-</category>
 <category><pattern>I AM FROM MALAYSIA</pattern>
 <template><srai>MY BIRTHPLACE IS MALAYSIA</srai> <srai>MY NATIONALITY IS MALAYSIA</srai></template>
 </category>
@@ -3522,9 +3519,6 @@
 <category><pattern>HOW IS THE WEATHER TODAY</pattern>
 <template><srai>WEATHER</srai></template>
 </category>
-<category><pattern>I AM A WOMAN</pattern>
-<template><srai>MY GENDER IS FEMALE</srai></template>
-</category>
 <category><pattern>I DO NOT KNOW BUT *</pattern>
 <template><srai>I DO NOT KNOW</srai> <sr/></template>
 </category>
@@ -4176,9 +4170,6 @@
 <category><pattern>HOW OLD ARE YOU *</pattern>
 <template><srai>HOW OLD ARE YOU</srai></template>
 </category>
-<category><pattern>I AM A GIRL</pattern>
-<template><srai>MY GENDER IS FEMALE</srai></template>
-</category>
 <category><pattern>I SAID I AM *</pattern>
 <template><srai>I AM <star/></srai></template>
 </category>
@@ -4607,9 +4598,6 @@
 </category>
 <category><pattern>HI ALICE</pattern>
 <template><srai>HELLO</srai></template>
-</category>
-<category><pattern>I AM A MAN</pattern>
-<template><srai>MY GENDER IS MALE</srai></template>
 </category>
 <category><pattern>ILL *</pattern>
 <template><srai>I WILL <star/></srai></template>

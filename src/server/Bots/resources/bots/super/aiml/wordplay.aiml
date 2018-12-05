@@ -1,44 +1,37 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <aiml>
-<!-- Wordplay.aiml -->
-<!-- Free software (c)2005 SQUAREBEAR. -->
-<!-- This program is open source code released under -->
-<!-- the terms of the GNU General Public License -->
-<!-- as published by the Free Software Foundation. -->
-<!-- Complies with AIML 1.0 Tag Set Specification -->
-<!-- as adopted by the ALICE A.I. Foundation. -->
-
-
-<category>
-<pattern>WORDPLAY</pattern>
+<!-- File: wordplay.aiml -->
+<!-- Author: Dr. Richard S. Wallace -->
+<!-- Last modified: December 04, 2018 -->
+<!--  -->
+<!-- This AIML file is part of the SUPER 0.0.4 chat bot knowledge base. -->
+<!--  -->
+<!-- The SUPER brain is Copyright &copy; 2018 by ALICE AI Foundation. -->
+<!--  -->
+<!-- The SUPER brain is released under the terms of the GNU Lesser General -->
+<!-- Public License, as published by the Free Software Foundation. -->
+<!--  -->
+<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
+<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
+<!--  -->
+<!-- For more information see http://www.alicebot.org -->
+<category><pattern>WORDPLAY</pattern>
 <template>Welcome to my anagram game.<br/>I am going to jumble a nine letter word up and you have to guess what it is.<br/>You must solve each anagram correctly to continue.
 <br/>Type START to begin the anagram game.</template>
 </category>
-
-<category>
-<pattern>START</pattern>
-<that>TYPE START TO BEGIN THE ANAGRAM GAME</that>
-<template>
-<think><set name="anagramscore">0</set>
+<category><pattern>START</pattern><that>TYPE START TO BEGIN THE ANAGRAM GAME</that>
+<template><think><set name="anagramscore">0</set>
 <set name="topic">WORDPLAY</set>
 </think>
 Here comes the first anagram.<br/>I've jumbled a word up, but which word is it?<br/>(Type QUITGAME if you give up).<br/><br/><srai>XANAGRAM</srai></template>
 </category>
-
-<category>
-<pattern>QUITGAME</pattern>
-<template>
-The answer was <get name="anagramanswer"/>!<br/>
+<category><pattern>QUITGAME</pattern>
+<template>The answer was <get name="anagramanswer"/>!<br/>
 Your final score was :<get name="anagramscore"/>.<br/><br/>
 Type START to begin the anagram game.</template>
 </category>
-
-<!-- Give a congratulation message and add 1 to the score -->
-
-<category>
-<pattern>XANAGRAMYES</pattern>
-<template>
-<srai>XANAGRAMSCORE</srai>
+<category><pattern>XANAGRAMYES</pattern>
+<template><srai>XANAGRAMSCORE</srai>
 <random>
 <li>Yes. Well done.</li>
 <li>That's correct.</li>
@@ -55,17 +48,10 @@ Type START to begin the anagram game.</template>
 <li>Can you solve the next anagram?</li>
 </random>
 <br/>(Type QUITGAME if you give up).<br/><br/>
-<srai>XANAGRAM</srai>
-</template>
+<srai>XANAGRAM</srai></template>
 </category>
-
-
-<!-- Place the jumbled up words and the answers in here -->
-
-<category>
-<pattern>XANAGRAM</pattern>
-<template>
-<random>
+<category><pattern>XANAGRAM</pattern>
+<template><random>
 <li>Clue: Stars<br/><set name="topic">NOMSTORAY</set><think><set name="anagramanswer">ASTRONOMY</set></think></li>
 <li>Clue: Me! ;-)<br/><set name="topic">AFLUTUBEI</set><think><set name="anagramanswer">BEAUTIFUL</set></think></li>
 <li>Clue: Seashore<br/><set name="topic">SELCATION</set><think><set name="anagramanswer">COASTLINE</set></think></li>
@@ -118,903 +104,686 @@ Type START to begin the anagram game.</template>
 <li>Clue: Music<br/><set name="topic">HEXPLOONY</set><think><set name="anagramanswer">XYLOPHONE</set></think></li>
 <li>Clue: Time<br/><set name="topic">STRAYEDEY</set><think><set name="anagramanswer">YESTERDAY</set></think></li>
 <li>Clue: Animals<br/><set name="topic">OKEPEROZE</set><think><set name="anagramanswer">ZOOKEEPER</set></think></li>
-</random>
-</template>
+</random></template>
 </category>
-
-
-<!-- Place the correct answers here -->
-
-<topic name="NOMSTORAY"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="NOMSTORAY">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="ASTRONOMY"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="AFLUTUBEI"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="AFLUTUBEI">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="BEAUTIFUL"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="SELCATION"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="SELCATION">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="COASTLINE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="UPILACTED"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="UPILACTED">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="DUPLICATE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="TRAMWOREH"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="TRAMWOREH">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="EARTHWORM"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="WILOGNOLF"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="WILOGNOLF">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="FOLLOWING"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="NEEENTGML"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="NEEENTGML">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="GENTLEMEN"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="LIIGGHHHT"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="LIIGGHHHT">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="HIGHLIGHT"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="LIBELIGEL"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="LIBELIGEL">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="ILLEGIBLE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="IJKLARABE"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="IJKLARABE">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="JAILBREAK"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="BREAKYDOS"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="BREAKYDOS">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="KEYBOARDS"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="BUCALRITE"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="BUCALRITE">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="LUBRICATE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="DEMAUTING"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="DEMAUTING">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="MAGNITUDE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="SWEETNANG"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="SWEETNANG">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="NEWSAGENT"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="FEFEVSION"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="FEFEVSION">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="OFFENSIVE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="UTRAPACHE"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="UTRAPACHE">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="PARACHUTE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="OESQUINTS"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="OESQUINTS">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="QUESTIONS"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="SPRAINDOR"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="SPRAINDOR">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="RAINDROPS"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="STRANGEIU"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="STRANGEIU">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="SIGNATURE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="RANTINGEE"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="RANTINGEE">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="TANGERINE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="TUMTUMAIL"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="TUMTUMAIL">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="ULTIMATUM"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="GEBLEVATE"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="GEBLEVATE">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="VEGETABLE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="FLOUNDERW"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="FLOUNDERW">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="WONDERFUL"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="PHONEBEXO"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="PHONEBEXO">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="XENOPHOBE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="STRONGEYU"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="STRONGEYU">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="YOUNGSTER"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="GLISTOOZO"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="GLISTOOZO">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="ZOOLOGIST"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="IANMOTIAN"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="IANMOTIAN">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="ANIMATION"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="FLOBINDDL"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="FLOBINDDL">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="BLINDFOLD"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="ARETRACKE"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="ARETRACKE">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="CARETAKER"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="PEERVOLED"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="PEERVOLED">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="DEVELOPER"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="NONETRUCE"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="NONETRUCE">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="ENCOUNTER"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="OSCOURIFE"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="OSCOURIFE">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="FEROCIOUS"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="HARPGALIC"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="HARPGALIC">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="GRAPHICAL"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="HESKANDAH"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="HESKANDAH">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="HANDSHAKE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="TROMPAINT"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="TROMPAINT">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="IMPORTANT"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="JIFYSHELL"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="JIFYSHELL">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="JELLYFISH"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="DEPADPINK"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="DEPADPINK">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="KIDNAPPED"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="SILLYFEET"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="SILLYFEET">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="LIFESTYLE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="ISCAMINUS"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="ISCAMINUS">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="MUSICIANS"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="YUNTRALAL"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="YUNTRALAL">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="NATURALLY"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="UNSIXBOOO"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="UNSIXBOOO">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="OBNOXIOUS"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="TRAPETEEN"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="TRAPETEEN">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="PENETRATE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="DECKNIQUE"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="DECKNIQUE">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="QUICKENED"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="STARELION"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="STARELION">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="RELATIONS"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="FEASTIDIS"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="FEASTIDIS">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="SATISFIED"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="HEEPLONET"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="HEEPLONET">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="TELEPHONE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="SCRAPEUPE"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="SCRAPEUPE">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="UPPERCASE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="CACAVINES"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="CACAVINES">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="VACANCIES"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="LAPPERLAW"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="LAPPERLAW">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="WALLPAPER"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="HEXPLOONY"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="HEXPLOONY">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="XYLOPHONE"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="STRAYEDEY"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="STRAYEDEY">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="YESTERDAY"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<topic name="OKEPEROZE"> 
-<category> 
-<pattern>_</pattern>
-<template>
-<think>
-<set name="topic"></set>
+<topic name="OKEPEROZE">
+<category><pattern>_</pattern>
+<template><think>
+<set name="topic"/>
 <set name="inp"><star/></set>
 </think>
 <condition name="inp">
 <li value="ZOOKEEPER"><srai>XANAGRAMYES</srai></li>
 <li value="QUITGAME"><srai>QUITGAME</srai></li>
 <li>Sorry "<star/>" is incorrect.<srai>QUITGAME</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
-<!-- This part keeps score up to fifty correct answers -->
-
-<category>
-<pattern>XANAGRAMSCORE</pattern> 
-<template>
-<think>
+<category><pattern>XANAGRAMSCORE</pattern>
+<template><think>
 	<condition name="anagramscore"> 
 		<li value="0"><set name="anagramscore">1</set></li>
 		<li value="1"><set name="anagramscore">2</set></li> 
@@ -1067,9 +836,6 @@ Type START to begin the anagram game.</template>
 		<li value="48"><set name="anagramscore">49</set></li> 
 		<li value="49"><set name="anagramscore">50</set></li> 
 	</condition>
-</think> 
-</template>
+</think></template>
 </category>
-
-
 </aiml>

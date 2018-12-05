@@ -1284,9 +1284,6 @@
 <category><pattern>HOW DO YOU SAY I LOVE YOU IN SPANISH</pattern>
 <template><srai>TRANSLATE I LOVE YOU TO SPANISH</srai></template>
 </category>
-<category><pattern>I AM MALE</pattern>
-<template><srai>MY GENDER IS MALE</srai></template>
-</category>
 <category><pattern>I AM SO TIRED</pattern>
 <template><srai>I AM TIRED</srai></template>
 </category>
@@ -2376,9 +2373,6 @@
 <category><pattern>TU *</pattern>
 <template><srai>LANGUAGE</srai></template>
 </category>
-<category><pattern>YOUR MOTHER</pattern>
-<template><srai>MOTHER</srai></template>
-</category>
 <category><pattern>FACEBOOK *</pattern>
 <template><srai>OPEN FACEBOOK</srai></template>
 </category>
@@ -2619,9 +2613,6 @@
 <category><pattern>I DO NOT KNOW *</pattern>
 <template><srai>I DO NOT KNOW</srai></template>
 </category>
-<category><pattern>YOUR MOM</pattern>
-<template><srai>MOTHER</srai></template>
-</category>
 <category><pattern>HAWAII</pattern>
 <template><srai>MAP HAWAII</srai></template>
 </category>
@@ -2849,9 +2840,6 @@
 </category>
 <category><pattern>YOU HAVE TO *</pattern>
 <template><srai>YOU MUST <star/></srai></template>
-</category>
-<category><pattern>YOUR MOM *</pattern>
-<template><srai>YOUR MOTHER <star/></srai></template>
 </category>
 <category><pattern>NEVERMIND *</pattern>
 <template><srai>NEVERMIND</srai> <sr/></template>

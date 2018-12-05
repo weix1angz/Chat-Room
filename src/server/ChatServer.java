@@ -11,14 +11,21 @@ import server.Bots.MakeupBot;
 import server.Bots.MinhsBot;
 import server.Bots.NBAbot;
 import server.Bots.WeixiangBot;
-
+/**
+ * This is the ChatServer
+ * @author Minh Bui
+ *
+ */
 public class ChatServer {
 
 	private static ServerSocket serverSocket;
 	protected static List<ChatClientThread> clients;
 	protected static List<Bot> bots;
 	protected static HashMap<String , String> asciiMap;
-	
+	/**
+	 * This main method to load the chat Server
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		constructAsciiMap();
 		int portNumber = 4000;
@@ -50,24 +57,28 @@ public class ChatServer {
 			}
 		}
 	}
-	
+	/**
+	 * constructAsciiMap for moji
+	 */
 	private static void constructAsciiMap() {
 		asciiMap = new HashMap<>();
-		asciiMap.put("/acid" , "	⊂(◉‿◉)つ");
-		asciiMap.put("/afraid" , "(ㆆ _ ㆆ)");
-		asciiMap.put("/angel" , "☜(⌒▽⌒)☞");
-		asciiMap.put("/angry" , "•`_´•");
-		asciiMap.put("/happy" , "٩( ๑╹ ꇴ╹)۶");
-		asciiMap.put("/mad" , "t(ಠ益ಠt)");
-		asciiMap.put("/sad" , "ε(´סּ︵סּ`)з");
-		asciiMap.put("/shrug" , "¯\\_(ツ)_/¯");
+		asciiMap.put("/acid" , "	鈯�(鈼夆�库棄)銇�");
+		asciiMap.put("/afraid" , "(銌� _ 銌�)");
+		asciiMap.put("/angel" , "鈽�(鈱掆柦鈱�)鈽�");
+		asciiMap.put("/angry" , "鈥_麓鈥�");
+		asciiMap.put("/happy" , "侃( 喙戔暪 陣粹暪)鄱");
+		asciiMap.put("/mad" , "t(嗖犵泭嗖爐)");
+		asciiMap.put("/sad" , "蔚(麓锃侊傅锃乣)蟹");
+		asciiMap.put("/shrug" , "炉\\_(銉�)_/炉");
 		asciiMap.put("/shy" , "=^_^=");
-		asciiMap.put("/strong" , "ᕙ(⇀‸↼‶)ᕗ");
-		asciiMap.put("/zombie" , "[¬º-°]¬");
-		asciiMap.put("/yuno" , "(•̀ᴗ•́)و ̑̑");
-		asciiMap.put("/no" , "→_←");
+		asciiMap.put("/strong" , "釙�(鈬�鈥糕喖鈥�)釙�");
+		asciiMap.put("/zombie" , "[卢潞-掳]卢");
+		asciiMap.put("/yuno" , "(鈥⑻�岽椻�⑻�)賵 虘虘");
+		asciiMap.put("/no" , "鈫抇鈫�");
 	}
-
+	/**
+	 * This function is using for accpeting clients
+	 */
 	public static void acceptClients() {
 		clients = new ArrayList<ChatClientThread>();
 		while (true) {

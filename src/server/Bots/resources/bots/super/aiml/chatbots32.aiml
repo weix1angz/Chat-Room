@@ -1,114 +1,83 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <aiml>
-	<!-- Free software (c) 2001-2003 ALICE A.I. Foundation.   -->
-	<!-- This program is open source code released under -->
-	<!-- the terms of the GNU General Public License     -->
-	<!-- as published by the Free Software Foundation.   -->
-	<!-- Complies with AIML 1.0 Tag Set Specification -->
-	<!-- as adopted by the ALICE A.I. Foundation.  -->
-	<!-- chatbots32.aiml written by Steve Worswick (Square Bear) -->
-	<!-- Please contact steve@mitsuku.com if you have queries about it -->
-
-
-<!-- set up the database and include a catchall category -->
-
-<category>
-<pattern>XCHECKANIMAL *</pattern>
-<template>
-<think>
+<!-- File: chatbots32.aiml -->
+<!-- Author: Dr. Richard S. Wallace -->
+<!-- Last modified: December 04, 2018 -->
+<!--  -->
+<!-- This AIML file is part of the SUPER 0.0.4 chat bot knowledge base. -->
+<!--  -->
+<!-- The SUPER brain is Copyright &copy; 2018 by ALICE AI Foundation. -->
+<!--  -->
+<!-- The SUPER brain is released under the terms of the GNU Lesser General -->
+<!-- Public License, as published by the Free Software Foundation. -->
+<!--  -->
+<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
+<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
+<!--  -->
+<!-- For more information see http://www.alicebot.org -->
+<category><pattern>XCHECKANIMAL *</pattern>
+<template><think>
 	<set name="animal">UNKNOWN</set> 
 	<set name="legs">UNKNOWN</set>
 	<set name="lives">UNKNOWN</set>
 	<set name="eats">UNKOWN</set>
 	<set name="says">UNKNOWN</set>
-</think>
-</template>
+</think></template>
 </category>
-
-<category>
-<pattern>XCHECKANIMAL DOG</pattern>
-<template>
-<think>
+<category><pattern>XCHECKANIMAL DOG</pattern>
+<template><think>
 	<set name="animal">dog</set> 
 	<set name="legs">4</set>
 	<set name="lives">in a kennel</set>
 	<set name="eats">meat</set>
 	<set name="says">woof</set>
-</think>
-</template>
+</think></template>
 </category>
-
-<category>
-<pattern>XCHECKANIMAL CHICKEN</pattern>
-<template>
-<think>
+<category><pattern>XCHECKANIMAL CHICKEN</pattern>
+<template><think>
 	<set name="animal">chicken</set> 
 	<set name="legs">2</set>
 	<set name="lives">on a farm</set>
 	<set name="eats">corn</set>
 	<set name="says">cluck</set>
-</think>
-</template>
+</think></template>
 </category>
-
-<category>
-<pattern>XCHECKANIMAL GIRAFFE</pattern>
-<template>
-<think>
+<category><pattern>XCHECKANIMAL GIRAFFE</pattern>
+<template><think>
 	<set name="animal">giraffe</set> 
 	<set name="legs">4</set>
 	<set name="lives">in Africa</set>
 	<set name="eats">leaves</set>
 	<set name="says">nothing</set>
-</think>
-</template>
+</think></template>
 </category>
-
-<category>
-<pattern>XCHECKANIMAL SPIDER</pattern>
-<template>
-<think>
+<category><pattern>XCHECKANIMAL SPIDER</pattern>
+<template><think>
 	<set name="animal">spider</set> 
 	<set name="legs">8</set>
 	<set name="lives">in a web</set>
 	<set name="eats">flies</set>
 	<set name="says">nothing</set>
-</think>
-</template>
+</think></template>
 </category>
-
-<category>
-<pattern>XCHECKANIMAL COW</pattern>
-<template>
-<think>
+<category><pattern>XCHECKANIMAL COW</pattern>
+<template><think>
 	<set name="animal">cow</set> 
 	<set name="legs">4</set>
 	<set name="lives">on a farm</set>
 	<set name="eats">grass</set>
 	<set name="says">moo</set>
-</think>
-</template>
+</think></template>
 </category>
-
-<!-- A simple query that accesses a row directly -->
-
-<category>
-<pattern>WHERE DOES A * LIVE</pattern>
-<template>
-	<srai>XCHECKANIMAL <star index="1"/></srai>
+<category><pattern>WHERE DOES A * LIVE</pattern>
+<template><srai>XCHECKANIMAL <star index="1"/></srai>
 <condition name="animal">
 	<li value="UNKNOWN">I haven't heard of a <star/>.</li>
 	<li> A <get name="animal"/> lives <get name="lives"/>.</li>
-</condition>
-</template>
+</condition></template>
 </category>
-
-<!-- A bit more complicated, setup a query and check for a fixed value  -->
-
-<category>
-<pattern>WHICH ANIMAL HAS 2 LEGS</pattern>
-<template>
-<think>
+<category><pattern>WHICH ANIMAL HAS 2 LEGS</pattern>
+<template><think>
 <set name="list">Results:<br/></set>
 	<srai>XCHECKANIMAL DOG</srai>
 	<srai>XCHECKMATCH 2 LEGS</srai>
@@ -121,27 +90,17 @@
 	<srai>XCHECKANIMAL COW</srai>
 	<srai>XCHECKMATCH 2 LEGS</srai>
 </think>
-<get name="list"/>.
-</template>
+<get name="list"/>.</template>
 </category>
-
-<category>
-<pattern>XCHECKMATCH 2 LEGS</pattern>
-<template>
-<condition name="legs">
+<category><pattern>XCHECKMATCH 2 LEGS</pattern>
+<template><condition name="legs">
 <li value="2">
 <set name="list"><get name="list"/><br/><get name="animal"/></set>
 </li>
-</condition>
-</template>
+</condition></template>
 </category>
-
-<!-- The main deal, search through the database and see what matches -->
-
-<category>
-<pattern>XSCANANIMALDATABASE</pattern>
-<template>
-<think>
+<category><pattern>XSCANANIMALDATABASE</pattern>
+<template><think>
 <set name="list">Results:<br/></set>
 	<srai>XCHECKANIMAL DOG</srai>
 	<srai>XCHECKMATCH</srai>
@@ -154,16 +113,10 @@
 	<srai>XCHECKANIMAL COW</srai>
 	<srai>XCHECKMATCH</srai>
 </think>
-<get name="list"/>
-</template>
+<get name="list"/></template>
 </category>
-
-<!-- A query to test the database -->
-
-<category>
-<pattern>WHICH ANIMAL HAS * LEGS</pattern>
-<template>
-<think>
+<category><pattern>WHICH ANIMAL HAS * LEGS</pattern>
+<template><think>
 <set name="searchfor"><star/></set>
 
 <learn>	
@@ -180,16 +133,10 @@
 </learn>
 
 </think>
-<srai>XSCANANIMALDATABASE</srai>
-</template>
+<srai>XSCANANIMALDATABASE</srai></template>
 </category>
-
-<!-- This query searches for two items -->
-
-<category>
-<pattern>WHAT LIVES * AND SAYS *</pattern>
-<template>
-<think>
+<category><pattern>WHAT LIVES * AND SAYS *</pattern>
+<template><think>
 <set name="searchfor"><star/> <star index="2"/></set>
 
 <learn>	
@@ -206,16 +153,10 @@
 </learn>
 
 </think>
-<srai>XSCANANIMALDATABASE</srai>
-</template>
+<srai>XSCANANIMALDATABASE</srai></template>
 </category>
-
-<!-- We can include more than just the one column in the results -->
-
-<category>
-<pattern>HOW MANY LEGS HAS THE ANIMAL THAT EATS *</pattern>
-<template>
-<think>
+<category><pattern>HOW MANY LEGS HAS THE ANIMAL THAT EATS *</pattern>
+<template><think>
 <set name="searchfor"><star/></set>
 
 <learn>	
@@ -233,16 +174,10 @@ A <get name="animal"/> eats <get name="eats"/> and has <get name="legs"/> legs.
 </learn>
 
 </think>
-<srai>XSCANANIMALDATABASE</srai>
-</template>
+<srai>XSCANANIMALDATABASE</srai></template>
 </category>
-
-<!-- We can also return more than one row -->
-
-<category>
-<pattern>WHICH ANIMALS SAY *</pattern>
-<template>
-<think>
+<category><pattern>WHICH ANIMALS SAY *</pattern>
+<template><think>
 <set name="searchfor"><star/></set>
 
 <learn>	
@@ -259,16 +194,10 @@ A <get name="animal"/> eats <get name="eats"/> and has <get name="legs"/> legs.
 </learn>
 
 </think>
-<srai>XSCANANIMALDATABASE</srai>
-</template>
+<srai>XSCANANIMALDATABASE</srai></template>
 </category>
-
-<!-- A query to compare 2 values in the table -->
-
-<category>
-<pattern>DOES A * HAVE MORE LEGS THAN A *</pattern>
-<template> 
-<think>
+<category><pattern>DOES A * HAVE MORE LEGS THAN A *</pattern>
+<template><think>
 <srai>XCHECKANIMAL <star/></srai>
 <set name="legs1"><get name="legs"/></set>
 <srai>XCHECKANIMAL <star index="2"/></srai>
@@ -297,8 +226,6 @@ A <get name="animal"/> eats <get name="eats"/> and has <get name="legs"/> legs.
 
 	<li>The one that runs fastest probably has more legs.</li>
 
-</condition>
-</template>
+</condition></template>
 </category>
-
 </aiml>

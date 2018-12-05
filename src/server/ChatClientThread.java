@@ -26,7 +26,11 @@ import java.util.Scanner;
 import javafx.scene.control.Alert;
 import server.Bots.Bot;
 import server.User;
-
+/**
+ * This is the ChatClientThread
+ * @author Minh Bui
+ *
+ */
 public class ChatClientThread extends ChatServer implements Runnable {
 
 	private Socket socket;
@@ -39,7 +43,10 @@ public class ChatClientThread extends ChatServer implements Runnable {
 	private AbstractMap<String, Bot> botsMap;
 	private User userObj;
 	private PrintStream logStream;
-
+	/**
+	 * This is the constructor
+	 * @param socket - Socket to connect
+	 */
 	public ChatClientThread(Socket socket) {
 		botsMap = new HashMap<String, Bot>();
 		this.socket = socket;
@@ -49,7 +56,9 @@ public class ChatClientThread extends ChatServer implements Runnable {
 		userObj = null;
 		logStream = System.out;
 	}
-
+	/**
+	 * close the Inputstream and Outputstream
+	 */
 	public void close() {
 		try {
 			if (objIn != null)
@@ -62,7 +71,9 @@ public class ChatClientThread extends ChatServer implements Runnable {
 		}
 
 	}
-
+	/**
+	 * This is the recvUserObject 
+	 */
 	public void recvUserObject() {
 		try {
 			// Read user's info.
@@ -72,7 +83,9 @@ public class ChatClientThread extends ChatServer implements Runnable {
 		}
 
 	}
-
+	/**
+	 * run method
+	 */
 	@Override
 	public void run() {
 		try {
@@ -207,7 +220,16 @@ public class ChatClientThread extends ChatServer implements Runnable {
 			this.close();
 		}
 	}
-
+	/**
+	 * This is the createUser function depending upon the parameters
+	 * @param userName which is the String value
+	 * @param password which is the String value
+	 * @param firstName which is the String value
+	 * @param lastName which is the String value
+	 * @param age which is the String value
+	 * @param major which is the String value
+	 * @return boolean 
+	 */
 	private boolean createUser(String userName, String password, String firstName, String lastName, String age,
 			String major) {
 		if (checkUserName(userName))
@@ -224,7 +246,11 @@ public class ChatClientThread extends ChatServer implements Runnable {
 		}
 		return true;
 	}
-
+	/**
+	 * checkUserName and return boolean
+	 * @param userName which is a String value
+	 * @return boolean
+	 */
 	private boolean checkUserName(String userName) {
 		Scanner sc = null;
 		try {
@@ -248,7 +274,12 @@ public class ChatClientThread extends ChatServer implements Runnable {
 
 		return false;
 	}
-
+	/**
+	 * checkUserName and return value
+	 * @param userName which is a String value
+	 * @param password which is a String value
+	 * @return boolean
+	 */
 	private boolean checkUserName(String userName, String password) {
 		Scanner sc = null;
 		try {

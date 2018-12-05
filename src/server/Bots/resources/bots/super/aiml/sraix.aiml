@@ -1139,9 +1139,6 @@
 <category><pattern>WHAT IS THE NEXT *</pattern>
 <template><sraix>WHAT IS THE NEXT <star/></sraix></template>
 </category>
-<category><pattern>WHAT IS THE CURRENCY OF *</pattern>
-<template><sraix>WHAT IS THE CURRENCY OF <star/></sraix></template>
-</category>
 <category><pattern>WHAT IS THE MEANING OF LIFE</pattern>
 <template><sraix>WHAT IS THE MEANING OF LIFE</sraix></template>
 </category>

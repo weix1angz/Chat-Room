@@ -43,7 +43,9 @@ public abstract class Bot {
 	private static org.alicebot.ab.Bot bot;
 
 	private static Chat chatSession;
-
+	/**
+	 * constructor
+	 */
 	public Bot() {
 
 		String resourcesPath = getResourcesPath();
@@ -91,7 +93,11 @@ public abstract class Bot {
 		}
 		return userInfo;
 	}
-
+	/**
+	 * get the user object by using username
+	 * @param userName which is the String value
+	 * @return user
+	 */
 	private User getUserFromDB(String userName) {
 		Scanner sc = null;
 		User user = null;

@@ -1,31 +1,30 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <aiml>
-<!-- Battledome.aiml -->
-<!-- Free software (c)2008 Square Bear -->
-<!-- This program is open source code released under -->
-<!-- the terms of the GNU General Public License -->
-<!-- as published by the Free Software Foundation. -->
-<!-- Complies with AIML 1.0 Tag Set Specification -->
-<!-- as adopted by the ALICE A.I. Foundation. -->
-<!-- A combat system for use in adventures -->
-
-
-<category>
-<pattern>BATTLEDOME</pattern>
-<template>
-<think>
+<!-- File: battledome.aiml -->
+<!-- Author: Dr. Richard S. Wallace -->
+<!-- Last modified: December 04, 2018 -->
+<!--  -->
+<!-- This AIML file is part of the SUPER 0.0.4 chat bot knowledge base. -->
+<!--  -->
+<!-- The SUPER brain is Copyright &copy; 2018 by ALICE AI Foundation. -->
+<!--  -->
+<!-- The SUPER brain is released under the terms of the GNU Lesser General -->
+<!-- Public License, as published by the Free Software Foundation. -->
+<!--  -->
+<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
+<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
+<!--  -->
+<!-- For more information see http://www.alicebot.org -->
+<category><pattern>BATTLEDOME</pattern>
+<template><think>
 <set name="energy">50</set>
 <set name="topic">BATTLEDOME</set>
 </think>
 Welcome to the Battledome.<br/><br/>You have<get name="energy"/>energy points and your enemy has<srai>GETNEWENEMY</srai>points<br/>Type FIGHT to begin your fight against the<get name="enemytype"/>that blocks your path.</template>
 </category>
-
-
 <topic name="BATTLEDOME">
-<category>
-<pattern>FIGHT</pattern>
-<template>
-<random>
+<category><pattern>FIGHT</pattern>
+<template><random>
 <li>You strike out at the<get name="enemytype"/>and hit him straight on his head. The<get name="enemytype"/>loses 10 HP.<think><set name="result">ENEMYLOSE10</set></think></li>
 <li>You strike out at the<get name="enemytype"/>. The<get name="enemytype"/>is quick but you manage to hit his shoulder. The<get name="enemytype"/>loses 5 HP.<think><set name="result">ENEMYLOSE5</set></think></li>
 <li>You strike out at the<get name="enemytype"/>but he is too quick and manages to avoid you.<think><set name="result">0</set></think></li>
@@ -50,75 +49,55 @@ Welcome to the Battledome.<br/><br/>You have<get name="energy"/>energy points an
 </condition>
 <condition name="enemy">
 <li value="DEAD"><srai>NEXTBATTLE</srai></li>
-</condition>
-</template>
-</category>
-</topic>
+</condition></template>
+</category></topic>
 
 <topic name="BATTLEDOME">
-<category>
-<pattern>NEXTBATTLE</pattern>
-<template>
-<think>
+<category><pattern>NEXTBATTLE</pattern>
+<template><think>
 <srai>PLAYERGAIN5</srai>
 </think>
 <br/><br/>You have defeated the<get name="enemytype"/>. You rest for a while and regain 5 energy points.<br/><br/>
 After a short rest, you walk further into the Battledome and meet a new enemy.<br/>
-His energy is<srai>GETNEWENEMY</srai>and yours is<get name="energy"/>. Type FIGHT to fight the<get name="enemytype"/>you now see before you.
-</template>
-</category>
-</topic>
+His energy is<srai>GETNEWENEMY</srai>and yours is<get name="energy"/>. Type FIGHT to fight the<get name="enemytype"/>you now see before you.</template>
+</category></topic>
 
 <topic name="BATTLEDOME">
-<category>
-<pattern>ENEMYLOSE5</pattern>
-<template>
-<think>
+<category><pattern>ENEMYLOSE5</pattern>
+<template><think>
 <srai>XKILLENEMY</srai>
 <srai>XKILLENEMY</srai>
 <srai>XKILLENEMY</srai>
 <srai>XKILLENEMY</srai>
 <srai>XKILLENEMY</srai>
-</think>
-</template>
-</category>
-</topic>
+</think></template>
+</category></topic>
 
 <topic name="BATTLEDOME">
-<category>
-<pattern>PLAYERLOSE5</pattern>
-<template>
-<think>
+<category><pattern>PLAYERLOSE5</pattern>
+<template><think>
 <srai>XKILLPLAYER</srai>
 <srai>XKILLPLAYER</srai>
 <srai>XKILLPLAYER</srai>
 <srai>XKILLPLAYER</srai>
 <srai>XKILLPLAYER</srai>
-</think>
-</template>
-</category>
-</topic>
+</think></template>
+</category></topic>
 
 <topic name="BATTLEDOME">
-<category>
-<pattern>PLAYERGAIN5</pattern>
-<template>
-<think>
+<category><pattern>PLAYERGAIN5</pattern>
+<template><think>
 <srai>XPLAYERGAIN</srai>
 <srai>XPLAYERGAIN</srai>
 <srai>XPLAYERGAIN</srai>
 <srai>XPLAYERGAIN</srai>
 <srai>XPLAYERGAIN</srai>
-</think>
-</template>
-</category>
-</topic>
+</think></template>
+</category></topic>
 
 <topic name="BATTLEDOME">
-<category>
-<pattern>GETNEWENEMY</pattern>
-<template>
-<random>
+<category><pattern>GETNEWENEMY</pattern>
+<template><random>
 <li><set name="enemy">30</set></li>
 <li><set name="enemy">25</set></li>
 <li><set name="enemy">22</set></li>
@@ -144,16 +123,12 @@ His energy is<srai>GETNEWENEMY</srai>and yours is<get name="energy"/>. Type FIGH
 <li><set name="enemytype">ogre</set></li>
 <li><set name="enemytype">fire spirit</set></li>
 </random>
-</think>
-</template>
-</category>
-</topic>
+</think></template>
+</category></topic>
 
 <topic name="BATTLEDOME">
-<category>
-<pattern>XKILLENEMY</pattern>
-<template>
-<think>
+<category><pattern>XKILLENEMY</pattern>
+<template><think>
 <condition name="enemy">
 <li value="30"><set name="enemy">29</set></li>
 <li value="29"><set name="enemy">28</set></li>
@@ -186,16 +161,12 @@ His energy is<srai>GETNEWENEMY</srai>and yours is<get name="energy"/>. Type FIGH
 <li value="2"><set name="enemy">1</set></li>
 <li value="1"><set name="enemy">DEAD</set></li>
 </condition>
-</think>
-</template>
-</category>
-</topic>
+</think></template>
+</category></topic>
 
 <topic name="BATTLEDOME">
-<category>
-<pattern>XKILLPLAYER</pattern>
-<template>
-<think>
+<category><pattern>XKILLPLAYER</pattern>
+<template><think>
 <condition name="energy">
 <li value="50"><set name="energy">49</set></li>
 <li value="49"><set name="energy">48</set></li>
@@ -248,16 +219,12 @@ His energy is<srai>GETNEWENEMY</srai>and yours is<get name="energy"/>. Type FIGH
 <li value="2"><set name="energy">1</set></li>
 <li value="1"><set name="energy">DEAD</set></li>
 </condition>
-</think>
-</template>
-</category>
-</topic>
+</think></template>
+</category></topic>
 
 <topic name="BATTLEDOME">
-<category>
-<pattern>XPLAYERGAIN</pattern>
-<template>
-<think>
+<category><pattern>XPLAYERGAIN</pattern>
+<template><think>
 <condition name="energy">
 <li value="1"><set name="energy">2</set></li>
 <li value="2"><set name="energy">3</set></li>
@@ -309,9 +276,7 @@ His energy is<srai>GETNEWENEMY</srai>and yours is<get name="energy"/>. Type FIGH
 <li value="48"><set name="energy">49</set></li>
 <li value="49"><set name="energy">50</set></li>
 </condition>
-</think>
-</template>
-</category>
-</topic>
+</think></template>
+</category></topic>
 
 </aiml>

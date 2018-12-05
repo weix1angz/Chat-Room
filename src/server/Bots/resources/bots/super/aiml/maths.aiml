@@ -1,20 +1,22 @@
-<?xml version="1.0" encoding="ISO-8859-1"?> 
-<aiml version="1.0">
-
-<!-- Free software (c)2008 Square Bear. -->
-<!-- This program is open source code released under -->
-<!-- the terms of the GNU General Public License -->
-<!-- as published by the Free Software Foundation. -->
-<!-- Complies with AIML 1.0.1 Tag Set Specification -->
-<!-- as adopted by the ALICE A.I. Foundation. -->
-<!-- maths.aiml by Square Bear -->
-<!-- http://www.square-bear.co.uk -->
-
-
-<category>
-<pattern>MATHS FACT</pattern>
-<template>
-<random>
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml>
+<!-- File: maths.aiml -->
+<!-- Author: Dr. Richard S. Wallace -->
+<!-- Last modified: December 04, 2018 -->
+<!--  -->
+<!-- This AIML file is part of the SUPER 0.0.4 chat bot knowledge base. -->
+<!--  -->
+<!-- The SUPER brain is Copyright &copy; 2018 by ALICE AI Foundation. -->
+<!--  -->
+<!-- The SUPER brain is released under the terms of the GNU Lesser General -->
+<!-- Public License, as published by the Free Software Foundation. -->
+<!--  -->
+<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
+<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
+<!--  -->
+<!-- For more information see http://www.alicebot.org -->
+<category><pattern>MATHS FACT</pattern>
+<template><random>
 <li>If you counted at the rate of 200 numbers a minute for twelve hours every day, it would take you 19,024 years, 68 days, 10 hours and 40 minutes to count to 1 billion.</li>
 <li>Here is a strange sum:<br/>846 x 14493 = 12345678.</li>
 <li>Here is a strange sum:<br/>9298 x 119.5 = 1111111.</li>
@@ -296,8 +298,6 @@ This may not look impressive but it is 9 raised to the 387,420,489th power. If y
 1728395046 +<br/>
 1975308624 = <br/>
 9876543120.</li>
-</random>
-</template>
+</random></template>
 </category>
-
 </aiml>

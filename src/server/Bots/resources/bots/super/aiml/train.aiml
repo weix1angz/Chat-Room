@@ -15,34 +15,6 @@
 <!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
 <!--  -->
 <!-- For more information see http://www.alicebot.org -->
-<category><pattern>* MEANS *</pattern>
-<template><think>
-<set name="equalto"><srai>IS <star/> EQUALTO <star index="2"/></srai></set>
-</think>
-<condition name="equalto">
-<li value="false">
-OK, when you say "<star/>", I will assume you mean "<star index="2"/>".
-<learnf>
-<category>
-<pattern><eval><star/></eval></pattern>
-<template><srai><eval><star index="2"/></eval></srai></template>
-</category>
-<category>
-<pattern><eval><star/></eval> _</pattern>
-<template><srai><eval><star index="2"/></eval> <star/></srai></template>
-</category>
-<category>
-<pattern>_ <eval><star/></eval></pattern>
-<template><srai><star/> <eval><star index="2"/></eval></srai></template>
-</category>
-<category>
-<pattern>_ <eval><star/></eval> *</pattern>
-<template><srai><star/> <eval><star index="2"/></eval> <star index="2"/></srai></template>
-</category>
-</learnf></li>
-<li><star/> is already the same as <star index="2"/>.</li>
-</condition></template>
-</category>
 <category><pattern>A * IS A *</pattern>
 <template>Ok, I will remember a <star/> is a <star index="2"/>.
 <learnf>
@@ -59,54 +31,6 @@ OK, when you say "<star/>", I will assume you mean "<star index="2"/>".
 <template>Yes.</template>
 </category>
 
-</learnf></template>
-</category>
-<category><pattern>* IS A *</pattern>
-<template>Ok, I will remember <star/> is a <star index="2"/>.
-<think>
-<set name="isaname"><srai>ISANAME <star/></srai></set>
-<condition name="isaname">
-<li value="true"><set name="learnpattern">WHO IS A</set></li>
-<li><set name="learnpattern">WHAT IS A</set></li>
-</condition>
-</think>
-<learnf>
-<category>
-<pattern>WHAT IS <eval><star/></eval></pattern>
-<template>A <eval><star index="2"/></eval>.</template>
-</category>
-<category>
-<pattern><eval><get name="learnpattern"/></eval> <eval><star index="2"/></eval></pattern>
-<template><eval><star/></eval>.</template>
-</category>
-<category>
-<pattern>IS <eval><star/></eval> A <eval><star index="2"/></eval></pattern>
-<template>Yes.</template>
-</category>
-</learnf></template>
-</category>
-<category><pattern>* IS THE *</pattern>
-<template>Ok, I will remember <star/> is the <star index="2"/>.
-<think>
-<set name="isaname"><srai>ISANAME <star/></srai></set>
-<condition name="isaname">
-<li value="true"><set name="learnpattern">WHO IS THE</set></li>
-<li><set name="learnpattern">WHAT IS THE</set></li>
-</condition>
-</think>
-<learnf>
-<category>
-<pattern>WHAT IS <eval><star/></eval></pattern>
-<template>The <eval><star index="2"/></eval>.</template>
-</category>
-<category>
-<pattern><eval><get name="learnpattern"/></eval> <eval><star index="2"/></eval></pattern>
-<template><eval><star/></eval>.</template>
-</category>
-<category>
-<pattern>IS <eval><star/></eval> THE <eval><star index="2"/></eval></pattern>
-<template>Yes.</template>
-</category>
 </learnf></template>
 </category>
 <category><pattern>A * IS AN *</pattern>
@@ -156,30 +80,6 @@ OK, when you say "<star/>", I will assume you mean "<star index="2"/>".
 </category>
 <category>
 <pattern>IS AN <eval><star/></eval> AN <eval><star index="2"/></eval></pattern>
-<template>Yes.</template>
-</category>
-</learnf></template>
-</category>
-<category><pattern>* IS AN *</pattern>
-<template>Ok, I will remember <star/> is a <star index="2"/>.
-<think>
-<set name="isaname"><srai>ISANAME <star/></srai></set>
-<condition name="isaname">
-<li value="true"><set name="learnpattern">WHO IS AN</set></li>
-<li><set name="learnpattern">WHAT IS AN</set></li>
-</condition>
-</think>
-<learnf>
-<category>
-<pattern>WHAT IS <eval><star/></eval></pattern>
-<template>An <eval><star index="2"/></eval>.</template>
-</category>
-<category>
-<pattern><eval><get name="learnpattern"/></eval> <eval><star index="2"/></eval></pattern>
-<template><eval><star/></eval>.</template>
-</category>
-<category>
-<pattern>IS <eval><star/></eval> AN <star index="2"/></pattern>
 <template>Yes.</template>
 </category>
 </learnf></template>
@@ -292,60 +192,6 @@ OK, when you say "<star/>", I will assume you mean "<star index="2"/>".
 </category>
 </learnf></template>
 </category>
-<category><pattern>MY * IS *</pattern>
-<template><think><set name="isaname"><srai>ISANAME <star index="2"/></srai></set>
-<set name="isanumber"><srai>ISANUMBER <star index="2"/></srai></set>
-<set name="isafamiliarname"><srai>ISAFAMILIARNAME <star/></srai></set>
-</think>
-<condition name="isaname">
-<li value="true"><srai>MY <star/> S NAME IS <star index="2"/></srai></li>
-<li>
-  <condition name="isanumber">
-  <li value="true"><srai>MY <star/> S AGE IS <star index="2"/></srai></li>
-  <li><condition name="isafamiliarname">
-   <li value="true">
-   <random>
-     <li>OK, now you can ask me "What is my <star/>?" </li>
-     <li>OK, now you can ask me "Who is <star index="2"/>?" </li>
-     <li>Your <star/> is?</li>
-     <li>Good to know.</li>
-   </random>
-   <learnf>
-   <category>
-   <pattern>WHAT IS MY <eval><star/></eval></pattern>
-   <template><eval><star index="2"/></eval></template>
-   </category>
-   <category>
-   <pattern>WHO IS <eval><star index="2"/></eval></pattern>
-   <template>Your <eval><star/></eval></template>
-   </category>
-   </learnf>
-   </li>
-   <li>
-   <random>
-     <li>OK, now you can ask me "What is my <star/>?" </li>
-     <li>OK, now you can ask me "What is <star index="2"/>?" </li>
-     <li>Your <star/> is?</li>
-     <li>Good to know.</li>
-     <li>Where did you get your <star/>?</li>
-   </random>
-   <learnf>
-   <category>
-   <pattern>WHAT IS MY <eval><star/></eval></pattern>
-   <template><eval><star index="2"/></eval></template>
-   </category>
-   <category>
-   <pattern>WHAT IS <eval><star index="2"/></eval></pattern>
-   <template>Your <eval><star/></eval></template>
-   </category>
-   </learnf>
-  </li>
-  </condition>
-  </li>
-  </condition>
-</li>
-</condition></template>
-</category>
 <category><pattern>MY FAVORITE * IS *</pattern>
 <template><random>
 <li>OK, now you can ask me "What is my favorite <star/>?" </li>
@@ -370,15 +216,6 @@ OK, when you say "<star/>", I will assume you mean "<star index="2"/>".
 <category>
 <pattern><eval><normalize><get name="newpattern"/></normalize></eval></pattern>
 <template><eval><star/></eval>.</template>
-</category>
-</learnf></template>
-</category>
-<category><pattern>LEARN * IS *</pattern>
-<template>Ok, I will remember <star/> is <star index="2"/>.
-<learnf>
-<category>
-<pattern>WHAT IS <eval><star/></eval></pattern>
-<template><eval><star index="2"/></eval>.</template>
 </category>
 </learnf></template>
 </category>
